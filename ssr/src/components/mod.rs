@@ -1,0 +1,16 @@
+pub mod header;
+pub use header::*;
+pub mod search;
+pub use search::*;
+pub mod services;
+pub use services::*;
+pub mod footer;
+pub use footer::*;
+pub mod best_placed_for_trips;
+pub use best_placed_for_trips::*;
+pub mod advantages;
+pub use advantages::*;
+pub mod get_in_touch;
+pub use get_in_touch::*;
+pub mod stay_in_the_know;
+pub use stay_in_the_know::*;
