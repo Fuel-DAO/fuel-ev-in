@@ -1,5 +1,7 @@
 use crate::components::*;
 use crate::error_template::{AppError, ErrorTemplate};
+use crate::state::canisters::Canisters;
+use base_route::BaseRoute;
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
@@ -7,6 +9,7 @@ use leptos_router::*;
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
+    provide_context(Canisters::default());
 
     view! {
 
@@ -29,7 +32,9 @@ pub fn App() -> impl IntoView {
         }>
             <main>
                 <Routes>
-                    <Route path="" view=HomePage/>
+                    <Route path="" view=BaseRoute>
+                        <Route path="" view=HomePage/>
+                    </Route>
                 </Routes>
             </main>
         </Router>

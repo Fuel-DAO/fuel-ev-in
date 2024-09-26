@@ -14,3 +14,6 @@ pub mod get_in_touch;
 pub use get_in_touch::*;
 pub mod stay_in_the_know;
 pub use stay_in_the_know::*;
+pub mod base_route;
+pub mod spinners;
+pub mod auth_cans_provider;
