@@ -51,6 +51,7 @@ fn HomePage() -> impl IntoView {
                 <Header/>
                 <Search/>
                 <BestPlacedForTrips/>
+                <SearchResult/>
                 // <Services/>
                 <Advantages/>
                 <GetInTouch/>

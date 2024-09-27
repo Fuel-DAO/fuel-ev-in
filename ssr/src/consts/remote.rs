@@ -1,1 +1,1 @@
-pub const AGENT_URL: &str = "hhttp://localhost:4943";
+pub const AGENT_URL: &str = "http://localhost:4943";

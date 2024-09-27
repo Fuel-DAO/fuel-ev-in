@@ -4,11 +4,11 @@ use candid::Principal;
 use ic_agent::{identity::DelegatedIdentity,  Identity};
 use leptos::*;
 use serde::{Deserialize, Serialize};
-
 use crate::{
     auth::DelegatedIdentityWire, canister::BACKEND_ID, utils::{ic::AgentWrapper, MockPartialEq, ParentResource}
 };
 
+use crate::canister::backend::Backend;
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct CanistersAuthWire {
@@ -117,7 +117,7 @@ pub fn unauth_canisters() -> Canisters<false> {
     expect_context()
 }
 
-pub struct Backend<'a>(pub Principal, pub &'a ic_agent::Agent);
+// pub struct Backend<'a>(pub Principal, pub &'a ic_agent::Agent);
 
 
 impl<const A: bool> Canisters<A> {
