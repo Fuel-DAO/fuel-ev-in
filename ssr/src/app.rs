@@ -9,27 +9,20 @@ pub fn App() -> impl IntoView {
     provide_meta_context();
 
     view! {
-
-
-        // injects a stylesheet into the document <head>
-        // id=leptos means cargo-leptos will hot-reload this stylesheet
-        <Stylesheet id="leptos" href="/pkg/fuel-dao-leptos-ssr.css"/>
+        <Stylesheet id="leptos" href="/pkg/fuel-dao-leptos-ssr.css" />
 
         // sets the document title
-        <Title text="Welcome to Leptos"/>
+        <Title text="Welcome to Leptos" />
 
         // content for this welcome page
         <Router fallback=|| {
             let mut outside_errors = Errors::default();
             outside_errors.insert_with_default_key(AppError::NotFound);
-            view! {
-                <ErrorTemplate outside_errors/>
-            }
-            .into_view()
+            view! { <ErrorTemplate outside_errors /> }.into_view()
         }>
             <main>
                 <Routes>
-                    <Route path="" view=HomePage/>
+                    <Route path="" view=HomePage />
                 </Routes>
             </main>
         </Router>
@@ -40,17 +33,17 @@ pub fn App() -> impl IntoView {
 #[component]
 fn HomePage() -> impl IntoView {
     view! {
-        <Title text="FuelDao"/>
+        <Title text="FuelDao" />
         <main>
-            <div class="min-h-screen flex flex-col">
-                <Header/>
-                <Search/>
-                <BestPlacedForTrips/>
+            <div class="flex flex-col min-h-screen">
+                // <Header/>
+                <Search />
+                <BestPlacedForTrips />
                 // <Services/>
-                <Advantages/>
-                <GetInTouch/>
-               // <StayInTheKnow/>
-                <Footer/>
+                <Advantages />
+                <GetInTouch />
+                // <StayInTheKnow/>
+                <Footer />
             </div>
         </main>
     }
