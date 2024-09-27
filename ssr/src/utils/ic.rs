@@ -17,6 +17,13 @@ impl AgentWrapper {
 
     pub async fn get_agent(&self) -> &Agent {
         let agent = &self.0;
+        #[cfg(any(feature = "local-bin", feature = "local-lib"))]
+        {
+            agent
+                .fetch_root_key()
+                .await
+                .expect("AGENT: fetch_root_key failed");
+        }
         agent
     }
 

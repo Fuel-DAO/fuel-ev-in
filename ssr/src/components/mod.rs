@@ -17,3 +17,5 @@ pub use stay_in_the_know::*;
 pub mod base_route;
 pub mod spinners;
 pub mod auth_cans_provider;
+pub mod car_tile;
+pub use car_tile::*;

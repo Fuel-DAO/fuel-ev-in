@@ -4,6 +4,7 @@ pub mod consts;
 pub mod error_template;
 pub mod auth;
 pub mod state;
+pub mod canister;
 #[cfg(feature = "ssr")]
 pub mod fileserv;
 pub mod utils;
