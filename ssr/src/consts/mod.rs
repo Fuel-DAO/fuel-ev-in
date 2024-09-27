@@ -1,8 +1,16 @@
 pub const USER_PRINCIPAL_ID_STORE: &str = "user-principal-id";
 pub const REFERRER_STORE: &str = "referrer";
 pub const ACCOUNT_CONNECTED_STORE: &str = "account-connected-1";
+#[cfg(any(feature = "local-bin", feature = "local-lib"))]
 pub mod local;
+#[cfg(any(feature = "local-bin", feature = "local-lib"))]
 pub use local::*;
+
+#[cfg(not(any(feature = "local-bin", feature = "local-lib")))]
+mod remote;
+#[cfg(not(any(feature = "local-bin", feature = "local-lib")))]
+pub use remote::*;
+
 pub mod auth {
     use web_time::Duration;
 

@@ -6,16 +6,16 @@ use leptos::*;
 use serde::{Deserialize, Serialize};
 
 use crate::{
-    auth::DelegatedIdentityWire,
-    
-    utils::{ic::AgentWrapper, MockPartialEq, ParentResource},
+    auth::DelegatedIdentityWire, canister::BACKEND_ID, utils::{ic::AgentWrapper, MockPartialEq, ParentResource}
 };
+
 
 #[derive(Clone, Serialize, Deserialize, Debug)]
 pub struct CanistersAuthWire {
     id: DelegatedIdentityWire,
     user_principal: Principal,
     expiry: u64,
+    backend_principal: Principal,
     // profile_details: ProfileDetails,
 }
 
@@ -34,6 +34,7 @@ impl CanistersAuthWire {
             id: Some(arc_id),
             user_principal: self.user_principal,
             expiry: self.expiry,
+            backend_principal: BACKEND_ID,
             // profile_details: Some(self.profile_details),
         })
     }
@@ -45,6 +46,7 @@ pub struct Canisters<const AUTH: bool> {
     id: Option<Arc<DelegatedIdentity>>,
     user_principal: Principal,
     expiry: u64,
+    backend_principal: Principal,
     // profile_details: Option<ProfileDetails>,
 }
 
@@ -55,6 +57,8 @@ impl Default for Canisters<false> {
             id: None,
             user_principal: Principal::anonymous(),
             expiry: 0,
+            backend_principal: BACKEND_ID,
+
             // profile_details: None,
         }
     }
@@ -75,6 +79,7 @@ impl Canisters<true> {
             id: Some(id),
             user_principal: Principal::anonymous(),
             expiry,
+            backend_principal: BACKEND_ID,
             // profile_details: None,
         }
     }
@@ -102,8 +107,8 @@ impl Canisters<true> {
             .expect("expect principal to be present")
     }
 
-    pub async fn authenticated_user(&self) -> IndividualUserTemplate<'_> {
-        self.individual_user(self.user_principal).await
+    pub async fn backend_canister(&self) -> Backend<'_> {
+        self.backend().await
     }
 }
 
@@ -112,13 +117,13 @@ pub fn unauth_canisters() -> Canisters<false> {
     expect_context()
 }
 
-pub struct IndividualUserTemplate<'a>(pub Principal, pub &'a ic_agent::Agent);
+pub struct Backend<'a>(pub Principal, pub &'a ic_agent::Agent);
 
 
 impl<const A: bool> Canisters<A> {
-    pub async fn individual_user(&self, user_principal: Principal) -> IndividualUserTemplate<'_> {
+    pub async fn backend(&self) -> Backend<'_> {
         let agent = self.agent.get_agent().await;
-        IndividualUserTemplate(user_principal, agent)
+        Backend(self.backend_principal, agent)
     }
 }
 
@@ -156,6 +161,7 @@ pub async fn do_canister_auth(
         id: auth,
         user_principal: canisters.user_principal,
         expiry: canisters.expiry,
+        backend_principal: BACKEND_ID
     };
 
     Ok(cans_wire)
