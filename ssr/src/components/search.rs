@@ -35,11 +35,10 @@ pub fn Search() -> impl IntoView {
             </div>
 
             <div class="flex relative z-10 items-center mx-auto max-w-screen-xl h-full">
-                <div class="p-10">
+                <div class="p-10" style="margin-bottom: 50px;">
                     <h1 class="text-7xl font-bold">Explore your place to <br />stay</h1>
                     <div class="relative mt-8">
                         <form class="flex items-center space-x-[10px] w-[1074px] h-[106px] p-[27px_34px] bg-[#1D1D1D9C] backdrop-blur-[3px] border-t-[1px] border-l-[1px] border-gray-400 rounded-[22.5px] mx-auto">
-
                             <input
                                 type="text"
                                 placeholder="Add your location"
@@ -53,6 +52,13 @@ pub fn Search() -> impl IntoView {
                                 Search
                             </button>
                         </form>
+                    </div>
+
+                    <div class="absolute right-0 p-4 mr-10 shadow-lg opacity-100 transform rotate-0 w-[431.3px] h-[175px] top-[564px]">
+                        <p class="p-4 font-bold text-left text-white font-poppins text-[27px] leading-[35.1px] tracking-[0.075px]">
+                            We provide a variety of the best vehicles for those of you who need it.
+                        </p>
+                    // <p>"Don’t worry about the quality of the service."</p>
                     </div>
                 </div>
             </div>
