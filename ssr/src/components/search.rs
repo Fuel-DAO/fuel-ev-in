@@ -55,9 +55,10 @@ pub fn Search() -> impl IntoView {
                     </div>
 
                     <div class="absolute right-0 p-4 mr-10 shadow-lg opacity-100 transform rotate-0 w-[431.3px] h-[175px] top-[564px]">
-                        <p class="p-4 font-bold text-left text-white font-poppins text-[27px] leading-[35.1px] tracking-[0.075px]">
+                        <p class="relative p-4 font-bold text-left text-white font-poppins text-[27px] leading-[35.1px] tracking-[0.075px] before:content-[''] before:absolute before:top-0 before:left-0 before:w-[4px] before:h-full before:bg-white">
                             We provide a variety of the best vehicles for those of you who need it.
                         </p>
+
                     // <p>"Don’t worry about the quality of the service."</p>
                     </div>
                 </div>
