@@ -21,20 +21,16 @@ pub fn BestPlacedForTrips() -> impl IntoView {
 
     // Functions to rotate the carousel
     let rotate_left = move |_| {
-        set_current_index.update(|index| {
-            *index = (*index + length - 1) % length; // Rotate left
-        });
+        set_current_index.update(|index| *index = (*index + length - 1) % length);
     };
 
     let rotate_right = move |_| {
-        set_current_index.update(|index| {
-            *index = (*index + 1) % length; // Rotate right
-        });
+        set_current_index.update(|index| *index = (*index + 1) % length);
     };
 
     // Function to handle mouse click on images
     let handle_image_click = move |index: usize| {
-        set_current_index.set(index); // Set current index to the clicked image's index
+        set_current_index.set(index);
     };
 
     // Calculate the 5 indices to be displayed in the carousel
@@ -49,7 +45,7 @@ pub fn BestPlacedForTrips() -> impl IntoView {
     view! {
         <section class="py-12 bg-gray-100">
             <div class="container mx-auto text-center">
-                <h2 class="mb-8 text-3xl font-bold">"Best placed for trips"</h2>
+                <h2 class="mb-8 text-3xl font-bold">"Top spots near Banglore"</h2>
                 <div class="flex relative justify-center items-center">
 
                     <div class="flex absolute left-0 items-center h-full">
@@ -64,27 +60,38 @@ pub fn BestPlacedForTrips() -> impl IntoView {
                     <div class="flex overflow-hidden space-x-4 carousel">
                         {get_display_indices(current_index.get())
                             .into_iter()
-                            .map(move |i| {
-                                let offset = ((i as i32) - (current_index.get() as i32)).abs();
-                                let scale = if offset == 0 {
+                            .enumerate()
+                            .map(move |(idx, i)| {
+                                let is_first = idx == 0;
+                                let is_last = idx == 4;
+                                let blur_class = if is_first || is_last {
+                                    "filter blur-sm"
+                                } else {
+                                    ""
+                                };
+                                let scale = if idx == 2 {
                                     1.0
-                                } else if offset == 1 {
+                                } else if idx == 1 || idx == 3 {
                                     0.8
                                 } else {
                                     0.6
                                 };
-                                let opacity = 1.0 - (offset as f32) * 0.2;
                                 let transform_style = format!(
                                     "scale({}) translateX({}px)",
                                     scale,
-                                    (offset as f32) * 20.0,
+                                    (idx as f32 - 2.0) * 20.0,
                                 );
                                 view! {
+                                    // Apply blur only to the first and last items
+                                    // Tailwind class for slight blur
+
                                     <div
                                         class="carousel-item"
                                         style=transform_style
-                                        style:opacity=opacity.to_string()
-                                        class="transition-transform duration-300 ease-in-out transform cursor-pointer"
+                                        class=format!(
+                                            "transition-transform duration-300 ease-in-out transform {}",
+                                            blur_class,
+                                        )
                                         // Handle mouse click
                                         on:click=move |_| handle_image_click(i)
                                     >
