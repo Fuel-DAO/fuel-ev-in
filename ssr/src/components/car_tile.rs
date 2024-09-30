@@ -1,30 +1,23 @@
 
 
+use convert_case::{Case, Casing};
 use leptos::*;
-use serde::{Deserialize, Serialize};
 use server_fn::codec::Cbor;
 
-use crate::{canister::backend::CarDetails, components::{auth_cans_provider::AuthCansProvider, spinners::Spinner}, state::canisters::{authenticated_canisters, Canisters, CanistersAuthWire}};
-
-// use crate::canister::backend::CarDetails;
-
-
-
+use crate::{canister::backend::{Car, CarDetails, CarStatus}, components::{spinners::Spinner, PopupOverlay}, state::canisters::{authenticated_canisters, CanistersAuthWire}};
 
 
 
 #[component]
 pub fn SearchResult( ) -> impl IntoView {
     view! { 
-        <AuthCansProvider  let:cans>
-            <SearchResultInner cans />
-        </AuthCansProvider>
+            <SearchResultInner />
         
     }
 }
 
 #[server(input=Cbor)]
-async fn fetch_all_cars(cans: CanistersAuthWire) -> Result<Vec<CarDetails>, ServerFnError> {
+async fn fetch_all_cars(cans: CanistersAuthWire) -> Result<Vec<Car>, ServerFnError> {
     let backend =   cans.canisters().unwrap();
     let backend = backend.backend().await;
     
@@ -39,7 +32,7 @@ async fn fetch_all_cars(cans: CanistersAuthWire) -> Result<Vec<CarDetails>, Serv
 }
 
 #[component]
-fn SearchResultInner(cans: Canisters<true>) -> impl IntoView {
+fn SearchResultInner() -> impl IntoView {
     let cans_res = authenticated_canisters();
 
     let search_resource = create_resource(|| {}, move |_| { 
@@ -88,9 +81,9 @@ fn SearchResultInner(cans: Canisters<true>) -> impl IntoView {
 
 
 #[component]
-fn ShowSearchResult(cars: Vec<CarDetails>) -> impl IntoView {
+fn ShowSearchResult(cars: Vec<Car>) -> impl IntoView {
     view! {
-        <div class= "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+        <div class= "grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
         {
            cars.into_iter().map(|car| view! {<CarCard car />}).collect_view()
         }
@@ -100,12 +93,119 @@ fn ShowSearchResult(cars: Vec<CarDetails>) -> impl IntoView {
 }
 
 #[component]
-pub fn CarCard(car: CarDetails) -> impl IntoView {
+pub fn CarCard(car: Car) -> impl IntoView {
+    // let car_principal = car.principal;
+    let car = car.details;
+    let details = car.clone();
+
     let car_type = format!("{:?}", car.car_type);
     let transmission_type = format!("{:?}", car.transmission_type);
+    let car_status = format!("{:?}",  &car.status).to_case(Case::Title);
+    let status = car.status.clone();
+    let show_details_popup = create_rw_signal(false);
+    let click = move |ev: ev::MouseEvent| {
+        ev.stop_propagation();
+        show_details_popup.set(true);
+
+    };
+
+    
 
     view! { 
-        <div class="w-64 p-4 bg-white rounded-xl shadow-md">
+        <div class="p-4 bg-white rounded-xl shadow-md"
+        class:opacity-50=move||format!("{:?}", status.clone()) != format!("{:?}",CarStatus::Available) &&format!("{:?}", status.clone()) != format!("{:?}",CarStatus::ComingSoon)  
+        >   
+            <button on:click=click>
+            // Car Name and Type
+            <div class="text-left mb-4">
+                <h1 class="text-xl font-bold text-gray-800">{car.model}</h1>
+                <p class="text-sm text-gray-400">{car_type}</p>
+            </div>
+
+            // Car Image
+            <div class="mb-4">
+                <img src="/img/car.svg" alt="Koenigsegg" class="w-full h-auto" />
+            </div>
+
+            </button>
+            <PopupOverlay show=show_details_popup   >
+                <CarDetailsPopup  car=details.clone() show_popup=show_details_popup/ >
+            </PopupOverlay>
+
+            // Car Details (Fuel, Transmission, Seating)
+            <div class="flex justify-between items-center mb-4">
+                <Show when=move||car.mileage.is_some()>
+                    <div class="flex items-center">
+                        <img src="/icons/mileage.svg" />
+                        <span class="text-sm text-gray-600 ml-1">{car.mileage.unwrap()}Km</span>
+                    </div>
+                </Show>
+
+                <div class="flex items-center">
+                    <img src="/icons/car_transmission.svg" />
+                    <span class="text-sm text-gray-600 ml-1">{transmission_type}</span>
+                </div>
+
+                <div class="flex items-center">
+                    <img src="/icons/capacity.svg" />
+                    <span class="text-sm text-gray-600 ml-1">{car.capacity}</span>
+                </div>
+            </div>
+
+            // Pricing and Availability
+            <div class="flex justify-between items-center">
+                <div class="flex flex-col">
+                    <div class="flex-1 text-lg font-bold text-gray-800">
+                        "₹"{car.price_per_day}
+                    <span class="text-sm text-gray-400">"/ day"</span>
+                    </div>
+                    <Show when=move||car.price_per_day != car.current_price_per_day >
+                        <div class="flex-1 text-sm text-gray-400 line-through">
+                            "₹"{car.price_per_day}/day
+                        </div>
+                    </Show>
+                </div>
+                {
+                    match car.status {
+                        CarStatus::Available => view! {
+                                        <div class="px-3 py-1  fill-green-500 text-white rounded text-sm" style="background-color:#03B74B" >
+                                            {car_status}
+                                        </div>
+                                    },
+                        CarStatus::ComingSoon => view! {
+                            <div class="px-3 py-1 border border-green-500 text-green-500 rounded text-sm">
+                                {car_status}
+                            </div>
+                        },
+                        _ => view! {
+                            <div class="px-3 py-1 rounded text-white rounded text-sm" style="background-color:gray">
+                                Not Available
+                            </div>
+                        }
+                    }
+                }
+                
+                
+            </div>
+        </div>
+    }
+}
+
+
+#[component]
+fn CarDetailsPopup(
+    #[prop(into)] show_popup: SignalSetter<bool>,
+    car: CarDetails
+) -> impl IntoView {
+
+    let car_type = format!("{:?}", car.car_type);
+    let transmission_type = format!("{:?}", car.transmission_type);
+    let car_status = format!("{:?}",  &car.status).to_case(Case::Title);
+    let status = car.status.clone();
+    view! { 
+        <div class="p-4 bg-white rounded-xl shadow-md"
+        class:opacity-50=move||format!("{:?}", status.clone()) != format!("{:?}",CarStatus::Available) &&format!("{:?}", status.clone()) != format!("{:?}",CarStatus::ComingSoon)  
+        >   
             // Car Name and Type
             <div class="mb-4">
                 <h1 class="text-xl font-bold text-gray-800">{car.model}</h1>
@@ -116,6 +216,8 @@ pub fn CarCard(car: CarDetails) -> impl IntoView {
             <div class="mb-4">
                 <img src="/img/car.svg" alt="Koenigsegg" class="w-full h-auto" />
             </div>
+
+            
 
             // Car Details (Fuel, Transmission, Seating)
             <div class="flex justify-between items-center mb-4">
@@ -147,9 +249,27 @@ pub fn CarCard(car: CarDetails) -> impl IntoView {
                     "$99.00"
                     <span class="text-sm text-gray-400">"/ day"</span>
                 </div>
-                <div class="px-3 py-1 border border-green-500 text-green-500 rounded-full text-sm">
-                    "Coming soon"
-                </div>
+                {
+                    match car.status {
+                        CarStatus::Available => view! {
+                                        <div class="px-3 py-1  fill-green-500 text-white rounded text-sm" style="background-color:#03B74B" >
+                                            {car_status}
+                                        </div>
+                                    },
+                        CarStatus::ComingSoon => view! {
+                            <div class="px-3 py-1 border border-green-500 text-green-500 rounded text-sm">
+                                {car_status}
+                            </div>
+                        },
+                        _ => view! {
+                            <div class="px-3 py-1 rounded text-white rounded text-sm" style="background-color:gray">
+                                Not Available
+                            </div>
+                        }
+                    }
+                }
+                
+                
             </div>
         </div>
     }

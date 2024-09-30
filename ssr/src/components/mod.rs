@@ -19,3 +19,5 @@ pub mod spinners;
 pub mod auth_cans_provider;
 pub mod car_tile;
 pub use car_tile::*;
+pub mod overlay;
+pub use overlay::*;
