@@ -23,6 +23,16 @@ http = "1"
 leptos_icons = "0.3.1"
 icondata_core = "0.1.0"
 icondata = "0.4.0"
+speedate = "0.14.4"
+web-sys = { version = "0.3", features = [
+    "Clipboard",
+    "Navigator",
+    "ShareData",
+    "Window",
+    "Document",
+    "Worker",
+    "CanvasRenderingContext2d",
+], optional = true }
 
 [features]
 hydrate = ["leptos/hydrate", "leptos_meta/hydrate", "leptos_router/hydrate"]
@@ -32,6 +42,7 @@ ssr = [
     "dep:tower",
     "dep:tower-http",
     "dep:leptos_axum",
+    "dep:web-sys",
     "leptos/ssr",
     "leptos_meta/ssr",
     "leptos_router/ssr",

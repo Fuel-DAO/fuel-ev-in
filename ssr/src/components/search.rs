@@ -1,7 +1,36 @@
+use leptos::ev::MouseEvent;
+use leptos::html::Input;
 use leptos::*;
 use leptos_icons::Icon;
+use speedate::DateTime;
 #[component]
 pub fn Search() -> impl IntoView {
+    let (date_value, set_date_value): (ReadSignal<String>, WriteSignal<String>) =
+        create_signal("".to_string());
+
+    // Create a node reference for the input
+    let input_ref = create_node_ref::<Input>();
+
+    // Get today's date using speedate
+    let today: DateTime = DateTime::now(0).unwrap();
+    let today_str = format!(
+        "{}-{:02}-{:02}",
+        today.date.year,
+        today.date.month, // month is already 1-indexed
+        today.date.day
+    );
+    let on_click = move |ev: MouseEvent| {
+        // Get the input element from the NodeRef
+        if let Some(node) = input_ref.get() {
+            // Set the type to 'date' and min date
+            node.set_attribute("type", "date").unwrap();
+            node.set_attribute("min", &today_str).unwrap();
+
+            // Focus the input to show the date picker
+            node.focus().unwrap();
+        }
+    };
+
     view! {
         <section
             class="relative h-screen text-white bg-center bg-cover"
@@ -94,17 +123,27 @@ pub fn Search() -> impl IntoView {
                                     <div class="flex justify-between items-center w-[241.67px] h-[52.5px] gap-[2px]">
                                         // <!-- First sub-field -->
                                         <div class="flex items-center w-[178.34px] h-[22.34px] bg-[#252525] text-white placeholder-white p-4 bg-opacity-0">
-                                            <button class="pt-4 pb-4">
+                                            <button class="pt-4 pb-4" on:click=on_click>
+
                                                 <Icon
                                                     class="w-[22px] h-[22px]"
                                                     icon=icondata::BsCalendar3
                                                 />
+
                                             </button>
 
                                             <input
-                                                type="text"
+                                                type="date"
                                                 placeholder="Pickup Date"
                                                 class="bg-[#252525] pl-4 bg-opacity-0 text-white w-full placeholder-white"
+                                                ref=input_ref
+                                                on:input=move |ev| {
+                                                    ev.prevent_default();
+                                                    let value = ev.target().unwrap().value_of();
+                                                    set_date_value.set(value.to_string().into());
+                                                }
+                                                prop:value=date_value
+                                                name="pickup-date"
                                             />
                                         </div>
 
