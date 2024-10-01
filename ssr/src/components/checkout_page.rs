@@ -115,7 +115,7 @@ pub fn CheckoutPage() -> impl IntoView {
 
                             // <!-- Security Info -->
                             <div class="flex items-center text-gray-600 text-sm">
-                                <img src="/img/security.svg" class="h-6 w-6 mr-2 text-blue-500"  />
+                                <img src="/icons/security.svg" class="h-6 w-6 mr-2 text-blue-500"  />
 
                                 <span>"All your data is safe. We are using the most advanced security to provide you the best experience ever."</span>
                             </div>
@@ -135,7 +135,7 @@ pub fn CheckoutPage() -> impl IntoView {
                             <h2 class="text-xl font-bold mb-4">"Rental Summary"</h2>
 
                             <div class="flex justify-between items-center mb-4">
-                                <img src="/path_to_car_image.png" alt="Car image" class="w-20 h-16 rounded-lg"/>
+                                <img src=car.default_image_url alt="Car image" class="w-20 h-16 rounded-lg"/>
                                 <div>
                                     <h3 class="text-lg font-bold">{format!("{} {}", car.make, car.model.clone())}</h3>
                                     <p class="text-sm text-gray-400">"440+ Reviewer"</p>
