@@ -11,34 +11,62 @@ pub fn Search() -> impl IntoView {
                 <img
                     src="/img/fueldao.svg"
                     alt="Logo"
-                    class="flex justify-between items-center h-8"
+                    class="flex justify-between items-center h-8 opacity-1"
                 />
             </div>
-            // Navbar
             <div class="flex absolute inset-x-0 top-0 z-20 justify-center items-center">
                 <div class="relative w-full bg-white max-w-[756.75px] rounded-b-[75px]">
-                    <ul class="flex justify-center items-center gap-[10%] list-none p-6 uppercase text-black">
+                    <div class="flex justify-end items-center p-6 md:hidden">
+                        <button id="menu-btn" class="focus:outline-none">
+                            <svg
+                                class="w-8 h-8 text-black"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M4 6h16M4 12h16M4 18h16"
+                                ></path>
+                            </svg>
+                        </button>
+                    </div>
 
-                        <li>
+                    <ul
+                        id="menu"
+                        class="hidden md:flex justify-center items-center gap-[10%] list-none p-6 uppercase text-black"
+                    >
+                        <li class="sm:px-2 md:px-4">
                             <a href="#">List your property</a>
                         </li>
-                        <li>
+                        <li class="sm:px-2 md:px-4">
                             <a href="#">Support</a>
                         </li>
-                        <li>
+                        <li class="sm:px-2 md:px-4">
                             <a href="#">Trips</a>
                         </li>
-                        <li>
+                        <li class="sm:px-2 md:px-4">
                             <a href="#">Sign in</a>
                         </li>
-
                     </ul>
-                    <span class="absolute top-0 left-[-18px] w-[20px] h-[20px]  shadow-[5px_-5px_0px_rgba(127,127,127,1)] rounded-tr-[80px]"></span>
-                    <span class="absolute top-0 right-[-18px] w-[20px] h-[20px]  shadow-[-5px_-5px_0px_rgba(127,127,127,1)] rounded-tl-[80px]"></span>
+
+                    <span class="absolute top-0 left-[-18px] w-[20px] h-[20px] shadow-[5px_-5px_0px_rgba(127,127,127,1)] rounded-tr-[80px]"></span>
+                    <span class="absolute top-0 right-[-18px] w-[20px] h-[20px] shadow-[-5px_-5px_0px_rgba(127,127,127,1)] rounded-tl-[80px]"></span>
                 </div>
                 <div class="absolute top-0 z-50 bg-yellow-500 transform left-[-30px] h-[10px] w-[10px] rotate-[-20deg] rounded-tr-[20px]"></div>
             </div>
 
+            <div class="flex absolute inset-x-0 bottom-0 z-20 justify-center items-center">
+                <div class="relative w-full bg-white max-w-[756.75px] rounded-t-[75px]">
+                    <ul class="flex justify-center items-center gap-[10%] list-none p-6 uppercase text-black"></ul>
+                    <span class="absolute bottom-0 left-[-18px] w-[20px] h-[20px] shadow-[5px_5px_0px_rgba(127,127,127,1)] rounded-br-[80px]"></span>
+                    <span class="absolute bottom-0 right-[-18px] w-[20px] h-[20px] shadow-[-5px_5px_0px_rgba(127,127,127,1)] rounded-bl-[80px]"></span>
+                </div>
+                <div class="absolute bottom-0 z-50 bg-yellow-500 transform left-[-30px] h-[10px] w-[10px] rotate-[20deg] rounded-bl-[20px]"></div>
+            </div>
             <div class="flex relative z-10 items-center mx-auto max-w-screen-xl h-full">
                 <div class="p-10" style="margin-bottom: 50px;">
                     <h1 class="text-7xl font-bold">Explore your place <br />to stay</h1>

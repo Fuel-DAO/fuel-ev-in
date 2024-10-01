@@ -4,16 +4,16 @@ use leptos_icons::Icon;
 #[component]
 pub fn BestPlacedForTrips() -> impl IntoView {
     let items = vec![
-        ("Villa Avenil", "/img/trips.svg", "$200 / night"),
-        ("Villa Edo", "/img/trips.svg", "$180 / night"),
-        ("Villa Raffa", "/img/trips.svg", "$250 / night"),
-        ("Villa Peony", "/img/trips.svg", "$300 / night"),
-        ("Villa Amara", "/img/trips.svg", "$220 / night"),
-        ("Villa Avenil", "/img/2.jpg", "$200 / night"),
-        ("Villa Edo", "/img/trips.svg", "$180 / night"),
-        ("Villa Raffa", "/img/trips.svg", "$250 / night"),
-        ("Villa Peony", "/img/trips.svg", "$300 / night"),
-        ("Villa Amara", "/img/trips.svg", "$220 / night"),
+        ("Villa Avenil", "/img/trips.svg", "$200 "),
+        ("Villa Edo", "/img/trips.svg", "$180"),
+        ("Villa Raffa", "/img/trips.svg", "$250 "),
+        ("Villa Peony", "/img/trips.svg", "$300 "),
+        ("Villa Amara", "/img/trips.svg", "$220 "),
+        // ("Villa Avenil", "/img/2.jpg", "$200 / night"),
+        ("Villa Edo", "/img/trips.svg", "$180 "),
+        ("Villa Raffa", "/img/trips.svg", "$250"),
+        ("Villa Peony", "/img/trips.svg", "$300 "),
+        ("Villa Amara", "/img/trips.svg", "$220"),
     ];
 
     let length = items.len();
@@ -69,28 +69,19 @@ pub fn BestPlacedForTrips() -> impl IntoView {
                                 } else {
                                     ""
                                 };
-                                let scale = if idx == 2 {
-                                    1.0
-                                } else if idx == 1 || idx == 3 {
-                                    0.8
-                                } else {
-                                    0.6
-                                };
+                                let scale = if is_first || is_last { 0.75 } else { 1.0 };
                                 let transform_style = format!(
                                     "scale({}) translateX({}px)",
                                     scale,
                                     (idx as f32 - 2.0) * 20.0,
                                 );
                                 view! {
-                                    // Apply blur only to the first and last items
-                                    // Tailwind class for slight blur
-
                                     <div
-                                        class="carousel-item"
+                                        class="flex flex-col justify-center items-center carousel-item"
+
                                         style=transform_style
                                         class=format!(
-                                            "transition-transform duration-300 ease-in-out transform {}",
-                                            blur_class,
+                                            "transition-transform duration-300 ease-in-out transform ",
                                         )
                                         // Handle mouse click
                                         on:click=move |_| handle_image_click(i)
@@ -98,10 +89,28 @@ pub fn BestPlacedForTrips() -> impl IntoView {
                                         <img
                                             src=items[i].1
                                             alt=items[i].0
-                                            class="object-cover rounded-lg shadow-lg"
+                                            class=format!(
+                                                "object-cover rounded-lg shadow-lg {}",
+                                                if is_first || is_last {
+                                                    " h-[65%] "
+                                                } else {
+                                                    "w-auto h-auto"
+                                                },
+                                            )
                                         />
-                                        <h3 class="mt-2 text-lg font-bold">{items[i].0}</h3>
-                                        <p class="font-bold text-green-500">{items[i].2}</p>
+                                        <div class=format!(
+                                            "flex flex-col items-center mt-2 {}",
+                                            if is_first || is_last { "w-[80%]" } else { "w-full" },
+                                        )>
+
+                                            <div class="flex justify-between w-full">
+                                                <h3 class="text-lg font-bold text-center">{items[i].0}</h3>
+                                                <div class="flex flex-col items-end">
+                                                    <p class="font-bold text-green-500">{items[i].2}</p>
+                                                    <p class="text-sm text-gray-500">{"per month"}</p>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 }
                             })
