@@ -19,7 +19,6 @@ pub fn Footer() -> impl IntoView {
     }
 }
 
-
 #[component]
 pub fn UserPrincipal() -> impl IntoView {
     view! {

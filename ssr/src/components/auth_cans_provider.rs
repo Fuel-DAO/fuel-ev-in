@@ -1,4 +1,5 @@
- use leptos::*;
+
+use leptos::*;
 
 use crate::{
     state::canisters::{authenticated_canisters, Canisters},

@@ -73,7 +73,9 @@ mod build_common {
 
         let mut candid_config = candid_parser::bindings::rust::Config::new();
         candid_config.set_target(candid_parser::bindings::rust::Target::Agent);
-        candid_config.set_type_attributes("#[derive(CandidType, Deserialize, serde::Serialize, Debug, Clone)]".into());
+        candid_config.set_type_attributes(
+            "#[derive(CandidType, Deserialize, serde::Serialize, Debug, Clone)]".into(),
+        );
         let mut did_mod_contents = String::new();
 
         // create $OUT_DIR/did
@@ -127,7 +129,6 @@ mod build_common {
         Ok(())
     }
 
-
     pub fn build_common() -> Result<()> {
         build_did_intf()?;
 
@@ -135,9 +136,7 @@ mod build_common {
     }
 }
 
-
 fn main() -> Result<()> {
-
     build_common::build_common()?;
 
     Ok(())

@@ -105,7 +105,7 @@ pub fn ShadowOverlay(#[prop(into)] show: ShowOverlay, children: ChildrenFn) -> i
                         #[cfg(not(feature = "hydrate"))] { |_| () }
                     }
 
-                    class="flex cursor-pointer modal-bg w-dvw h-dvh fixed left-0 top-0 bg-black/60 z-[99] justify-center items-center overflow-hidden"
+                    class="flex cursor-pointer modal-bg w-dvw  fixed inset-0 left-0 top-0 bg-black/60 z-[99] justify-center items-center overflow-auto"
                 >
                     {(children_s())()}
                 </div>
@@ -129,7 +129,7 @@ fn ActionRunningOverlay(message: String) -> impl IntoView {
 pub fn PopupOverlay(#[prop(into)] show: ShowOverlay, children: ChildrenFn) -> impl IntoView {
     view! {
         <ShadowOverlay show>
-            <div class="px-4 pt-4 pb-12 mx-6 w-full lg:w-1/2 max-h-[65%] rounded-xl bg-white">
+            <div class="w-full lg:w-4/5 lg:max-h-[75%] rounded-xl bg-white">
                 {children()}
             </div>
         </ShadowOverlay>
@@ -175,7 +175,7 @@ pub fn ActionTrackerPopup<
                 when=move || res.with(|r| r.is_some())
                 fallback=move || view! { <ActionRunningOverlay message=loading_msg_s.get_value()/> }
             >
-                <div class="px-4 pt-4 pb-12 mx-6 w-full lg:w-1/2 max-h-[65%] rounded-xl bg-white">
+                <div class="px-4 pt-4 pb-12 mx-6 w-full lg:w-3/4 max-h-[65%] rounded-xl bg-white">
                     {move || (modal_s.get_value())(res().unwrap())}
                 </div>
             </Show>

@@ -1,3 +1,5 @@
+use std::ops::Add;
+
 use uts2ts::uts2ts;
 use web_time::{Duration, SystemTime};
 
@@ -10,8 +12,9 @@ pub fn current_epoch() -> Duration {
 /// Get day & month -> DD MMM format
 /// where DD -> 2 digits
 /// MMM -> String representing the month. i.e AUG for august
-pub fn get_day_month(epoch_secs: u64) -> String {
+pub fn get_day_month_time(epoch_secs: u64) -> String {
     let ts = uts2ts(epoch_secs as i64);
+
     let month = match ts.month {
         1 => "JAN",
         2 => "FEB",
@@ -27,7 +30,7 @@ pub fn get_day_month(epoch_secs: u64) -> String {
         12 => "DEC",
         _ => unreachable!(),
     };
-    format!("{:02} {month}", ts.day)
+    format!("{:02} {month} {}:{}", ts.day, ts.hour, ts.second)
 }
 
 pub fn to_hh_mm_ss(duration: Duration) -> String {

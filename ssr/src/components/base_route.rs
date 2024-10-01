@@ -15,7 +15,7 @@ use crate::{
     components::spinners::FullScreenSpinner,
     state::{
         auth::AuthState,
-        canisters::{ AuthCansResource, Canisters},
+        canisters::{AuthCansResource, Canisters},
     },
     try_or_redirect,
     utils::MockPartialEq,
@@ -57,26 +57,24 @@ fn CtxProvider(temp_identity: Option<JwkEcKey>, children: ChildrenFn) -> impl In
         move |auth_id| {
             let temp_identity = temp_identity.clone();
             async move {
-
                 if let Some(id_wire) = auth_id.0 {
-                    return do_canister_auth(id_wire,).await;
+                    return do_canister_auth(id_wire).await;
                 }
 
                 let Some(jwk_key) = temp_identity else {
                     let id_wire = extract_identity().await?.expect("No refresh cookie set?!");
-                    return do_canister_auth(id_wire,).await;
+                    return do_canister_auth(id_wire).await;
                 };
 
                 let key = k256::SecretKey::from_jwk(&jwk_key)?;
                 let id = Secp256k1Identity::from_private_key(key);
                 let id_wire = DelegatedIdentityWire::delegate(&id);
 
-                do_canister_auth(id_wire,).await
+                do_canister_auth(id_wire).await
             }
         },
     ));
     provide_context(canisters_res.clone());
-
 
     view! {
         {children}

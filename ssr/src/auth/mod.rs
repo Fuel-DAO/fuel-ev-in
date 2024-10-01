@@ -115,4 +115,3 @@ pub async fn extract_identity() -> Result<Option<DelegatedIdentityWire>, ServerF
 pub async fn logout_identity() -> Result<DelegatedIdentityWire, ServerFnError> {
     server_impl::logout_identity_impl().await
 }
-

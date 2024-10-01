@@ -58,7 +58,6 @@ async fn main() {
                 _ = terminate => {},
             }
             log::info!("stopping...");
-
         }
     };
 
@@ -111,7 +110,6 @@ pub async fn leptos_routes_handler(
             provide_context(app_state.canisters.clone());
             provide_context(app_state.kv.clone());
             provide_context(app_state.cookie_key.clone());
-            
         },
         App,
     );
