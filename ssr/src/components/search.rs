@@ -3,7 +3,7 @@ use leptos::html::Input;
 use leptos::HtmlElement;
 use leptos::*;
 use leptos_icons::Icon;
-use speedate::DateTime;
+// use speedate::DateTime;
 #[component]
 pub fn Search() -> impl IntoView {
     // let input_ref = create_node_ref::<html::Input>();
@@ -28,27 +28,27 @@ pub fn Search() -> impl IntoView {
     let input_ref = create_node_ref::<Input>();
 
     // Get today's date using speedate
-    let today: DateTime = DateTime::now(0).unwrap();
-    let today_str = format!(
-        "{}-{:02}-{:02}",
-        today.date.year,
-        today.date.month, // month is already 1-indexed
-        today.date.day
-    );
-    let on_click = move |ev: MouseEvent| {
-        // Get the input element from the NodeRef
-        ev.prevent_default();
-        ev.stop_propagation();
+    // let today: DateTime = DateTime::now(0).unwrap();
+    // let today_str = format!(
+    //     "{}-{:02}-{:02}",
+    //     today.date.year,
+    //     today.date.month, // month is already 1-indexed
+    //     today.date.day
+    // );
+    // let on_click = move |ev: MouseEvent| {
+    //     // Get the input element from the NodeRef
+    //     ev.prevent_default();
+    //     ev.stop_propagation();
 
-        if let Some(node) = input_ref.get() {
-            // Set the type to 'date' and min date
-            node.set_attribute("type", "date").unwrap();
-            node.set_attribute("min", &today_str).unwrap();
+    //     if let Some(node) = input_ref.get() {
+    //         // Set the type to 'date' and min date
+    //         node.set_attribute("type", "date").unwrap();
+    //         node.set_attribute("min", &today_str).unwrap();
 
-            // Focus the input to show the date picker
-            node.focus().unwrap()
-        }
-    };
+    //         // Focus the input to show the date picker
+    //         node.focus().unwrap()
+    //     }
+    // };
 
     view! {
         <section
@@ -174,7 +174,7 @@ pub fn Search() -> impl IntoView {
                                     <div class="flex justify-between items-center w-[241.67px] h-[52.5px] gap-[2px]">
                                         // <!-- First sub-field -->
                                         <div class="flex items-center w-[178.34px] h-[22.34px] bg-[#252525] text-white placeholder-white p-4 bg-opacity-0">
-                                            <button class="pt-4 pb-4" on:click=on_click>
+                                            <button class="pt-4 pb-4" /* on:click=on_click */>
 
                                                 <Icon
                                                     class="w-[22px] h-[22px]"
