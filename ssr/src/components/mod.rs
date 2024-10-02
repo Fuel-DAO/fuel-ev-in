@@ -7,6 +7,9 @@ pub use services::*;
 pub mod footer;
 pub use footer::*;
 pub mod best_placed_for_trips;
+pub mod invest_in_car;
+pub use invest_in_car::*;
+
 pub use best_placed_for_trips::*;
 pub mod advantages;
 pub use advantages::*;
