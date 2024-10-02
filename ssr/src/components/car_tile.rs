@@ -292,12 +292,12 @@ fn CarDetailsPopup(#[prop(into)] show_popup: SignalSetter<bool>, car: CarDetails
                             <span class="text-sm text-gray-400 line-through ml-2">$100.00</span>
                             <span class="block text-sm text-gray-400">"/ days"</span>
                         </div>
-                        <button  class="py-2  px-4 rounded-lg hover:bg-green-500">
+                        <button  class="py-2  px-4 rounded-lg ">
                         {
                             match car.status {
                                 CarStatus::Available => view! {
                                                 <div>
-                                                    <button on:click=move|_|navigate_to_checkout(details.clone())>
+                                                    <button  class="hover:bg-green-500" on:click=move|_|navigate_to_checkout(details.clone())>
                                                     // <a href="/checkout">
                                                         <div class="w-24 px-3 py-1 fill-green-500 text-white rounded text-sm" style="background-color:#03B74B" >
                                                             Rent Now

@@ -1,14 +1,13 @@
 use leptos::*;
 
 use crate::{
-    state::{
+    canister::backend::CarStatus, state::{
         canisters::authenticated_canisters,
         checkout_state::{CheckoutState, CheckoutUser},
-    },
-    utils::{
+    }, utils::{
         input::{non_empty_string_validator, InputBox},
         time::get_day_month_time,
-    },
+    }
 };
 
 #[component]
@@ -61,7 +60,16 @@ pub fn CheckoutPage() -> impl IntoView {
                     <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                     <h1 class="text-2xl lg:text-3xl font-bold mb-6">{format!("{} {}",car.make, car.model )}</h1>
                     </div>
-
+                    
+                    <Suspense>
+                    {
+                        move || {
+                            fetch_car_details.get().map(|res| {
+                                match res {
+                                    Ok(avail) => {
+                                        let car = avail.details;
+                                        let available = avail.available;
+                                        view! {
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         // <!-- Left Section - Billing Info, Payment, and Confirmation -->
                         <div class="lg:col-span-2">
@@ -107,10 +115,15 @@ pub fn CheckoutPage() -> impl IntoView {
                                     <input type="checkbox" id="terms" class="mr-2"/>
                                     <label for="terms" class="text-gray-600 text-sm">"I agree with our terms and conditions and privacy policy."</label>
                                 </div>
-
-                                <button class="w-full bg-green-500 text-white py-3 rounded-lg font-bold hover:bg-green-600">
+                                <Show when=move||format!("{:?}", car.status) == format!("{:?}", CarStatus::Available) fallback=move || view! {
+                                    <button disabled=true class="w-full bg-gray-500 text-white py-3 rounded-lg font-bold">
+                                    Not Available
+                                    </button>
+                                }>
+                                <button  class="w-full bg-green-500 text-white py-3 rounded-lg font-bold hover:bg-green-600">
                                     "Rent Now"
                                 </button>
+                                </Show>
                             </div>
 
                             // <!-- Security Info -->
@@ -122,15 +135,7 @@ pub fn CheckoutPage() -> impl IntoView {
                         </div>
 
                         // <!-- Right Section - Rental Summary -->
-                        <Suspense>
-                        {
-                            move || {
-                                fetch_car_details.get().map(|res| {
-                                    match res {
-                                        Ok(avail) => {
-                                            let car = avail.details;
-                                            let available = avail.available;
-                                            view! {
+                        
                                                 <div class="bg-white rounded-lg shadow-lg p-6">
                             <h2 class="text-xl font-bold mb-4">"Rental Summary"</h2>
 
@@ -144,7 +149,7 @@ pub fn CheckoutPage() -> impl IntoView {
 
                             <div class="text-sm text-gray-600 mb-4">
                                 {
-                                    match car.dropoff_location {
+                                    match car.pickup_location {
                                         Some(location) =>{ view! { <div class="flex justify-between items-center mb-2">
                                                                         <span>"Pick up Location"</span>
                                                                         <span>{ location.address}</span>
@@ -157,10 +162,19 @@ pub fn CheckoutPage() -> impl IntoView {
                                     <span>"Date & Time"</span>
                                     <span>{get_day_month_time(checkout.start_time.get().unwrap())}</span>
                                 </div>
-                                <div class="flex justify-between items-center mb-2">
-                                    <span>"Drop off Location"</span>
-                                    <span>"Same Location"</span>
-                                </div>
+                                {
+                                    match car.dropoff_location {
+                                        Some(location) =>{ view! { <div class="flex justify-between items-center mb-2">
+                                                                        <span>"Pick up Location"</span>
+                                                                        <span>{ location.address}</span>
+                                                                    </div> } }
+                                    None => {view! { <div> </div> }}
+                                    }
+                                }
+                                // <div class="flex justify-between items-center mb-2">
+                                //     <span>"Drop off Location"</span>
+                                //     <span>"Same Location"</span>
+                                // </div>
                                 <div class="flex justify-between items-center mb-2">
                                     <span>"Date & Time"</span>
                                     <span>{get_day_month_time(checkout.end_time.get().unwrap())}</span>
@@ -175,11 +189,11 @@ pub fn CheckoutPage() -> impl IntoView {
                                             // {a.customer_principal_id.to_text()}
                                             <div class="flex justify-between items-center mb-4">
                                             <span>"Subtotal"</span>
-                                            <span>{a.total_amount}</span>
+                                            <span>"₹"{a.total_amount}</span>
                                         </div>
                                         <div class="flex justify-between items-center mb-4">
                                             <span>"Tax"</span>
-                                            <span>"$0.00"</span>
+                                            <span>"₹""0.00"</span>
                                         </div>
 
                                         <div class="flex items-center mb-4">
@@ -189,7 +203,7 @@ pub fn CheckoutPage() -> impl IntoView {
 
                                         <div class="flex justify-between items-center mb-4 font-bold text-lg">
                                             <span>"Total Rental Price"</span>
-                                            <span>{a.total_amount}</span>
+                                            <span>"₹"{a.total_amount}</span>
                                         </div>
 
                                         <button class="w-full bg-green-500 text-white py-3 rounded-lg font-bold hover:bg-green-600">
@@ -204,23 +218,24 @@ pub fn CheckoutPage() -> impl IntoView {
                             }
 
 
-                        </div>
-                                            }
-                                        },
-                                        Err(_) => {
-                                            view! {
-                                                <div></div>
-                                            }
-                                        } ,
+                            </div>
+                                            
+
+                            </div>
+                                }
+                                },
+                                Err(_) => {
+                                    view! {
+                                        <div></div>
+                                    }
+                                    } ,
                                     }
 
 
-                                })
-                            }
-                        }
-
-                        </Suspense>
-                    </div>
+                                 })
+                             }
+                    }
+                    </Suspense>
                 </div>
             }
         }
