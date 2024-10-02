@@ -1,6 +1,8 @@
 use leptos::*;
 use leptos_icons::Icon;
 
+use crate::components::{auth_cans_provider::AuthCansProvider, spinners::FullScreenSpinner};
+
 #[component]
 pub fn Footer() -> impl IntoView {
     view! {
@@ -81,8 +83,18 @@ pub fn Footer() -> impl IntoView {
                     <button class="border-t border-transparent icon w-[33.97px] h-[33.97px]">
                         <Icon icon=icondata::BiInstagram class="w-full h-full text-white" />
                     </button>
+
                 </div>
             </div>
         </footer>
+    }
+}
+
+#[component]
+pub fn UserPrincipal() -> impl IntoView {
+    view! {
+        <AuthCansProvider fallback=FullScreenSpinner let:canister>
+        <p>{canister.user_principal().to_text()}</p>
+        </AuthCansProvider>
     }
 }

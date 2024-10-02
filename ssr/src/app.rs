@@ -1,5 +1,8 @@
 use crate::components::*;
 use crate::error_template::{AppError, ErrorTemplate};
+use crate::state::canisters::Canisters;
+use crate::state::checkout_state::{CheckoutState, CheckoutUser};
+use base_route::BaseRoute;
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
@@ -8,6 +11,9 @@ use leptos_router::*;
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
+    provide_context(Canisters::default());
+    provide_context(CheckoutState::default());
+    provide_context(CheckoutUser::default());
 
     view! {
         <Stylesheet id="leptos" href="/pkg/fuel-dao-leptos-ssr.css" />
@@ -23,7 +29,11 @@ pub fn App() -> impl IntoView {
         }>
             <main>
                 <Routes>
-                    <Route path="" view=HomePage />
+                    <Route path="" view=BaseRoute>
+                        <Route path="/" view=HomePage/>
+                        <Route path="/checkout" view=CheckoutPage/>
+                    </Route>
+
                 </Routes>
             </main>
         </Router>
@@ -36,10 +46,11 @@ fn HomePage() -> impl IntoView {
     view! {
         <Title text="FuelDao" />
         <main>
-            <div class="flex flex-col w-full min-h-screen">
-                // <Header/>
-                <Search />
-                <BestPlacedForTrips />
+            <div class="min-h-screen flex flex-col">
+                <Header/>
+                <Search/>
+                <BestPlacedForTrips/>
+                <SearchResult/>
                 // <Services/>
                 <Advantages />
                 <InvestInCar />

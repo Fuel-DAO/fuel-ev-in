@@ -1,8 +1,14 @@
 pub mod app;
+pub mod auth;
+pub mod canister;
 pub mod components;
+pub mod consts;
 pub mod error_template;
 #[cfg(feature = "ssr")]
 pub mod fileserv;
+#[cfg(feature = "ssr")]
+pub mod init;
+pub mod state;
 pub mod utils;
 
 #[cfg(feature = "hydrate")]
