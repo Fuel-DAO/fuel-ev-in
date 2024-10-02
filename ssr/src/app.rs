@@ -36,7 +36,7 @@ fn HomePage() -> impl IntoView {
     view! {
         <Title text="FuelDao" />
         <main>
-            <div class="flex flex-col min-h-screen">
+            <div class="flex flex-col w-full min-h-screen">
                 // <Header/>
                 <Search />
                 <BestPlacedForTrips />

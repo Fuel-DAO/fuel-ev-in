@@ -1,12 +1,28 @@
 use leptos::ev::MouseEvent;
 use leptos::html::Input;
+use leptos::HtmlElement;
 use leptos::*;
 use leptos_icons::Icon;
 use speedate::DateTime;
 #[component]
 pub fn Search() -> impl IntoView {
+    // let input_ref = create_node_ref::<html::Input>();
+    // let date_value = create_rw_signal(String::new());
+    let (is_hamburger_open, set_hamburger_open) = create_signal(false);
+
+    // Function to toggle the menu
+    let toggle_menu = move || {
+        set_hamburger_open.update(|open| *open = !*open);
+    };
+    let hamburger_menu_class = create_memo(move |_| {
+        if is_hamburger_open.get() {
+            "flex flex-col gap-6 items-center p-6 text-black uppercase bg-white"
+        } else {
+            "hidden" // Use hidden class when the menu is closed
+        }
+    });
     let (date_value, set_date_value): (ReadSignal<String>, WriteSignal<String>) =
-        create_signal("".to_string());
+        create_signal(String::new());
 
     // Create a node reference for the input
     let input_ref = create_node_ref::<Input>();
@@ -21,13 +37,16 @@ pub fn Search() -> impl IntoView {
     );
     let on_click = move |ev: MouseEvent| {
         // Get the input element from the NodeRef
+        ev.prevent_default();
+        ev.stop_propagation();
+
         if let Some(node) = input_ref.get() {
             // Set the type to 'date' and min date
             node.set_attribute("type", "date").unwrap();
             node.set_attribute("min", &today_str).unwrap();
 
             // Focus the input to show the date picker
-            node.focus().unwrap();
+            node.focus().unwrap()
         }
     };
 
@@ -40,13 +59,20 @@ pub fn Search() -> impl IntoView {
                 <img
                     src="/img/fueldao.svg"
                     alt="Logo"
-                    class="flex justify-between items-center h-8 opacity-1"
+                    class="flex justify-between items-center h-8 sm:h-4 md:h-6 lg:h-8 opacity-1"
                 />
+
             </div>
-            <div class="flex absolute inset-x-0 top-0 z-20 justify-center items-center">
-                <div class="relative w-full bg-white max-w-[756.75px] rounded-b-[75px]">
+
+            // hamburger menu
+            <div class="flex absolute inset-x-0 top-0 z-20 justify-center items-center md:hidden">
+                <div class="relative w-full md:bg-white max-w-[756.75px] md:rounded-b-[75px]">
                     <div class="flex justify-end items-center p-6 md:hidden">
-                        <button id="menu-btn" class="focus:outline-none">
+                        <button
+                            id="menu-btn"
+                            class="focus:outline-none"
+                            on:click=move |_| toggle_menu()
+                        >
                             <svg
                                 class="w-8 h-8 text-black"
                                 fill="none"
@@ -61,9 +87,32 @@ pub fn Search() -> impl IntoView {
                                     d="M4 6h16M4 12h16M4 18h16"
                                 ></path>
                             </svg>
+
                         </button>
                     </div>
+                    // <!-- Hidden vertical menu for small devices (shown when hamburger clicked) -->
 
+                    <div class=hamburger_menu_class>
+                        <a href="#" class="block">
+                            List your property
+                        </a>
+                        <a href="#" class="block">
+                            Support
+                        </a>
+                        <a href="#" class="block">
+                            Trips
+                        </a>
+                        <a href="#" class="block">
+                            Sign in
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            // navbar
+            <div class="hidden absolute inset-x-0 top-0 z-20 justify-center items-center md:flex">
+                <div class="hidden relative w-full bg-white md:block max-w-[756.75px] rounded-b-[75px]">
                     <ul
                         id="menu"
                         class="hidden md:flex justify-center items-center gap-[10%] list-none p-6 uppercase text-black"
@@ -82,13 +131,14 @@ pub fn Search() -> impl IntoView {
                         </li>
                     </ul>
 
-                    <span class="absolute top-0 left-[-18px] w-[20px] h-[20px] shadow-[5px_-5px_0px_rgba(127,127,127,1)] rounded-tr-[80px]"></span>
-                    <span class="absolute top-0 right-[-18px] w-[20px] h-[20px] shadow-[-5px_-5px_0px_rgba(127,127,127,1)] rounded-tl-[80px]"></span>
+                    // Ensure these spans are hidden on small devices
+                    <span class="absolute top-0 left-[-18px] w-[20px] h-[20px] shadow-[5px_-5px_0px_rgba(127,127,127,1)] rounded-tr-[80px] hidden md:block"></span>
+                    <span class="absolute top-0 right-[-18px] w-[20px] h-[20px] shadow-[-5px_-5px_0px_rgba(127,127,127,1)] rounded-tl-[80px] hidden md:block"></span>
                 </div>
-                <div class="absolute top-0 z-50 bg-yellow-500 transform left-[-30px] h-[10px] w-[10px] rotate-[-20deg] rounded-tr-[20px]"></div>
+
             </div>
 
-            <div class="flex absolute inset-x-0 bottom-0 z-20 justify-center items-center">
+            <div class="hidden absolute inset-x-0 bottom-0 z-20 justify-center items-center md:flex">
                 <div class="relative w-full bg-white max-w-[756.75px] rounded-t-[75px]">
                     <ul class="flex justify-center items-center gap-[10%] list-none p-6 uppercase text-black"></ul>
                     <span class="absolute bottom-0 left-[-18px] w-[20px] h-[20px] shadow-[5px_5px_0px_rgba(127,127,127,1)] rounded-br-[80px]"></span>
@@ -96,6 +146,7 @@ pub fn Search() -> impl IntoView {
                 </div>
                 <div class="absolute bottom-0 z-50 bg-yellow-500 transform left-[-30px] h-[10px] w-[10px] rotate-[20deg] rounded-bl-[20px]"></div>
             </div>
+            // hero section
             <div class="flex relative z-10 items-center mx-auto max-w-screen-xl h-full">
                 <div class="p-10" style="margin-bottom: 50px;">
                     <h1 class="text-7xl font-bold">Explore your place <br />to stay</h1>
@@ -142,9 +193,11 @@ pub fn Search() -> impl IntoView {
                                                     let value = ev.target().unwrap().value_of();
                                                     set_date_value.set(value.to_string().into());
                                                 }
-                                                prop:value=date_value
+                                                value=date_value
                                                 name="pickup-date"
+                                                style="appearance: none; border: none; outline: none; padding: 10px;"
                                             />
+
                                         </div>
 
                                         // <!-- Separator -->
