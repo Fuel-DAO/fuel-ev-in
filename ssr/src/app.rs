@@ -1,5 +1,8 @@
 use crate::components::*;
 use crate::error_template::{AppError, ErrorTemplate};
+use crate::state::canisters::Canisters;
+use crate::state::checkout_state::{CheckoutState, CheckoutUser};
+use base_route::BaseRoute;
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
@@ -7,6 +10,9 @@ use leptos_router::*;
 pub fn App() -> impl IntoView {
     // Provides context that manages stylesheets, titles, meta tags, etc.
     provide_meta_context();
+    provide_context(Canisters::default());
+    provide_context(CheckoutState::default());
+    provide_context(CheckoutUser::default());
 
     view! {
 
@@ -29,7 +35,10 @@ pub fn App() -> impl IntoView {
         }>
             <main>
                 <Routes>
-                    <Route path="" view=HomePage/>
+                    <Route path="" view=BaseRoute>
+                        <Route path="/" view=HomePage/>
+                        <Route path="/checkout" view=CheckoutPage/>
+                    </Route>
                 </Routes>
             </main>
         </Router>
@@ -46,6 +55,7 @@ fn HomePage() -> impl IntoView {
                 <Header/>
                 <Search/>
                 <BestPlacedForTrips/>
+                <SearchResult/>
                 // <Services/>
                 <Advantages/>
                 <GetInTouch/>
