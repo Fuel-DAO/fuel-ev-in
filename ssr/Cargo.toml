@@ -27,16 +27,7 @@ http = "1"
 leptos_icons = "0.3.1"
 icondata_core = "0.1.0"
 icondata = "0.4.0"
-speedate = "0.14.4"
-web-sys = { version = "0.3", features = [
-    "Clipboard",
-    "Navigator",
-    "ShareData",
-    "Window",
-    "Document",
-    "Worker",
-    "CanvasRenderingContext2d",
-], optional = true }
+#speedate = "0.14.4"
 serde.workspace = true
 candid.workspace = true
 ic-agent = { version = "0.38.1"}
@@ -46,10 +37,10 @@ serde-wasm-bindgen = "0.6.5"
 futures = "0.3.30"
 leptos-use = "0.12.0"
 codee = { version = "0.1.2", features = ["json_serde"] }
-reqwest = { version = "0.12", default-features = false, features = [
-    "json",
-    "http2",
-] }
+#reqwest = { version = "0.12", default-features = false, features = [
+#    "json",
+#    "http2",
+#] }
 k256 = { version = "0.13.4", default-features = false, features = [
     "std",
     "jwk",
@@ -96,7 +87,7 @@ hydrate = [
     "leptos_meta/hydrate",
     "leptos_router/hydrate",
     "ic-agent/wasm-bindgen",
-    "reqwest/native-tls",
+#    "reqwest/native-tls",
     "dep:rand_chacha",
 ]
 ssr = [
@@ -105,7 +96,6 @@ ssr = [
     "dep:tower",
     "dep:tower-http",
     "dep:leptos_axum",
-    "dep:web-sys",
     "leptos/ssr",
     "leptos_meta/ssr",
     "leptos_router/ssr",
