@@ -30,8 +30,8 @@ pub fn App() -> impl IntoView {
             <main>
                 <Routes>
                     <Route path="" view=BaseRoute>
-                        <Route path="/" view=HomePage/>
-                        <Route path="/checkout" view=CheckoutPage/>
+                        <Route path="/" view=HomePage />
+                        <Route path="/checkout" view=CheckoutPage />
                     </Route>
 
                 </Routes>
@@ -46,11 +46,11 @@ fn HomePage() -> impl IntoView {
     view! {
         <Title text="FuelDao" />
         <main>
-            <div class="min-h-screen flex flex-col">
-                <Header/>
-                <Search/>
-                <BestPlacedForTrips/>
-                <SearchResult/>
+            <div class="flex flex-col min-h-screen">
+                // <Header/>
+                <Search />
+                <BestPlacedForTrips />
+                <SearchResult />
                 // <Services/>
                 <Advantages />
                 <InvestInCar />
