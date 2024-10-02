@@ -2,7 +2,6 @@ use futures::{Future, StreamExt};
 use leptos::{create_memo, Resource, Serializable, Signal, SignalStream, SignalWith};
 use serde::{Deserialize, Serialize};
 
-
 /// Wrapper for PartialEq that always returns false
 /// this is currently only used for resources
 /// this does not provide a sane implementation of PartialEq

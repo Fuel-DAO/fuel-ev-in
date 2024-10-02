@@ -1,15 +1,15 @@
 pub mod app;
+pub mod auth;
+pub mod canister;
 pub mod components;
 pub mod consts;
 pub mod error_template;
-pub mod auth;
-pub mod state;
-pub mod canister;
 #[cfg(feature = "ssr")]
 pub mod fileserv;
-pub mod utils;
 #[cfg(feature = "ssr")]
 pub mod init;
+pub mod state;
+pub mod utils;
 
 #[cfg(feature = "hydrate")]
 #[wasm_bindgen::prelude::wasm_bindgen]

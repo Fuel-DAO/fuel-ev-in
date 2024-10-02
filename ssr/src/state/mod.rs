@@ -1,7 +1,7 @@
-
-pub mod local_storage;
 pub mod auth;
 pub mod canisters;
+pub mod checkout_state;
+pub mod local_storage;
 
 #[cfg(feature = "ssr")]
 pub mod server {

@@ -1,4 +1,3 @@
-
 use std::{
     env,
     fs::OpenOptions,
@@ -13,7 +12,6 @@ use crate::{
     auth::server_impl::store::KVStoreImpl,
     state::{canisters::Canisters, server::AppState},
 };
-
 
 fn init_cookie_key() -> Key {
     let cookie_key_raw = {
@@ -33,16 +31,13 @@ fn init_cookie_key() -> Key {
     Key::from(&cookie_key_raw)
 }
 
-
 pub struct AppStateRes {
     pub app_state: AppState,
-   
 }
 
 pub struct AppStateBuilder {
     leptos_options: LeptosOptions,
     routes: Vec<RouteListing>,
-   
 }
 
 impl AppStateBuilder {
@@ -78,19 +73,16 @@ impl AppStateBuilder {
 
     pub async fn build(mut self) -> AppStateRes {
         let kv = self.init_kv().await;
-        
 
         let app_state = AppState {
             leptos_options: self.leptos_options,
             canisters: Canisters::default(),
             routes: self.routes,
-            
+
             kv,
             cookie_key: init_cookie_key(),
         };
 
-        AppStateRes {
-            app_state,
-        }
+        AppStateRes { app_state }
     }
 }

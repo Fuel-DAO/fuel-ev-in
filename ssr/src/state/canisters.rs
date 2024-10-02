@@ -1,12 +1,14 @@
 use std::sync::Arc;
 
+use crate::{
+    auth::DelegatedIdentityWire,
+    canister::BACKEND_ID,
+    utils::{ic::AgentWrapper, MockPartialEq, ParentResource},
+};
 use candid::Principal;
-use ic_agent::{identity::DelegatedIdentity,  Identity};
+use ic_agent::{identity::DelegatedIdentity, Identity};
 use leptos::*;
 use serde::{Deserialize, Serialize};
-use crate::{
-    auth::DelegatedIdentityWire, canister::BACKEND_ID, utils::{ic::AgentWrapper, MockPartialEq, ParentResource}
-};
 
 use crate::canister::backend::Backend;
 
@@ -58,7 +60,6 @@ impl Default for Canisters<false> {
             user_principal: Principal::anonymous(),
             expiry: 0,
             backend_principal: BACKEND_ID,
-
             // profile_details: None,
         }
     }
@@ -94,7 +95,6 @@ impl Canisters<true> {
             .expect("Authenticated canisters must have an identity")
     }
 
-
     // pub fn profile_details(&self) -> ProfileDetails {
     //     self.profile_details
     //         .clone()
@@ -112,13 +112,11 @@ impl Canisters<true> {
     }
 }
 
-
 pub fn unauth_canisters() -> Canisters<false> {
     expect_context()
 }
 
 // pub struct Backend<'a>(pub Principal, pub &'a ic_agent::Agent);
-
 
 impl<const A: bool> Canisters<A> {
     pub async fn backend(&self) -> Backend<'_> {
@@ -151,17 +149,15 @@ pub async fn do_canister_auth(
     let id = auth.clone().try_into()?;
     let canisters = Canisters::<true>::authenticated(id);
 
-
     // let user = canisters.authenticated_user().await;
 
-    
     // let profile_details = user.get_profile_details().await?.into();
 
     let cans_wire = CanistersAuthWire {
         id: auth,
         user_principal: canisters.user_principal,
         expiry: canisters.expiry,
-        backend_principal: BACKEND_ID
+        backend_principal: BACKEND_ID,
     };
 
     Ok(cans_wire)
