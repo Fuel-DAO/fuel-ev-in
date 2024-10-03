@@ -183,7 +183,7 @@ pub fn Search() -> impl IntoView {
                                         //
                                         <div class="flex items-center w-[178.34px] lg:h-[22.34px] bg-[#252525] text-white placeholder-white lg:p-4 bg-opacity-0">
                                             <button
-                                                class="pt-4 pb-4 pl-2"
+                                                class="pt-4 pb-4 pl-2 lg:pl-0"
                                                 on:click=move |_| {
                                                     if let Some(input) = input_ref.get() {
                                                         input.click();
@@ -205,7 +205,7 @@ pub fn Search() -> impl IntoView {
                                             </button>
 
                                             <input
-                                                type="date"
+                                                type="text"
                                                 placeholder="Pickup Date"
                                                 class="bg-[#252525] pl-2 bg-opacity-0 text-white w-full placeholder-white"
                                                 ref=input_ref
@@ -214,11 +214,7 @@ pub fn Search() -> impl IntoView {
                                                     let value = ev.target().unwrap().value_of();
                                                     set_date_value.set(value.to_string().into());
                                                 }
-                                                value=date_value
-                                                on:input=move |ev| {
-                                                    let input = event_target_value(&ev);
-                                                    set_date_value(input);
-                                                }
+                                                prop:value=date_value
                                             />
 
                                         </div>
@@ -275,7 +271,7 @@ pub fn Search() -> impl IntoView {
                                     </div>
                                 </div>
                             </div>
-                            <button class="flex justify-center items-center py-3 px-8 mt-8 w-full font-semibold text-white bg-green-600 rounded-md lg:w-auto hover:bg-green-700">
+                            <button class="flex justify-center items-center py-3 px-8 mt-8 w-full font-semibold text-white bg-green-600 rounded-md lg:mt-0 lg:w-auto hover:bg-green-700">
                                 Search
                             </button>
                         // <button class="flex justify-center items-center bg-green-600 hover:bg-green-700 w-[141.75px] h-[52.5px] p-[19px_39px] gap-[10px] rounded-[9px]">
