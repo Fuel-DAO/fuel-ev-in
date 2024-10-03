@@ -21,11 +21,11 @@ pub fn SearchResult() -> impl IntoView {
 }
 
 #[server(input=Cbor)]
-async fn fetch_all_cars(cans: CanistersAuthWire) -> Result<Vec<Car>, ServerFnError> {
+async fn fetch_all_cars(cans: CanistersAuthWire, start_time: u64, end_time: u64) -> Result<Vec<Car>, ServerFnError> {
     let backend = cans.canisters().unwrap();
     let backend = backend.backend().await;
 
-    let cars = backend.list_all_cars().await;
+    let cars = backend.search_car(start_time, end_time).await;
     match cars {
         Ok(cars) => Ok(cars),
         Err(e) => Err(ServerFnError::ServerError(format!(
@@ -39,13 +39,21 @@ async fn fetch_all_cars(cans: CanistersAuthWire) -> Result<Vec<Car>, ServerFnErr
 fn SearchResultInner() -> impl IntoView {
     let cans_res = authenticated_canisters();
 
+    let checkout_state = CheckoutState::get();
+
     let search_resource = create_resource(
-        || {},
+        move || checkout_state.start_time.get().is_none() || checkout_state.end_time.get().is_none(),
         move |_| {
             let cans_res = cans_res.clone();
 
             async move {
-                let cars = fetch_all_cars(cans_res.wait_untracked().await.unwrap()).await;
+                    let start_time =checkout_state.start_time.get_untracked();
+                    let end_time = checkout_state.end_time.get_untracked();
+                    if checkout_state.start_time.get_untracked().is_none() || checkout_state.end_time.get_untracked().is_none() {
+                        return  Err("".into());
+                    }
+
+                let cars = fetch_all_cars(cans_res.wait_untracked().await.unwrap(), start_time.unwrap(), end_time.unwrap() ).await;
                 match cars {
                     Ok(cars) => Ok(cars),
                     Err(e) => Err(format!("Some error occuered while fetching cars {:?}", e)),
@@ -159,7 +167,7 @@ pub fn CarCard(car: Car) -> impl IntoView {
             <div class="flex justify-between items-center">
                 <div class="flex flex-col">
                     <div class="flex-1 text-lg font-bold text-gray-800">
-                        "₹"{car.price_per_day}
+                        "₹"{car.current_price_per_day}
                     <span class="text-sm text-gray-400">"/ day"</span>
                     </div>
                     <Show when=move||car.price_per_day != car.current_price_per_day >
@@ -229,22 +237,22 @@ fn CarDetailsPopup(#[prop(into)] show_popup: SignalSetter<bool>, car: CarDetails
                          style=format!("background-image: url('{}');", car.default_image_url)>
 
                         // Text overlay on top of the image
-                        <div class="absolute inset-0 flex flex-col justify-start items-start md:items-start p-6 rounded-lg">
-                            <h2 class="text-white text-xl md:text-2xl font-bold mb-2 text-left">
-                                "Sports car with the best design and acceleration"
-                            </h2>
-                            <p class="text-white text-sm md:text-base mb-4 text-left">
-                                "Safety and comfort while driving a futuristic and elegant sports car"
-                            </p>
-                        </div>
+                        // <div class="absolute inset-0 flex flex-col justify-start items-start md:items-start p-6 rounded-lg">
+                        //     <h2 class="text-white text-xl md:text-2xl font-bold mb-2 text-left">
+                        //         "Sports car with the best design and acceleration"
+                        //     </h2>
+                        //     <p class="text-white text-sm md:text-base mb-4 text-left">
+                        //         "Safety and comfort while driving a futuristic and elegant sports car"
+                        //     </p>
+                        // </div>
                     </div>
 
                     // Gallery with additional car images
-                    <div class="flex space-x-2 justify-center md:justify-start">
-                        <img src="/img/car-side.svg" alt="Car thumbnail" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
-                        <img src="/img/interior.svg" alt="Car interior" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
-                        <img src="/img/interior.svg" alt="Car seats" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
-                    </div>
+                    // <div class="flex space-x-2 justify-center md:justify-start">
+                    //     <img src="/img/car-side.svg" alt="Car thumbnail" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
+                    //     <img src="/img/interior.svg" alt="Car interior" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
+                    //     <img src="/img/interior.svg" alt="Car seats" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
+                    // </div>
                 </div>
 
                 // Right Section: Car details, price, and "Rent Now" button
@@ -253,17 +261,17 @@ fn CarDetailsPopup(#[prop(into)] show_popup: SignalSetter<bool>, car: CarDetails
                         <div class="w-full">
                             // Car name and rating
                             <h2 class="text-xl md:text-2xl font-bold text-gray-800">{format!("{} {}", car.make, car.model)}</h2>
-                            <div class="flex items-center">
-                                <span class="text-yellow-400 text-lg mr-2">"★★★★★"</span>
-                                <span class="text-sm text-gray-500">"440+ Reviewer"</span>
-                            </div>
+                            // <div class="flex items-center">
+                            //     <span class="text-yellow-400 text-lg mr-2">"★★★★★"</span>
+                            //     <span class="text-sm text-gray-500">"440+ Reviewer"</span>
+                            // </div>
                         </div>
                         // Close button (optional, depending on the design)
 
                     </div>
 
                     // Car description
-                    <p class="text-gray-600 text-sm mb-4">"NISMO has become the embodiment of Nissan's outstanding performance, inspired by the most unforgiving proving ground, the 'race track'."</p>
+                    <p class="text-gray-600 text-sm mb-4">{car.description}</p>
 
                     // Car specifications
                     <div class="grid grid-cols-2 gap-4 mb-6">
@@ -288,9 +296,9 @@ fn CarDetailsPopup(#[prop(into)] show_popup: SignalSetter<bool>, car: CarDetails
                     // Pricing and "Rent Now" button
                     <div class="flex justify-between items-center">
                         <div>
-                            <span class="text-2xl font-bold text-gray-800">$80.00</span>
-                            <span class="text-sm text-gray-400 line-through ml-2">$100.00</span>
-                            <span class="block text-sm text-gray-400">"/ days"</span>
+                            <span class="text-2xl font-bold text-gray-800">"₹"{car.current_price_per_day}</span>
+                            <span class="text-sm text-gray-400 line-through ml-2">{}</span>
+                            <span class="block text-sm text-gray-400">"/ day"</span>
                         </div>
                         <button  class="py-2  px-4 rounded-lg ">
                         {

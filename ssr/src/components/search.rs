@@ -1,19 +1,16 @@
-use icondata::*;
-use leptos::ev::MouseEvent;
+use crate::state::checkout_state::CheckoutState;
+use crate::utils::time::{current_epoch, to_hh_mm_ss};
+use chrono::{DateTime, NaiveDateTime};
+use leptos::event_target_value;
 use leptos::html::Input;
-use leptos::HtmlElement;
 use leptos::*;
 use leptos_icons::Icon;
-// use speedate::DateTime;
-use leptos::*;
+use uts2ts::Timestamp;
 
 #[component]
 pub fn Search() -> impl IntoView {
-    // let input_ref = create_node_ref::<html::Input>();
-    // let date_value = create_rw_signal(String::new());
     let (is_hamburger_open, set_hamburger_open) = create_signal(false);
 
-    // Function to toggle the menu
     let toggle_menu = move || {
         set_hamburger_open.update(|open| *open = !*open);
     };
@@ -24,35 +21,28 @@ pub fn Search() -> impl IntoView {
             "hidden" // Use hidden class when the menu is closed
         }
     });
-    let (date_value, set_date_value): (ReadSignal<String>, WriteSignal<String>) =
-        create_signal(String::new());
+    let pickup_ref_date = create_node_ref::<Input>();
+    let pickup_ref_time = create_node_ref::<Input>();
+    let return_ref_date = create_node_ref::<Input>();
+    let return_ref_time = create_node_ref::<Input>();
 
-    // Create a node reference for the input
-    let input_ref = create_node_ref::<Input>();
+    let checkout_state = CheckoutState::get();
 
-    // Get today's date using speedate
-    // let today: DateTime = DateTime::now(0).unwrap();
-    // let today_str = format!(
-    //     "{}-{:02}-{:02}",
-    //     today.date.year,
-    //     today.date.month, // month is already 1-indexed
-    //     today.date.day
-    // );
-    // let on_click = move |ev: MouseEvent| {
-    //     // Get the input element from the NodeRef
-    //     ev.prevent_default();
-    //     ev.stop_propagation();
 
-    //     if let Some(node) = input_ref.get() {
-    //         // Set the type to 'date' and min date
-    //         node.set_attribute("type", "date").unwrap();
-    //         node.set_attribute("min", &today_str).unwrap();
+    let (pickup_date_value, set_pickup_date_value) = create_signal(String::new());
+    let (return_date_value, set_return_date_value) = create_signal(String::new());
 
-    //         // Focus the input to show the date picker
-    //         node.focus().unwrap()
-    //     }
-    // };
+    
+    let (pickup_time_value, set_pickup_time_value) = create_signal(String::new());
+    let (return_time_value, set_return_time_value) = create_signal(String::new());
 
+    
+    let on_click_search = move || {
+        let pickup_date = pickup_ref_date.get().unwrap().value();
+        let pickup_time = pickup_ref_time.get().unwrap().value();
+        let return_date = return_ref_date.get().unwrap().value();
+        let return_time = return_ref_time.get().unwrap().value();
+    };
     view! {
         <section
             class="relative h-screen text-white bg-center bg-cover"
@@ -173,8 +163,35 @@ pub fn Search() -> impl IntoView {
                                 </div>
                                 // second field
                                 <div class="flex items-center bg-[#1D1D1D9C] bg-opacity-0 w-[281px] h-[52px] p-[0px_11px] gap-[6px] rounded-tl-[9px] rounded-[9px] ">
+                                            <input
+                                                type="datetime-local"
+                                                placeholder="Pickup datetime"
+                                                class="bg-[#252525] pl-2  bg-opacity-0 text-white w-full placeholder-white"
+                                                ref=pickup_ref_time
+                                                on:input=move |ev| {
+                                                    ev.prevent_default();
+                                                    let value = event_target_value(&ev);
+                                                    set_pickup_time_value.set(value.clone());
+                                                    logging::log!("{:?}", &value.clone());
+                                                    let time = format!("{}", value.clone());
+                                                    match   NaiveDateTime::parse_from_str(&time, "%Y-%m-%dT%H:%M") {
+                                                        Ok(date) => {
+                                                            let datetime = date.and_utc().timestamp();
+                                                            CheckoutState::set_pickup_date_value(datetime as u64);
+                                                            }, 
+                                                        Err(e) =>  {
+                                                            logging::log!("failed to parse datetime {:?}", e);
+                                                        }
+                                                    };
+                                                
+
+
+
+                                                }
+                                                value=pickup_time_value.get()
+                                            />
                                     // <!-- First part of the input -->
-                                    <div class="flex flex-row justify-between items-center w-[241.67px] gap-[2px] lg:h-[52.5px]">
+                                    /* <div class="flex flex-row justify-between items-center w-[241.67px] gap-[2px] lg:h-[52.5px]">
                                         // <!-- First sub-field -->
                                         // <DateInputWithIcon
                                         // placeholder="Pickup Date"
@@ -182,21 +199,15 @@ pub fn Search() -> impl IntoView {
                                         // />
                                         //
                                         <div class="flex items-center w-[178.34px] lg:h-[22.34px] bg-[#252525] text-white placeholder-white lg:p-4 bg-opacity-0">
-                                            <button
-                                                class="pt-4 pb-4 pl-2 lg:pl-0"
-                                                on:click=move |_| {
-                                                    if let Some(input) = input_ref.get() {
-                                                        input.click();
-                                                    }
-                                                }
-                                            >
+                                            <button type="datetime-local" class="pt-4 pb-4 pl-2 lg:pl-0">
+                                                // on:click=move |ev: MouseEvent| {
+                                                // ev.prevent_default();
+                                                // if let Some(input) = input_ref.get() {
+                                                // input.click();
+                                                // }
+                                                // }
 
                                                 <Icon
-                                                    on:click=move |_| {
-                                                        if let Some(input) = input_ref.get() {
-                                                            input.click();
-                                                        }
-                                                    }
 
                                                     class="w-[22px] h-[22px]"
                                                     icon=icondata::BsCalendar3
@@ -205,16 +216,16 @@ pub fn Search() -> impl IntoView {
                                             </button>
 
                                             <input
-                                                type="text"
+                                                type="date"
                                                 placeholder="Pickup Date"
                                                 class="bg-[#252525] pl-2 bg-opacity-0 text-white w-full placeholder-white"
-                                                ref=input_ref
+                                                ref=pickup_ref_date
                                                 on:input=move |ev| {
                                                     ev.prevent_default();
-                                                    let value = ev.target().unwrap().value_of();
-                                                    set_date_value.set(value.to_string().into());
+                                                    let value = event_target_value(&ev);
+                                                    set_pickup_date_value.set(value);
                                                 }
-                                                prop:value=date_value
+                                                value=pickup_date_value.get()
                                             />
 
                                         </div>
@@ -228,17 +239,49 @@ pub fn Search() -> impl IntoView {
                                                 <Icon class="w-[24px] h-[24px]" icon=icondata::WiTime10 />
                                             </button>
                                             <input
-                                                type="text"
+                                                type="datetime-local"
                                                 placeholder="Time"
                                                 class="bg-[#252525] pl-2  bg-opacity-0 text-white w-full placeholder-white"
+                                                ref=pickup_ref_time
+                                                on:input=move |ev| {
+                                                    ev.prevent_default();
+                                                    let value = event_target_value(&ev);
+                                                    set_pickup_time_value.set(value);
+                                                }
+                                                value=pickup_time_value.get()
                                             />
                                         </div>
-                                    </div>
+                                    </div> */
                                 </div>
                                 // third field
                                 <div class="flex items-center bg-[#1D1D1D9C] bg-opacity-0 w-[281px] h-[52px] p-[0px_11px] gap-[2px] rounded-[9px]">
+                                            <input
+                                                type="datetime-local"
+                                                placeholder="Time"
+                                                class="bg-[#252525] pl-2  bg-opacity-0 text-white w-full placeholder-white"
+                                                ref=return_ref_time
+
+                                                on:input=move |ev| {
+                                                    ev.prevent_default();
+                                                    let value = event_target_value(&ev);
+                                                    set_return_time_value.set(value.clone());
+                                                    let time = format!("{}", value.clone());
+                                                    match   NaiveDateTime::parse_from_str(&time, "%Y-%m-%dT%H:%M") {
+                                                        Ok(date) => {
+                                                            let datetime = date.and_utc().timestamp();
+                                                            CheckoutState::set_return_date_value(datetime as u64);
+                                                            }, 
+                                                        Err(e) =>  {
+                                                            logging::log!("failed to parse datetime {:?}", e);
+                                                        }
+                                                    };
+
+                                                    
+                                                }
+                                                value=return_time_value.get()
+                                            />
                                     // <!-- Placeholder container -->
-                                    <div class="flex justify-between items-center w-[240.67px] h-[52.5px] gap-[2px]">
+                                    /* <div class="flex justify-between items-center w-[240.67px] h-[52.5px] gap-[2px]">
                                         // <!-- First part of the placeholder -->
                                         <div class="flex items-center w-[178.34px] h-[22.34px] bg-[#252525] text-white  bg-opacity-0">
                                             <button class="pt-4 pb-4">
@@ -248,10 +291,18 @@ pub fn Search() -> impl IntoView {
                                                 />
                                             </button>
                                             <input
-                                                type="text"
+                                                type="date"
                                                 placeholder="Return Date"
                                                 class="bg-[#252525] pl-4  bg-opacity-0 text-white w-full placeholder-white"
+                                                ref=return_ref_date
+                                                on:input=move |ev| {
+                                                    ev.prevent_default();
+                                                    let value = event_target_value(&ev);
+                                                    set_return_date_value.set(value);
+                                                }
+                                                value=return_date_value.get()
                                             />
+
                                         </div>
 
                                         // <!-- Separator -->
@@ -263,12 +314,21 @@ pub fn Search() -> impl IntoView {
                                                 <Icon class="w-[24px] h-[24px]" icon=icondata::WiTime10 />
                                             </button>
                                             <input
-                                                type="text"
+                                                type="time"
                                                 placeholder="Time"
                                                 class="bg-[#252525] pl-2  bg-opacity-0 text-white w-full placeholder-white"
+                                                ref=return_ref_time
+
+                                                on:input=move |ev| {
+                                                    ev.prevent_default();
+                                                    let value = event_target_value(&ev);
+                                                    set_return_time_value.set(value);
+                                                }
+                                                value=return_time_value.get()
                                             />
-                                        </div>
-                                    </div>
+                                            </div>
+                                        
+                                        </div> */
                                 </div>
                             </div>
                             <button class="flex justify-center items-center py-3 px-8 mt-8 w-full font-semibold text-white bg-green-600 rounded-md lg:mt-0 lg:w-auto hover:bg-green-700">
