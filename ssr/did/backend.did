@@ -78,13 +78,11 @@ type TransmissionType = variant { Manual; Automatic };
 service : () -> {
   add_car : (CarDetails) -> ();
   cancel_reservation : (nat64) -> (Result);
-  get_car_details : (nat64, nat64, nat64) -> (opt CarAvailability) query;
+  get_car_details : (nat64, nat64, nat64) -> (opt CarAvailability);
   get_default_car : () -> (opt Car) query;
   get_monitoring_events : () -> (vec EventMoniter) query;
   greet : (text) -> (text) query;
-  list_all_cars : () -> (vec Car) query;
-  log_car_selection : (nat64) -> ();
-  log_search : () -> ();
+  list_all_cars : () -> (vec Car);
   reserve_car : (nat64, nat64, nat64) -> (Result_1);
   search_car : (nat64, nat64) -> (vec Car) query;
   update_car : (nat64, CarDetails) -> ();
