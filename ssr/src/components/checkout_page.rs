@@ -1,7 +1,7 @@
 use leptos::*;
 
 use crate::{
-    canister::backend::CarStatus, state::{
+    canister::backend::{CarAvailability, CarStatus, CustomerDetials, RentalTransaction}, components::ActionTrackerPopup, state::{
         canisters::authenticated_canisters,
         checkout_state::{CheckoutState, CheckoutUser},
     }, utils::{
@@ -19,11 +19,11 @@ pub fn CheckoutPage() -> impl IntoView {
             let user: CheckoutUser = expect_context();
             let checkout_state: CheckoutState = expect_context();
             let cans_res = authenticated_canisters();
-
+            let fetch_car = cans_res.clone();
             let fetch_car_details = create_resource(
                 move || (checkout.start_time.get(), checkout.end_time.get()),
                 move |_| {
-                    let cans_res = cans_res.clone();
+                    let cans_res = fetch_car.clone();
                     async move {
                         let cans = cans_res.wait_untracked().await.unwrap();
                         let cans = cans.canisters().unwrap();
@@ -45,14 +45,68 @@ pub fn CheckoutPage() -> impl IntoView {
                 },
             );
 
+            
+            let create_action = create_action( move |&()| {
+                {
+                let value = cans_res.clone();
+                async move {
+
+                    if !user.user.get_untracked().check_ready() {
+                        return Err("All fields are required".into());
+                    }
+
+                    let cans = value.wait_untracked().await.unwrap();
+                        let cans = cans.canisters().unwrap();
+                        let backend = cans
+                            .backend()
+                            .await;
+                        let reserve  = backend.reserve_car(car.id, checkout.start_time.get_untracked().unwrap(), checkout.end_time.get_untracked().unwrap(), CustomerDetials {
+                            age:   user.user.get_untracked().age.unwrap(), 
+                            pan :  user.user.get_untracked().pan.unwrap(), 
+                            aadhar:  user.user.get_untracked().aadhar.unwrap(), 
+                            mobile_number:  user.user.get_untracked().mobile_number.unwrap(),
+                            name:  user.user.get_untracked().name.unwrap(),
+                            email:  user.user.get_untracked().email.unwrap(), 
+                            country_code:  user.user.get_untracked().country_code.unwrap()
+                        }).await;
+
+                        match reserve {
+                            Ok(result1)  => {
+                                    match result1 {
+                                        crate::canister::backend::Result1::Ok(rental_transaction) => Ok(rental_transaction),
+                                        crate::canister::backend::Result1::Err(e) => Err(e),
+                                    }
+                            }  , 
+                            Err(e) => Err(e.to_string())                           
+                        }
+
+
+                }
+                }
+
+
+            });
+
+            let creating = create_action.pending();
+
+            let create_diabled = create_memo(move |_| creating() || !user.user.get().check_ready() );
+
             let update_name = move |value| user.user.update(|f| f.name = Some(value));
             let update_age = move |value: String| {
                 user.user
-                    .update(|f| f.age = Some(value.parse::<u8>().unwrap().into()))
+                    .update(|f| {
+                        let age = value.parse::<u8>();
+                        match age {
+                            Ok(age) => {f.age = Some(age);}, 
+                            Err(_) => {f.age = None}
+                        }
+                        })
             };
             let update_email = move |value| user.user.update(|f| f.email = Some(value));
             let update_code = move |value| user.user.update(|f| f.country_code = Some(value));
             let update_mobile = move |value| user.user.update(|f| f.mobile_number = Some(value));
+            let update_pan = move |value| user.user.update(|f| f.pan = Some(value));
+            let update_aadhar = move |value| user.user.update(|f| f.aadhar = Some(value));
 
             // let detals = car.clone();
             view! {
@@ -67,8 +121,14 @@ pub fn CheckoutPage() -> impl IntoView {
                             fetch_car_details.get().map(|res| {
                                 match res {
                                     Ok(avail) => {
+                                        /* view! {
+                                            <div>
+                                            <CheckoutInner avail />
+                                            </div>
+                                        } */
                                         let car = avail.details;
                                         let available = avail.available;
+                                        let status = car.status.clone();
                                         view! {
                     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         // <!-- Left Section - Billing Info, Payment, and Confirmation -->
@@ -88,11 +148,15 @@ pub fn CheckoutPage() -> impl IntoView {
                                     <InputBox initial_value=user.user.get_untracked().age.map_or("".into(), |f| f.to_string() ) heading="Age" placeholder="Age" updater=update_age validator=move|val|non_empty_string_validator(val) input_type="number" />
                                     // <input type="email" placeholder="Email ID" class="border rounded-lg px-4 py-2"/>
                                     <InputBox initial_value=user.user.get_untracked().email.map_or("".into(), |f| f.to_string() ) heading="Email" placeholder="Email" updater=update_email validator=move|val|non_empty_string_validator(val) input_type="email" />
-
+                                   
                                     // <input type="text" placeholder="Pan Card No." class="border rounded-lg px-4 py-2"/>
+                                    <InputBox initial_value=user.user.get_untracked().pan.map_or("".into(), |f| f.to_string() ) heading="PAN" placeholder="PAN" updater=update_pan validator=move|val|non_empty_string_validator(val) />
+                                    
                                     // <input type="text" placeholder="Adhar Card No." class="border rounded-lg px-4 py-2"/>
+                                    <InputBox initial_value=user.user.get_untracked().aadhar.map_or("".into(), |f| f.to_string() ) heading="Aadhar" placeholder="Aadhar" updater=update_aadhar validator=move|val|non_empty_string_validator(val) input_type="number" />
+
                                 </div>
-                                <div class="grid grid-cols-2 space-x-2">
+                                <div class="grid grid-cols-2 space-x-2 gap-4">
                                     // <input type="text" placeholder="Country Code" class="border rounded-lg px-4 py-2 w-1/3"/>
                                     <InputBox initial_value=user.user.get_untracked().country_code.map_or("".into(), |f| f.to_string() ) heading="Country Code" placeholder="Country Code" updater=update_code validator=move|val|non_empty_string_validator(val) input_type="text" style="col-span-1".into() />
                                     // <input type="text" placeholder="Mobile Number" class="border rounded-lg px-4 py-2 w-2/3"/>
@@ -115,14 +179,18 @@ pub fn CheckoutPage() -> impl IntoView {
                                     <input type="checkbox" id="terms" class="mr-2"/>
                                     <label for="terms" class="text-gray-600 text-sm">"I agree with our terms and conditions and privacy policy."</label>
                                 </div>
-                                <Show when=move||format!("{:?}", car.status) == format!("{:?}", CarStatus::Available) fallback=move || view! {
+                                <Show when=move||format!("{:?}", car.status) == format!("{:?}", CarStatus::Available)   fallback=move || view! {
                                     <button disabled=true class="w-full bg-gray-500 text-white py-3 rounded-lg font-bold">
-                                    Not Available
+                                      { match  format!("{:?}", status) == format!("{:?}", CarStatus::Available) {
+                                        true => "Rent Now", 
+                                        false => "Not Available"
+                                      } }
                                     </button>
                                 }>
-                                <button  class="w-full bg-green-500 text-white py-3 rounded-lg font-bold hover:bg-green-600">
+                                <button disabled=create_diabled  on:click=move |_| create_action.dispatch(()) class="w-full bg-green-500 text-white py-3 rounded-lg font-bold disabled:text-neutral-500 disabled:bg-primary-500/30">
                                     "Rent Now"
                                 </button>
+                                <BookingCreationPopup creation_action=create_action/>
                                 </Show>
                             </div>
 
@@ -189,7 +257,7 @@ pub fn CheckoutPage() -> impl IntoView {
                                             // {a.customer_principal_id.to_text()}
                                             <div class="flex justify-between items-center mb-4">
                                             <span>"Subtotal"</span>
-                                            <span>"₹"{a.total_amount}</span>
+                                            <span>"₹"{format!("{:.2}", a.total_amount)}</span>
                                         </div>
                                         <div class="flex justify-between items-center mb-4">
                                             <span>"Tax"</span>
@@ -203,7 +271,7 @@ pub fn CheckoutPage() -> impl IntoView {
 
                                         <div class="flex justify-between items-center mb-4 font-bold text-lg">
                                             <span>"Total Rental Price"</span>
-                                            <span>"₹"{a.total_amount}</span>
+                                            <span>"₹"{format!("{:.2}", a.total_amount)}</span>
                                         </div>
 
                                         <button class="w-full bg-green-500 text-white py-3 rounded-lg font-bold hover:bg-green-600">
@@ -248,6 +316,37 @@ pub fn CheckoutPage() -> impl IntoView {
         }
     }
 }
+
+
+#[component]
+pub fn BookingCreationPopup(
+    creation_action: Action<(), Result<RentalTransaction, String>>,
+) -> impl IntoView {
+    let close_popup = create_rw_signal(false);
+    view! {
+        <ActionTrackerPopup
+            action=creation_action
+            loading_message="Booking in Progress"
+            modal=move |res| match res {
+                Ok(_) => {
+                    view! {
+                        <div>Congtratulation</div>
+                    }
+                }
+                Err(e) => {
+                    view! {
+                        <div>
+                        <p style="color:red">{e}</p>
+                        </div>
+                    }
+                }
+            }
+
+            close=close_popup
+        />
+    }
+}
+
 
 #[component]
 fn PaymentMethod() -> impl IntoView {

@@ -30,7 +30,7 @@ pub fn get_day_month_time(epoch_secs: u64) -> String {
         12 => "DEC",
         _ => unreachable!(),
     };
-    format!("{month} {:02}, {year}  {}:{}", ts.day, ts.hour, ts.second)
+    format!("{month} {:02}, {year}  {}:{:02}", ts.day, ts.hour, ts.second)
 }
 
 pub fn to_hh_mm_ss(duration: Duration) -> String {
