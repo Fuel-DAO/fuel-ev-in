@@ -1,11 +1,49 @@
-use icondata::*;
 use leptos::ev::MouseEvent;
 use leptos::html::Input;
 use leptos::HtmlElement;
 use leptos::*;
 use leptos_icons::Icon;
 // use speedate::DateTime;
+use leptos::html::InputElement;
 use leptos::*;
+
+#[component]
+pub fn DateInputWithIcon(cx: Scope, placeholder: &'static str, icon: IconData) -> impl IntoView {
+    // Create a signal to manage the date value
+    let (date_value, set_date_value) = create_signal(String::new());
+
+    // Create a reference for the input element
+    let input_ref = create_node_ref::<InputElement>(cx);
+
+    view! { cx,
+        <div class="flex items-center bg-[#252525] rounded-md p-2">
+            // Button with the calendar icon
+            <button
+                class="pt-4 pb-4 pl-2"
+                on:click=move |_| {
+                    if let Some(input) = input_ref.get() {
+                        input.click();
+                    }
+                }
+            >
+                <Icon class="w-[22px] h-[22px]" icon=icon />
+            </button>
+
+            // Date input field
+            <input
+                type="date"
+                placeholder=placeholder
+                class="bg-[#252525] pl-2 bg-opacity-0 text-white w-full placeholder-white"
+                ref=input_ref
+                value=date_value
+                on:input=move |ev| {
+                    let input = event_target_value(&ev);
+                    set_date_value(input);
+                }
+            />
+        </div>
+    }
+}
 
 #[component]
 pub fn Search() -> impl IntoView {
@@ -176,28 +214,10 @@ pub fn Search() -> impl IntoView {
                                     // <!-- First part of the input -->
                                     <div class="flex flex-row justify-between items-center w-[241.67px] gap-[2px] lg:h-[52.5px]">
                                         // <!-- First sub-field -->
-                                        // <DateInputWithIcon
-                                        // placeholder="Pickup Date"
-                                        // icon=BsCalendar3
-                                        // />
-                                        //
                                         <div class="flex items-center w-[178.34px] lg:h-[22.34px] bg-[#252525] text-white placeholder-white lg:p-4 bg-opacity-0">
-                                            <button
-                                                class="pt-4 pb-4 pl-2 lg:pl-0"
-                                                on:click=move |_| {
-                                                    if let Some(input) = input_ref.get() {
-                                                        input.click();
-                                                    }
-                                                }
-                                            >
+                                            <button class="pt-4 pb-4 pl-2">
 
                                                 <Icon
-                                                    on:click=move |_| {
-                                                        if let Some(input) = input_ref.get() {
-                                                            input.click();
-                                                        }
-                                                    }
-
                                                     class="w-[22px] h-[22px]"
                                                     icon=icondata::BsCalendar3
                                                 />
@@ -214,7 +234,8 @@ pub fn Search() -> impl IntoView {
                                                     let value = ev.target().unwrap().value_of();
                                                     set_date_value.set(value.to_string().into());
                                                 }
-                                                prop:value=date_value
+                                                value=date_value
+                                                name="pickup-date"
                                             />
 
                                         </div>
@@ -271,7 +292,7 @@ pub fn Search() -> impl IntoView {
                                     </div>
                                 </div>
                             </div>
-                            <button class="flex justify-center items-center py-3 px-8 mt-8 w-full font-semibold text-white bg-green-600 rounded-md lg:mt-0 lg:w-auto hover:bg-green-700">
+                            <button class="flex justify-center items-center py-3 px-8 mt-8 w-full font-semibold text-white bg-green-600 rounded-md lg:w-auto hover:bg-green-700">
                                 Search
                             </button>
                         // <button class="flex justify-center items-center bg-green-600 hover:bg-green-700 w-[141.75px] h-[52.5px] p-[19px_39px] gap-[10px] rounded-[9px]">

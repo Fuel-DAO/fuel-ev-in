@@ -7,7 +7,7 @@ pub fn Advantages() -> impl IntoView {
             <div class="container mx-auto text-center gap-50">
                 // first sub div
                 <div
-                    class="flex flex-col gap-3 items-center w-[1236.88px] h-[134px]"
+                    class="flex flex-col gap-3 items-center h-[134px] lg:w-[1236.88px]"
                     style="margin-bottom: 49.99px;"
                 >
                     // <!-- First Part -->
