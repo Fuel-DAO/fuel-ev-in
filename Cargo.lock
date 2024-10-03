@@ -1290,6 +1290,7 @@ dependencies = [
  "icondata",
  "icondata_core",
  "icp-ledger",
+ "js-sys",
  "k256",
  "leptos",
  "leptos-use",

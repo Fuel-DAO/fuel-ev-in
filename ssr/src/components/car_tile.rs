@@ -14,10 +14,7 @@ use crate::{
 
 #[component]
 pub fn SearchResult() -> impl IntoView {
-    view! {
-            <SearchResultInner />
-
-    }
+    view! { <SearchResultInner /> }
 }
 
 #[server(input=Cbor)]
@@ -55,32 +52,31 @@ fn SearchResultInner() -> impl IntoView {
     );
 
     view! {
-        <Suspense fallback=move|| view! {<Spinner />}>
-        <div>
-        {
-            move || {
-                search_resource.get().map(|res| {
-                    match  res {
-                        Ok(cars) => {
-                            view! {
-                            <div>
-                                <ShowSearchResult cars/ >
-                            </div>
-                            }
-                        },
-                        Err(e) => {
-                                view! {
-                                <div>
-                                    <span>{e}</span>
-                                </div>
+        <Suspense fallback=move || view! { <Spinner /> }>
+            <div>
+                {move || {
+                    search_resource
+                        .get()
+                        .map(|res| {
+                            match res {
+                                Ok(cars) => {
+                                    view! {
+                                        <div>
+                                            <ShowSearchResult cars />
+                                        </div>
+                                    }
                                 }
-                        }
-
-                    }
-                })
-            }
-        }
-        </div>
+                                Err(e) => {
+                                    view! {
+                                        <div>
+                                            <span>{e}</span>
+                                        </div>
+                                    }
+                                }
+                            }
+                        })
+                }}
+            </div>
         </Suspense>
     }
 }
@@ -88,10 +84,8 @@ fn SearchResultInner() -> impl IntoView {
 #[component]
 fn ShowSearchResult(cars: Vec<Car>) -> impl IntoView {
     view! {
-        <div class= "grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
-        {
-           cars.into_iter().map(|car| view! {<CarCard car />}).collect_view()
-        }
+        <div class="grid grid-cols-1 gap-4 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {cars.into_iter().map(|car| view! { <CarCard car /> }).collect_view()}
         </div>
     }
 }
@@ -115,43 +109,47 @@ pub fn CarCard(car: Car) -> impl IntoView {
     };
 
     view! {
-        <div class="p-4 bg-white rounded-xl shadow-md"
-        class:opacity-50=move||format!("{:?}", status.clone()) != format!("{:?}",CarStatus::Available) &&format!("{:?}", status.clone()) != format!("{:?}",CarStatus::ComingSoon)
+        <div
+            class="p-4 bg-white rounded-xl shadow-md"
+            class:opacity-50=move || {
+                format!("{:?}", status.clone()) != format!("{:?}", CarStatus::Available)
+                    && format!("{:?}", status.clone()) != format!("{:?}", CarStatus::ComingSoon)
+            }
         >
             <button on:click=click>
-            // Car Name and Type
-            <div class="text-left mb-4">
-                <h1 class="text-xl font-bold text-gray-800">{car.model}</h1>
-                <p class="text-sm text-gray-400">{car_type}</p>
-            </div>
+                // Car Name and Type
+                <div class="mb-4 text-left">
+                    <h1 class="text-xl font-bold text-gray-800">{car.model}</h1>
+                    <p class="text-sm text-gray-400">{car_type}</p>
+                </div>
 
-            // Car Image
-            <div class="mb-4">
-                <img src=car.default_image_url alt="Koenigsegg" class="w-full h-auto" />
-            </div>
+                // Car Image
+                <div class="mb-4">
+                    <img src=car.default_image_url alt="Koenigsegg" class="w-full h-auto" />
+                </div>
 
             </button>
-            <PopupOverlay show=show_details_popup   >
-                <CarDetailsPopup  car=details.clone() show_popup=show_details_popup/ >
+            <PopupOverlay show=show_details_popup>
+                <CarDetailsPopup car=details.clone() show_popup=show_details_popup />
             </PopupOverlay>
 
             // Car Details (Fuel, Transmission, Seating)
             <div class="flex justify-between items-center mb-4">
-                <Show when=move||car.mileage.is_some()>
+                <Show when=move || car.mileage.is_some()>
                     <div class="flex items-center">
                         <img src="/icons/mileage.svg" />
-                        <span class="text-sm text-gray-600 ml-1">{car.mileage.unwrap()}Km</span>
+                        <span class="ml-1 text-sm text-gray-600">{car.mileage.unwrap()}Km</span>
                     </div>
                 </Show>
 
                 <div class="flex items-center">
                     <img src="/icons/car_transmission.svg" />
-                    <span class="text-sm text-gray-600 ml-1">{transmission_type}</span>
+                    <span class="ml-1 text-sm text-gray-600">{transmission_type}</span>
                 </div>
 
                 <div class="flex items-center">
                     <img src="/icons/capacity.svg" />
-                    <span class="text-sm text-gray-600 ml-1">{car.capacity}</span>
+                    <span class="ml-1 text-sm text-gray-600">{car.capacity}</span>
                 </div>
             </div>
 
@@ -159,41 +157,49 @@ pub fn CarCard(car: Car) -> impl IntoView {
             <div class="flex justify-between items-center">
                 <div class="flex flex-col">
                     <div class="flex-1 text-lg font-bold text-gray-800">
-                        "₹"{car.price_per_day}
-                    <span class="text-sm text-gray-400">"/ day"</span>
+                        "₹"{car.price_per_day} <span class="text-sm text-gray-400">"/ day"</span>
                     </div>
-                    <Show when=move||car.price_per_day != car.current_price_per_day >
+                    <Show when=move || car.price_per_day != car.current_price_per_day>
                         <div class="flex-1 text-sm text-gray-400 line-through">
                             "₹"{car.price_per_day}/day
                         </div>
                     </Show>
                 </div>
-                {
-                    match car.status {
-                        CarStatus::Available => view! {
-                                        <div>
-                                            <button on:click=move|_|navigate_to_checkout(checkout.clone())>
-                                            // <a href="/checkout">
-                                            <div class="px-3 py-1  fill-green-500 text-white rounded text-sm" style="background-color:#03B74B" >
-                                                Rent Now
-                                            </div>
-                                            // </a>
-                                            </button>
-                                        </div>
-                                    },
-                        CarStatus::ComingSoon => view! {
-                            <div class="px-3 py-1 border border-green-500 text-green-500 rounded text-sm">
+                {match car.status {
+                    CarStatus::Available => {
+                        view! {
+                            <div>
+                                <button on:click=move |_| navigate_to_checkout(checkout.clone())>
+                                    // <a href="/checkout">
+                                    <div
+                                        class="py-1 px-3 text-sm text-white rounded fill-green-500"
+                                        style="background-color:#03B74B"
+                                    >
+                                        Rent Now
+                                    </div>
+                                // </a>
+                                </button>
+                            </div>
+                        }
+                    }
+                    CarStatus::ComingSoon => {
+                        view! {
+                            <div class="py-1 px-3 text-sm text-green-500 rounded border border-green-500">
                                 {car_status}
                             </div>
-                        },
-                        _ => view! {
-                            <div class="px-3 py-1 rounded text-white rounded text-sm" style="background-color:gray">
+                        }
+                    }
+                    _ => {
+                        view! {
+                            <div
+                                class="py-1 px-3 text-sm text-white rounded"
+                                style="background-color:gray"
+                            >
                                 Not Available
                             </div>
                         }
                     }
-                }
-
+                }}
 
             </div>
         </div>
@@ -210,60 +216,91 @@ fn CarDetailsPopup(#[prop(into)] show_popup: SignalSetter<bool>, car: CarDetails
     let fuel_type = format!("{:?}", car.fuel_type);
     view! {
         <div class="container mx-auto bg-gray-100">
-            <div  class="flex flex-cols-2 bg-gray-100">
-            <div class="flex-1">
+            <div class="flex bg-gray-100 flex-cols-2">
+                <div class="flex-1"></div>
+                <button
+                    class="px-4 text-gray-400 hover:text-gray-600 items-right"
+                    on:click=move |_| {
+                        show_popup.set(false);
+                    }
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-6 h-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12"
+                        />
+                    </svg>
+                </button>
             </div>
-            <button class="items-right px-4 text-gray-400 hover:text-gray-600" on:click=move|_| {show_popup.set(false);}>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-            </button>
-            </div>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 p-4 bg-gray-100">
-
+            <div class="grid grid-cols-1 gap-4 p-4 bg-gray-100 lg:grid-cols-2">
 
                 // Left Section: Main car image and gallery
-                <div class="flex flex-col items-center bg-white rounded-lg shadow-lg p-6 max-w-full overflow-hidden">
+                <div class="flex overflow-hidden flex-col items-center p-6 max-w-full bg-white rounded-lg shadow-lg">
                     // Car promotion with large image and text
-                    <div class="relative w-full h-64 md:h-72 bg-cover bg-center rounded-lg mb-4"
-                         style=format!("background-image: url('{}');", car.default_image_url)>
+                    <div
+                        class="relative mb-4 w-full h-64 bg-center bg-cover rounded-lg md:h-72"
+                        style=format!("background-image: url('{}');", car.default_image_url)
+                    >
 
                         // Text overlay on top of the image
-                        <div class="absolute inset-0 flex flex-col justify-start items-start md:items-start p-6 rounded-lg">
-                            <h2 class="text-white text-xl md:text-2xl font-bold mb-2 text-left">
+                        <div class="flex absolute inset-0 flex-col justify-start items-start p-6 rounded-lg md:items-start">
+                            <h2 class="mb-2 text-xl font-bold text-left text-white md:text-2xl">
                                 "Sports car with the best design and acceleration"
                             </h2>
-                            <p class="text-white text-sm md:text-base mb-4 text-left">
+                            <p class="mb-4 text-sm text-left text-white md:text-base">
                                 "Safety and comfort while driving a futuristic and elegant sports car"
                             </p>
                         </div>
                     </div>
 
                     // Gallery with additional car images
-                    <div class="flex space-x-2 justify-center md:justify-start">
-                        <img src="/img/car-side.svg" alt="Car thumbnail" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
-                        <img src="/img/interior.svg" alt="Car interior" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
-                        <img src="/img/interior.svg" alt="Car seats" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
+                    <div class="flex justify-center space-x-2 md:justify-start">
+                        <img
+                            src="/img/car-side.svg"
+                            alt="Car thumbnail"
+                            class="object-cover w-20 h-20 rounded-lg shadow-sm md:w-24 md:h-24"
+                        />
+                        <img
+                            src="/img/interior.svg"
+                            alt="Car interior"
+                            class="object-cover w-20 h-20 rounded-lg shadow-sm md:w-24 md:h-24"
+                        />
+                        <img
+                            src="/img/interior.svg"
+                            alt="Car seats"
+                            class="object-cover w-20 h-20 rounded-lg shadow-sm md:w-24 md:h-24"
+                        />
                     </div>
                 </div>
 
                 // Right Section: Car details, price, and "Rent Now" button
-                <div class="bg-white rounded-lg shadow-lg p-6 max-w-full overflow-hidden">
+                <div class="overflow-hidden p-6 max-w-full bg-white rounded-lg shadow-lg">
                     <div class="flex justify-between items-start mb-4">
                         <div class="w-full">
                             // Car name and rating
-                            <h2 class="text-xl md:text-2xl font-bold text-gray-800">{format!("{} {}", car.make, car.model)}</h2>
+                            <h2 class="text-xl font-bold text-gray-800 md:text-2xl">
+                                {format!("{} {}", car.make, car.model)}
+                            </h2>
                             <div class="flex items-center">
-                                <span class="text-yellow-400 text-lg mr-2">"★★★★★"</span>
+                                <span class="mr-2 text-lg text-yellow-400">"★★★★★"</span>
                                 <span class="text-sm text-gray-500">"440+ Reviewer"</span>
                             </div>
                         </div>
-                        // Close button (optional, depending on the design)
-
+                    // Close button (optional, depending on the design)
                     </div>
 
                     // Car description
-                    <p class="text-gray-600 text-sm mb-4">"NISMO has become the embodiment of Nissan's outstanding performance, inspired by the most unforgiving proving ground, the 'race track'."</p>
+                    <p class="mb-4 text-sm text-gray-600">
+                        "NISMO has become the embodiment of Nissan's outstanding performance, inspired by the most unforgiving proving ground, the 'race track'."
+                    </p>
 
                     // Car specifications
                     <div class="grid grid-cols-2 gap-4 mb-6">
@@ -289,35 +326,48 @@ fn CarDetailsPopup(#[prop(into)] show_popup: SignalSetter<bool>, car: CarDetails
                     <div class="flex justify-between items-center">
                         <div>
                             <span class="text-2xl font-bold text-gray-800">$80.00</span>
-                            <span class="text-sm text-gray-400 line-through ml-2">$100.00</span>
+                            <span class="ml-2 text-sm text-gray-400 line-through">$100.00</span>
                             <span class="block text-sm text-gray-400">"/ days"</span>
                         </div>
-                        <button  class="py-2  px-4 rounded-lg ">
-                        {
-                            match car.status {
-                                CarStatus::Available => view! {
-                                                <div>
-                                                    <button  class="hover:bg-green-500" on:click=move|_|navigate_to_checkout(details.clone())>
-                                                    // <a href="/checkout">
-                                                        <div class="w-24 px-3 py-1 fill-green-500 text-white rounded text-sm" style="background-color:#03B74B" >
-                                                            Rent Now
-                                                        </div>
-                                                    // </a>
-                                                    </button>
+                        <button class="py-2 px-4 rounded-lg">
+                            {match car.status {
+                                CarStatus::Available => {
+                                    view! {
+                                        <div>
+                                            <button
+                                                class="hover:bg-green-500"
+                                                on:click=move |_| navigate_to_checkout(details.clone())
+                                            >
+                                                // <a href="/checkout">
+                                                <div
+                                                    class="py-1 px-3 w-24 text-sm text-white rounded fill-green-500"
+                                                    style="background-color:#03B74B"
+                                                >
+                                                    Rent Now
                                                 </div>
-                                            },
-                                CarStatus::ComingSoon => view! {
-                                    <div class="w-24 px-3 py-1 border border-green-500 text-green-500 rounded text-sm">
-                                        {car_status}
-                                    </div>
-                                },
-                                _ => view! {
-                                    <div class="w-24 px-3 py-1 rounded text-white rounded text-sm" style="background-color:gray">
-                                        Not Available
-                                    </div>
+                                            // </a>
+                                            </button>
+                                        </div>
+                                    }
                                 }
-                            }
-                        }
+                                CarStatus::ComingSoon => {
+                                    view! {
+                                        <div class="py-1 px-3 w-24 text-sm text-green-500 rounded border border-green-500">
+                                            {car_status}
+                                        </div>
+                                    }
+                                }
+                                _ => {
+                                    view! {
+                                        <div
+                                            class="py-1 px-3 w-24 text-sm text-white rounded"
+                                            style="background-color:gray"
+                                        >
+                                            Not Available
+                                        </div>
+                                    }
+                                }
+                            }}
                         </button>
                     </div>
                 </div>

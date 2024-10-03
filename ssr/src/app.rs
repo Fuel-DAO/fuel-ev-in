@@ -6,6 +6,7 @@ use base_route::BaseRoute;
 use leptos::*;
 use leptos_meta::*;
 use leptos_router::*;
+
 #[component]
 //te
 pub fn App() -> impl IntoView {
