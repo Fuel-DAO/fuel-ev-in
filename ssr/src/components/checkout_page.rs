@@ -259,24 +259,24 @@ pub fn CheckoutPage() -> impl IntoView {
                                             <span>"Subtotal"</span>
                                             <span>"₹"{format!("{:.2}", a.total_amount)}</span>
                                         </div>
-                                        <div class="flex justify-between items-center mb-4">
-                                            <span>"Tax"</span>
-                                            <span>"₹""0.00"</span>
-                                        </div>
+                                        // <div class="flex justify-between items-center mb-4">
+                                        //     <span>"Tax"</span>
+                                        //     <span>"₹""0.00"</span>
+                                        // </div>
 
-                                        <div class="flex items-center mb-4">
-                                            <input type="text" placeholder="Promo Code" class="border rounded-lg px-4 py-2 flex-1"/>
-                                            <button class="bg-gray-200 text-gray-600 py-2 px-4 rounded-lg ml-2">"Apply"</button>
-                                        </div>
+                                        // <div class="flex items-center mb-4">
+                                        //     <input type="text" placeholder="Promo Code" class="border rounded-lg px-4 py-2 flex-1"/>
+                                        //     <button class="bg-gray-200 text-gray-600 py-2 px-4 rounded-lg ml-2">"Apply"</button>
+                                        // </div>
 
                                         <div class="flex justify-between items-center mb-4 font-bold text-lg">
                                             <span>"Total Rental Price"</span>
                                             <span>"₹"{format!("{:.2}", a.total_amount)}</span>
                                         </div>
 
-                                        <button class="w-full bg-green-500 text-white py-3 rounded-lg font-bold hover:bg-green-600">
-                                            "Apply Now"
-                                        </button>
+                                        // <button class="w-full bg-green-500 text-white py-3 rounded-lg font-bold hover:bg-green-600">
+                                        //     "Apply Now"
+                                        // </button>
                                             </div>
                                         }
 

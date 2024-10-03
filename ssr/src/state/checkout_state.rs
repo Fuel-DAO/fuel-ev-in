@@ -48,10 +48,19 @@ impl CheckoutState {
         let this: Self = expect_context();
 
         this.selected_car.update(|f| *f = Some(car));
-        //2024-10-01 08:35:05
-        this.start_time.update(|f| *f = Some(1727771705));
-        //2024-10-03 12:35:05
-        this.end_time.update(|f| *f = Some(1727958905));
+    }
+
+    pub fn set_pickup_date_value(value: u64) {
+        let this: Self = expect_context();
+
+        this.start_time.update(|f| *f = Some(value));
+
+    }
+
+    pub fn set_return_date_value(value: u64) {
+        let this: Self = expect_context();
+
+        this.end_time.update(|f| *f = Some(value));
     }
 
     pub fn clear() {
