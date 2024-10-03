@@ -1,5 +1,6 @@
 use leptos::*;
 use leptos_icons::Icon;
+use leptos_use::use_media_query;
 
 #[component]
 pub fn BestPlacedForTrips() -> impl IntoView {
@@ -32,14 +33,33 @@ pub fn BestPlacedForTrips() -> impl IntoView {
     let handle_image_click = move |index: usize| {
         set_current_index.set(index);
     };
+    let is_mobile = use_media_query("(max-width: 640px)").get();
+    log::info!("Is Mobile: {}", is_mobile);
 
     // Calculate the 5 indices to be displayed in the carousel
-    let get_display_indices = |current: usize| {
-        let mut indices = Vec::new();
-        for i in 0..5 {
-            indices.push((current + i) % length); // Wrap around the array
+    let get_display_count = move || {
+        // Capture the media query and check if the screen width is less than or equal to 640px
+        if use_media_query("(max-width: 640px)").get_untracked() {
+            3 // Display 3 items on small screens
+        } else {
+            5 // Display 5 items on larger screens
         }
-        indices
+    };
+    let log_size = {
+        move || {
+            logging::log!(
+                "mobile screen: {:?}",
+                use_media_query("(max-width: 640px)").get()
+            )
+        }
+    };
+    log_size();
+    // Calculate the display indices to be displayed in the carousel
+    let get_display_indices = |current: usize| {
+        let count = get_display_count();
+        (0..count)
+            .map(|i| (current + i) % length) // Wrap around the array
+            .collect::<Vec<_>>()
     };
 
     view! {
@@ -51,7 +71,7 @@ pub fn BestPlacedForTrips() -> impl IntoView {
                     <div class="flex absolute left-0 items-center h-full">
                         <button on:click=rotate_left>
                             <Icon
-                                class="bg-gray-300 rounded-full w-[24px] h-[24px]"
+                                class="bg-gray-300 rounded-full w-[24px] h-[24px] lg:w-[30px] lg:h-[30px]"
                                 icon=icondata::BsArrowLeftCircle
                             />
                         </button>
@@ -63,7 +83,7 @@ pub fn BestPlacedForTrips() -> impl IntoView {
                             .enumerate()
                             .map(move |(idx, i)| {
                                 let is_first = idx == 0;
-                                let is_last = idx == 4;
+                                let is_last = idx == get_display_count() - 1;
                                 let blur_class = if is_first || is_last {
                                     "filter blur-sm"
                                 } else {
@@ -73,15 +93,20 @@ pub fn BestPlacedForTrips() -> impl IntoView {
                                 let transform_style = format!(
                                     "scale({}) translateX({}px)",
                                     scale,
-                                    (idx as f32 - 2.0) * 20.0,
+                                    (idx as f32 - 1.0) * 20.0,
                                 );
                                 view! {
+                                    // Adjusted for dynamic display count
+                                    // Adjusted for dynamic index
                                     <div
-                                        class="flex flex-col justify-center items-center carousel-item"
-
                                         style=transform_style
                                         class=format!(
-                                            "transition-transform duration-300 ease-in-out transform ",
+                                            "flex flex-col justify-center items-center carousel-item transition-transform duration-300 ease-in-out transform {}",
+                                            if is_first || is_last {
+                                                "w-[80%] sm:w-[90%] lg:w-auto"
+                                            } else {
+                                                "w-[80%] sm:w-[95%] lg:w-auto"
+                                            },
                                         )
                                         // Handle mouse click
                                         on:click=move |_| handle_image_click(i)
@@ -92,9 +117,9 @@ pub fn BestPlacedForTrips() -> impl IntoView {
                                             class=format!(
                                                 "object-cover rounded-lg shadow-lg {}",
                                                 if is_first || is_last {
-                                                    " h-[65%] "
+                                                    " h-32  lg:h-[65%]"
                                                 } else {
-                                                    "w-auto h-auto"
+                                                    "h-40 lg:h-auto"
                                                 },
                                             )
                                         />
@@ -120,7 +145,7 @@ pub fn BestPlacedForTrips() -> impl IntoView {
                     <div class="flex absolute right-0 items-center h-full">
                         <button on:click=rotate_right>
                             <Icon
-                                class="bg-gray-300 rounded-full w-[24px] h-[24px]"
+                                class="bg-gray-300 rounded-full w-[24px] h-[24px] lg:w-[30px] lg:h-[30px]"
                                 icon=icondata::BsArrowRightCircle
                             />
                         </button>
