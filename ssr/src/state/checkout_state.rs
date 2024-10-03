@@ -1,5 +1,5 @@
 use chrono::NaiveDateTime;
-use leptos::{expect_context, logging, RwSignal, SignalUpdate, Trigger};
+use leptos::{expect_context, logging, RwSignal, SignalGetUntracked, SignalUpdate, Trigger};
 
 use crate::canister::backend::CarDetails;
 
@@ -59,12 +59,33 @@ impl CheckoutState {
 
         this.start_time.update(|f| *f = Some(value));
 
+        if !Self::valid_time() {
+        
+            this.start_time.update(|f| *f = None);
+                
+        }
+
     }
 
     pub fn set_return_date_value(value: u64) {
         let this: Self = expect_context();
 
         this.end_time.update(|f| *f = Some(value));
+
+        if !Self::valid_time() {
+        
+        this.end_time.update(|f| *f = None);
+            
+        }
+    }
+
+    fn valid_time() -> bool {
+        let this: Self = expect_context();
+
+        match (this.start_time.get_untracked(), this.end_time.get_untracked()) {
+            (Some(start), Some(end)) => start < end,
+            _ => true,
+        }
     }
 
     pub fn set_pickup_date_value_formatted(value: String) {
