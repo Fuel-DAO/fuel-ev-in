@@ -5,7 +5,7 @@ use server_fn::codec::Cbor;
 
 use crate::{
     canister::backend::{Car, CarDetails, CarStatus},
-    components::{spinners::Spinner, PopupOverlay},
+    components::{spinners::Spinner, Footer, PopupOverlay, Search},
     state::{
         canisters::{authenticated_canisters, CanistersAuthWire},
         checkout_state::CheckoutState,
@@ -15,7 +15,10 @@ use crate::{
 #[component]
 pub fn SearchResult() -> impl IntoView {
     view! {
+        <Search />
             <SearchResultInner />
+        <Footer />
+        
 
     }
 }
@@ -42,7 +45,7 @@ fn SearchResultInner() -> impl IntoView {
     let checkout_state = CheckoutState::get();
 
     let search_resource = create_resource(
-        move || checkout_state.start_time.get().is_none() || checkout_state.end_time.get().is_none(),
+        move || (checkout_state.start_time.get(), checkout_state.end_time.get()),
         move |_| {
             let cans_res = cans_res.clone();
 
@@ -78,7 +81,7 @@ fn SearchResultInner() -> impl IntoView {
                         },
                         Err(e) => {
                                 view! {
-                                <div>
+                                <div class="h-6 w-6">
                                     <span>{e}</span>
                                 </div>
                                 }
