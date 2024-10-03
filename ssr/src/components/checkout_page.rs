@@ -1,7 +1,7 @@
 use leptos::*;
 
 use crate::{
-    canister::backend::{CarAvailability, CarStatus, CustomerDetials, RentalTransaction}, components::ActionTrackerPopup, state::{
+    canister::backend::{CarAvailability, CarStatus, CustomerDetials, RentalTransaction}, components::{ActionTrackerPopup, Footer}, state::{
         canisters::authenticated_canisters,
         checkout_state::{CheckoutState, CheckoutUser},
     }, utils::{
@@ -10,8 +10,21 @@ use crate::{
     }
 };
 
-#[component]
+use super::Search;
+
+
+#[component] 
 pub fn CheckoutPage() -> impl IntoView {
+    view! {
+    <Search />
+        <CheckoutPageInner />
+    <Footer />
+    }
+ 
+
+}
+#[component]
+pub fn CheckoutPageInner() -> impl IntoView {
     let checkout = CheckoutState::get();
 
     match checkout.selected_car.get() {
@@ -111,7 +124,7 @@ pub fn CheckoutPage() -> impl IntoView {
             // let detals = car.clone();
             view! {
                 <div class="container mx-auto py-8 px-4 lg:px-8">
-                    <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+                    <div class="bg-white rounded-lg  p-6 mb-6">
                     <h1 class="text-2xl lg:text-3xl font-bold mb-6">{format!("{} {}",car.make, car.model )}</h1>
                     </div>
                     
@@ -126,6 +139,8 @@ pub fn CheckoutPage() -> impl IntoView {
                                             <CheckoutInner avail />
                                             </div>
                                         } */
+                                       let t_n_c =   create_rw_signal(false);
+
                                         let car = avail.details;
                                         let available = avail.available;
                                         let status = car.status.clone();
@@ -137,7 +152,7 @@ pub fn CheckoutPage() -> impl IntoView {
                             <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                                 <div class="flex justify-between items-center mb-4">
                                     <h2 class="text-xl font-bold">"Billing Info"</h2>
-                                    <span class="text-sm text-gray-500">"Step 1 of 3"</span>
+                                    <span class="text-sm text-gray-500">"Step 1 of 2"</span>
                                 </div>
                                 <p class="text-sm text-gray-400 mb-4">"Please enter your billing info"</p>
 
@@ -171,15 +186,15 @@ pub fn CheckoutPage() -> impl IntoView {
                             <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
                                 <div class="flex justify-between items-center mb-4">
                                     <h2 class="text-xl font-bold">"Confirmation"</h2>
-                                    <span class="text-sm text-gray-500">"Step 2 of 3"</span>
+                                    <span class="text-sm text-gray-500">"Step 2 of 2"</span>
                                 </div>
                                 <p class="text-sm text-gray-400 mb-4">"We are getting to the end. Just a few clicks and your rental is ready!"</p>
 
                                 <div class="flex items-center mb-6">
-                                    <input type="checkbox" id="terms" class="mr-2"/>
+                                    <input type="checkbox" id="terms" class="mr-2" on:input=move|_| {t_n_c.update(|f| *f = !*f);}/>
                                     <label for="terms" class="text-gray-600 text-sm">"I agree with our terms and conditions and privacy policy."</label>
                                 </div>
-                                <Show when=move||format!("{:?}", car.status) == format!("{:?}", CarStatus::Available)   fallback=move || view! {
+                                <Show when=move||(format!("{:?}", car.status) == format!("{:?}", CarStatus::Available ) && t_n_c.get() && user.user.get().check_ready())   fallback=move || view! {
                                     <button disabled=true class="w-full bg-gray-500 text-white py-3 rounded-lg font-bold">
                                       { match  format!("{:?}", status) == format!("{:?}", CarStatus::Available) {
                                         true => "Rent Now", 
@@ -211,7 +226,7 @@ pub fn CheckoutPage() -> impl IntoView {
                                 <img src=car.default_image_url alt="Car image" class="w-20 h-16 rounded-lg"/>
                                 <div>
                                     <h3 class="text-lg font-bold">{format!("{} {}", car.make, car.model.clone())}</h3>
-                                    <p class="text-sm text-gray-400">"440+ Reviewer"</p>
+                                    // <p class="text-sm text-gray-400">"440+ Reviewer"</p>
                                 </div>
                             </div>
 
@@ -228,7 +243,7 @@ pub fn CheckoutPage() -> impl IntoView {
 
                                 <div class="flex justify-between items-center mb-2">
                                     <span>"Date & Time"</span>
-                                    <span>{get_day_month_time(checkout.start_time.get().unwrap())}</span>
+                                    <span>{move|| get_day_month_time(checkout.start_time.get().unwrap())}</span>
                                 </div>
                                 {
                                     match car.dropoff_location {
@@ -245,7 +260,7 @@ pub fn CheckoutPage() -> impl IntoView {
                                 // </div>
                                 <div class="flex justify-between items-center mb-2">
                                     <span>"Date & Time"</span>
-                                    <span>{get_day_month_time(checkout.end_time.get().unwrap())}</span>
+                                    <span>{move || get_day_month_time(checkout.end_time.get().unwrap())}</span>
                                 </div>
                             </div>
 
@@ -330,13 +345,48 @@ pub fn BookingCreationPopup(
             modal=move |res| match res {
                 Ok(_) => {
                     view! {
-                        <div>Congtratulation</div>
+                        <div>
+                        <div class="flex items-center justify-center  bg-gray-100">
+            <div class="bg-white p-2 rounded-lg shadow-lg text-center max-w-md w-full">
+                // Success Icon
+                <div class="flex justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" fill="green" viewBox="0 0 24 24">
+                <path d="M12 0C5.383 0 0 5.383 0 12c0 6.616 5.383 12 12 12 6.616 0 12-5.384 12-12 0-6.617-5.384-12-12-12zm-1.015 17.828l-4.813-4.828 1.427-1.413 3.4 3.413 7.399-7.428 1.414 1.399-8.827 8.857z"/>
+                </svg>
+                </div>
+                
+                // Success Message
+                <h2 class="text-2xl font-semibold text-gray-800 mb-2">
+                    "We've sent you a booking confirmation on your email."
+                </h2>
+                <p class="text-gray-600 mb-2">
+                    "We'll communicate further instructions on the same email"
+                </p>
+                
+                // Booking Reference
+                                        <div class="bg-gray-200 py-3 px-4 rounded-lg inline-block text-lg font-medium text-gray-700">
+                                        "Booking Ref. FRA-BE-19283102-MHAKSA-DELIVERY-ORDER"
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-center p-2">
+                        <a  href="/search"  class="w-full  text-center bg-green-500 text-white px-3 py-3 rounded-lg font-bold disabled:text-neutral-500 disabled:bg-primary-500/30">
+                        Back to Search
+                        </a>
+                        </div>
+                        </div>
                     }
                 }
                 Err(e) => {
                     view! {
-                        <div>
+                        <div class="flex justify-center">
                         <p style="color:red">{e}</p>
+                        <div class="flex justify-center">
+                        <button   on:click=move |_|close_popup.set_untracked(false) class="w-full bg-green-500 text-white px-3 py-3 rounded-lg font-bold disabled:text-neutral-500 disabled:bg-primary-500/30">
+                        "Retry"
+                        </button>
+                        </div>
+                        
                         </div>
                     }
                 }

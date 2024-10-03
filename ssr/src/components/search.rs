@@ -1,11 +1,10 @@
 use crate::state::checkout_state::CheckoutState;
-use crate::utils::time::{current_epoch, to_hh_mm_ss};
+use crate::utils::time::{current_epoch, get_day_month_time, to_hh_mm_ss};
 use chrono::{DateTime, NaiveDateTime};
 use leptos::event_target_value;
 use leptos::html::Input;
 use leptos::*;
 use leptos_icons::Icon;
-use uts2ts::Timestamp;
 
 #[component]
 pub fn Search() -> impl IntoView {
@@ -29,20 +28,23 @@ pub fn Search() -> impl IntoView {
     let checkout_state = CheckoutState::get();
 
 
-    let (pickup_date_value, set_pickup_date_value) = create_signal(String::new());
-    let (return_date_value, set_return_date_value) = create_signal(String::new());
+    // let (pickup_date_value, set_pickup_date_value) = create_signal(String::new());
+    // let (return_date_value, set_return_date_value) = create_signal(String::new());
+
+    let start_time = move ||  checkout_state.pickup_date_formatted.get();
+    let end_time = move || checkout_state.return_date_formatted.get();
 
     
     let (pickup_time_value, set_pickup_time_value) = create_signal(String::new());
     let (return_time_value, set_return_time_value) = create_signal(String::new());
 
     
-    let on_click_search = move || {
-        let pickup_date = pickup_ref_date.get().unwrap().value();
-        let pickup_time = pickup_ref_time.get().unwrap().value();
-        let return_date = return_ref_date.get().unwrap().value();
-        let return_time = return_ref_time.get().unwrap().value();
-    };
+    // let on_click_search = move || {
+    //     let pickup_date = pickup_ref_date.get().unwrap().value();
+    //     let pickup_time = pickup_ref_time.get().unwrap().value();
+    //     let return_date = return_ref_date.get().unwrap().value();
+    //     let return_time = return_ref_time.get().unwrap().value();
+    // };
     view! {
         <section
             class="relative h-screen text-white bg-center bg-cover"
@@ -144,7 +146,7 @@ pub fn Search() -> impl IntoView {
                 <div class="p-4 lg:p-10" style="margin-bottom: 70px;">
                     <h1 class="text-5xl font-bold lg:text-7xl">Explore your place <br />to stay</h1>
                     <div class="relative mt-8">
-                        <form class="flex flex-col lg:flex-row items-center space-x-[10px] w-4/5 md:w-full  lg:w-[1074px] h-full lg:h-[106px] p-12 pt-4  lg:p-[27px_34px] bg-[#1D1D1D9C] backdrop-blur-[3px] border-t-[1px] border-l-[1px] border-gray-400 rounded-[22.5px] ">
+                        <div class="flex flex-col lg:flex-row items-center space-x-[10px] w-4/5 md:w-full  lg:w-[1074px] h-full lg:h-[106px] p-12 pt-4  lg:p-[27px_34px] bg-[#1D1D1D9C] backdrop-blur-[3px] border-t-[1px] border-l-[1px] border-gray-400 rounded-[22.5px] ">
                             <div class="flex flex-col gap-4 px-2 lg:flex-row lg:gap-[21px] lg:w-[1005.5px]">
                                 // first field
                                 <div class="bg-[#1D1D1D9C] flex   items-center bg-opacity-0 w-[238.75px] h-[52.5px] lg:p-[13px_12px] gap-[10px] rounded-[9px]">
@@ -158,8 +160,13 @@ pub fn Search() -> impl IntoView {
                                     <input
                                         type="text"
                                         placeholder="Add your location"
+                                        value= "Bengaluru"
                                         class="w-[213.81px] h-[24px]  pt-4 pr-4 pb-4 pl-0  bg-[#252525] bg-opacity-0 text-white placeholder-white"
+                                        list="cities"
                                     />
+                                    <datalist id="cities">
+                                        <option value="Bengaluru"></option>
+                                    </datalist>
                                 </div>
                                 // second field
                                 <div class="flex items-center bg-[#1D1D1D9C] bg-opacity-0 w-[281px] h-[52px] p-[0px_11px] gap-[6px] rounded-tl-[9px] rounded-[9px] ">
@@ -172,23 +179,9 @@ pub fn Search() -> impl IntoView {
                                                     ev.prevent_default();
                                                     let value = event_target_value(&ev);
                                                     set_pickup_time_value.set(value.clone());
-                                                    logging::log!("{:?}", &value.clone());
-                                                    let time = format!("{}", value.clone());
-                                                    match   NaiveDateTime::parse_from_str(&time, "%Y-%m-%dT%H:%M") {
-                                                        Ok(date) => {
-                                                            let datetime = date.and_utc().timestamp();
-                                                            CheckoutState::set_pickup_date_value(datetime as u64);
-                                                            }, 
-                                                        Err(e) =>  {
-                                                            logging::log!("failed to parse datetime {:?}", e);
-                                                        }
-                                                    };
-                                                
-
-
-
+                                                    CheckoutState::set_pickup_date_value_formatted(value);
                                                 }
-                                                value=pickup_time_value.get()
+                                                value=move || start_time.clone()
                                             />
                                     // <!-- First part of the input -->
                                     /* <div class="flex flex-row justify-between items-center w-[241.67px] gap-[2px] lg:h-[52.5px]">
@@ -265,20 +258,9 @@ pub fn Search() -> impl IntoView {
                                                     ev.prevent_default();
                                                     let value = event_target_value(&ev);
                                                     set_return_time_value.set(value.clone());
-                                                    let time = format!("{}", value.clone());
-                                                    match   NaiveDateTime::parse_from_str(&time, "%Y-%m-%dT%H:%M") {
-                                                        Ok(date) => {
-                                                            let datetime = date.and_utc().timestamp();
-                                                            CheckoutState::set_return_date_value(datetime as u64);
-                                                            }, 
-                                                        Err(e) =>  {
-                                                            logging::log!("failed to parse datetime {:?}", e);
-                                                        }
-                                                    };
-
-                                                    
+                                                    CheckoutState::set_return_date_value_formatted(value);
                                                 }
-                                                value=return_time_value.get()
+                                                value=end_time.clone()
                                             />
                                     // <!-- Placeholder container -->
                                     /* <div class="flex justify-between items-center w-[240.67px] h-[52.5px] gap-[2px]">
@@ -331,15 +313,15 @@ pub fn Search() -> impl IntoView {
                                         </div> */
                                 </div>
                             </div>
-                            <button class="flex justify-center items-center py-3 px-8 mt-8 w-full font-semibold text-white bg-green-600 rounded-md lg:mt-0 lg:w-auto hover:bg-green-700">
+                            <a href="/search" class="flex justify-center items-center py-3 px-8 mt-8 w-full font-semibold text-white bg-green-600 rounded-md lg:mt-0 lg:w-auto hover:bg-green-700">
                                 Search
-                            </button>
+                            </a>
                         // <button class="flex justify-center items-center bg-green-600 hover:bg-green-700 w-[141.75px] h-[52.5px] p-[19px_39px] gap-[10px] rounded-[9px]">
                         // <span class="font-semibold text-white text-[15px] leading-[13.98px] tracking-[0.075em] font-poppins">
                         // Search
                         // </span>
                         // </button>
-                        </form>
+                        </div>
                     </div>
 
                     <div class="absolute right-0 shadow-lg opacity-100 transform rotate-0 lg:p-4 lg:mr-10 lg:top-[564px] lg:w-[431.3px] lg:h-[185px]">

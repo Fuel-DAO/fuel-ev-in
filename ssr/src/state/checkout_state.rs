@@ -1,4 +1,5 @@
-use leptos::{expect_context, RwSignal, SignalUpdate, Trigger};
+use chrono::NaiveDateTime;
+use leptos::{expect_context, logging, RwSignal, SignalUpdate, Trigger};
 
 use crate::canister::backend::CarDetails;
 
@@ -7,6 +8,9 @@ pub struct CheckoutState {
     pub selected_car: RwSignal<Option<CarDetails>>,
     pub start_time: RwSignal<Option<u64>>,
     pub end_time: RwSignal<Option<u64>>,
+    pub pickup_date_formatted: RwSignal<String>, 
+    pub return_date_formatted: RwSignal<String>,
+
 }
 
 #[derive(Clone, Default)]
@@ -62,6 +66,42 @@ impl CheckoutState {
 
         this.end_time.update(|f| *f = Some(value));
     }
+
+    pub fn set_pickup_date_value_formatted(value: String) {
+        let this: Self = expect_context();
+
+        this.pickup_date_formatted.update(|f| *f = value.clone());
+
+        let time = format!("{}", value.clone());
+        match   NaiveDateTime::parse_from_str(&time, "%Y-%m-%dT%H:%M") {
+            Ok(date) => {
+                let datetime = date.and_utc().timestamp();
+                Self::set_pickup_date_value(datetime as u64);
+                }, 
+            Err(e) =>  {
+                logging::log!("failed to parse datetime {:?}", e);
+            }
+        };
+    }
+
+    pub fn set_return_date_value_formatted(value: String) {
+        let this: Self = expect_context();
+
+        this.return_date_formatted.update(|f| *f = value.clone());
+
+        let time = format!("{}", value.clone());
+        match   NaiveDateTime::parse_from_str(&time, "%Y-%m-%dT%H:%M") {
+            Ok(date) => {
+                let datetime = date.and_utc().timestamp();
+                Self::set_return_date_value(datetime as u64);
+                }, 
+            Err(e) =>  {
+                logging::log!("failed to parse datetime {:?}", e);
+            }
+        };
+    }
+
+    
 
     pub fn clear() {
         let this: Self = expect_context();

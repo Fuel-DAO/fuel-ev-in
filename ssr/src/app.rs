@@ -31,6 +31,7 @@ pub fn App() -> impl IntoView {
                 <Routes>
                     <Route path="" view=BaseRoute>
                         <Route path="/" view=HomePage />
+                        <Route path="/search" view=SearchResult />
                         <Route path="/checkout" view=CheckoutPage />
                     </Route>
 
@@ -50,7 +51,7 @@ fn HomePage() -> impl IntoView {
                 // <Header/>
                 <Search />
                 <BestPlacedForTrips />
-                <SearchResult />
+                
                 // <Services/>
                 <Advantages />
                 <InvestInCar />
