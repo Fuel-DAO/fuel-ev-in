@@ -19,7 +19,7 @@ pub fn App() -> impl IntoView {
         <Stylesheet id="leptos" href="/pkg/fuel-dao-leptos-ssr.css" />
 
         // sets the document title
-        <Title text="Welcome to Leptos" />
+        <Title text="FuelDAO" />
 
         // content for this welcome page
         <Router fallback=|| {
@@ -49,7 +49,8 @@ fn HomePage() -> impl IntoView {
         <main>
             <div class="flex flex-col min-h-screen">
                 // <Header/>
-                <Search />
+                <HeroSection  />
+                // <Search />
                 <BestPlacedForTrips />
                 
                 // <Services/>

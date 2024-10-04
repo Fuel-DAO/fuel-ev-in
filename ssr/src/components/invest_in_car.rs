@@ -26,7 +26,7 @@ pub fn InvestInCar() -> impl IntoView {
 
                     <div class="h-auto gap-[9.99px] lg:w-[484.56px]">
                         <p class="font-normal text-left font-lato text-[18px] leading-[21.6px]">
-                            If you need consultation with us, you can write a message or call us, we will respond as quickly as possible
+                        Invest in a car and earn proportional revenue on it! An exclusive, members-only service that enables global decentralization of car networks.
                         </p>
                     </div>
 

@@ -27,7 +27,7 @@ pub fn Advantages() -> impl IntoView {
                     // <!-- Second Part -->
                     <div class="flex flex-col gap-2 justify-center items-center p-2 pt-2 w-full h-[38px]">
                         <p class="text-left">
-                            We present many guarantees and advantages when you rent a car with us for your trip. Here are some of the advantages that you will get
+                        We promise to make this an unforgettable experience in your car rental journey. Some of our guarantees-
                         </p>
                     </div>
                 </div>
@@ -42,9 +42,9 @@ pub fn Advantages() -> impl IntoView {
                             <img src="/icons/rocket.svg" alt="Easy Rent" class="w-20 h-20" />
                         </div>
                         <div class="flex flex-col">
-                            <h3 class="text-lg font-bold text-left">Easy Rent</h3>
+                            <h3 class="text-lg font-bold text-left">Smooth Experience</h3>
                             <p class="text-left text-gray-700">
-                                We provide an easy and quick process...
+                            A rental experience focused on making your ride smooth- from booking to grooving!
                             </p>
                         </div>
                     </div>
@@ -55,7 +55,7 @@ pub fn Advantages() -> impl IntoView {
                         <div class="flex flex-col">
                             <h3 class="text-lg font-bold text-left">Premium Quality</h3>
                             <p class="text-left text-gray-700">
-                                Top-notch vehicles ensuring comfort...
+                            Clean cars and regular battery health monitoring, to make sure you never stop
                             </p>
                         </div>
                     </div>
@@ -68,9 +68,9 @@ pub fn Advantages() -> impl IntoView {
                             />
                         </div>
                         <div class="flex flex-col">
-                            <h3 class="text-lg font-bold text-left">Professional Agent</h3>
+                            <h3 class="text-lg font-bold text-left">24x7 Support</h3>
                             <p class="text-left text-gray-700">
-                                Our agents are highly trained to assist...
+                            Coldplay tickets may not have been available for you, but we always are on your trip!
                             </p>
                         </div>
                     </div>
@@ -84,9 +84,9 @@ pub fn Advantages() -> impl IntoView {
                             <img src="/icons/car-safety.svg" alt="Easy Rent" class="w-20 h-20" />
                         </div>
                         <div class="flex flex-col">
-                            <h3 class="text-lg font-bold text-left">Easy Rent</h3>
+                            <h3 class="text-lg font-bold text-left">Car Safety</h3>
                             <p class="text-left text-gray-700">
-                                We provide an easy and quick process...
+                            Our car components are checked regularly, so check this off your list and ride comfortably.
                             </p>
                         </div>
                     </div>
@@ -95,9 +95,9 @@ pub fn Advantages() -> impl IntoView {
                             <img src="/icons/refund.svg" alt="Premium Quality" class="w-20 h-20" />
                         </div>
                         <div class="flex flex-col">
-                            <h3 class="text-lg font-bold text-left">Premium Quality</h3>
+                            <h3 class="text-lg font-bold text-left">Route Planning</h3>
                             <p class="text-left text-gray-700">
-                                Top-notch vehicles ensuring comfort...
+                            "We’ll help you plan all your stops to your destination: while your car eats, so should you!" 
                             </p>
                         </div>
                     </div>
@@ -110,9 +110,9 @@ pub fn Advantages() -> impl IntoView {
                             />
                         </div>
                         <div class="flex flex-col">
-                            <h3 class="text-lg font-bold text-left">Professional Agent</h3>
+                            <h3 class="text-lg font-bold text-left">Live Monitoring</h3>
                             <p class="text-left text-gray-700">
-                                Our agents are highly trained to assist...
+                            Our trips are monitored as per government regulations. Your safety, our responsibility.
                             </p>
                         </div>
                     </div>

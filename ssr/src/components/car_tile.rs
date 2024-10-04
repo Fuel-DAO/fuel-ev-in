@@ -5,7 +5,7 @@ use server_fn::codec::Cbor;
 
 use crate::{
     canister::backend::{Car, CarDetails, CarStatus},
-    components::{spinners::Spinner, Footer, PopupOverlay, Search},
+    components::{spinners::Spinner, Footer, HeroSectionNotHome, PopupOverlay},
     state::{
         canisters::{authenticated_canisters, CanistersAuthWire},
         checkout_state::CheckoutState,
@@ -15,7 +15,7 @@ use crate::{
 #[component]
 pub fn SearchResult() -> impl IntoView {
     view! {
-        <Search />
+        <HeroSectionNotHome />
             <SearchResultInner />
         <Footer />
         

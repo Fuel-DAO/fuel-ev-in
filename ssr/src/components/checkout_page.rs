@@ -10,13 +10,13 @@ use crate::{
     }
 };
 
-use super::Search;
+use super::HeroSectionNotHome;
 
 
 #[component] 
 pub fn CheckoutPage() -> impl IntoView {
     view! {
-    <Search />
+    <HeroSectionNotHome />
         <CheckoutPageInner />
     <Footer />
     }

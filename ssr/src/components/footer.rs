@@ -17,7 +17,7 @@ pub fn Footer() -> impl IntoView {
                         Stay in the Know
                     </h3>
                     <p class="gap-0 text-left text-white h-[162px] mt-[25px] lg:w-[500px]">
-                        "Sign up to get marketing emails from Bookme.com, including promotions, rewards, travel experiences, and information about Bookme.com and Booking.com Transport Limited’s products and services."
+                        "Sign up to get marketing emails from FuelDAO, including promotions, rewards, travel experiences and information about FuelDAO.’"
                     </p>
                     <div class="flex flex-col items-center lg:flex-row gap-[6px] lg:mt-[70px]">
                         <input
@@ -60,9 +60,9 @@ pub fn Footer() -> impl IntoView {
                         <a href="#" class="mb-2 text-white">
                             Help
                         </a>
-                        <a href="#" class="mb-2 text-white">
-                            FAQs
-                        </a>
+                        // <a href="#" class="mb-2 text-white">
+                        //     FAQs
+                        // </a>
 
                         <a href="#" class="text-white">
                             Contact Us

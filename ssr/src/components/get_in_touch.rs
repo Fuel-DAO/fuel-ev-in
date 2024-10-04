@@ -31,7 +31,7 @@ pub fn GetInTouch() -> impl IntoView {
                                     icon=icondata::FiMail
                                 />
                             </button>
-                            <p class="pl-2 m-0">fueldao@gmail.com</p>
+                            <p class="pl-2 m-0">bookings@fueldao.io</p>
                         </div>
 
                         <div class="flex flex-row items-center gap-[9.99px] w-[253.92px] h-[57.96px]">
@@ -62,8 +62,7 @@ pub fn GetInTouch() -> impl IntoView {
                                 />
                             </button>
                             <p class="pl-2 m-0">
-                                103, Office , Main  road Selatan,
-                                India 41222
+                                Bangalore, India
                             </p>
                         </div>
                     </div>
