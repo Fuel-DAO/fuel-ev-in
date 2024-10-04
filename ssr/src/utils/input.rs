@@ -13,6 +13,7 @@ macro_rules! input_component {
             #[prop(optional)] initial_value: Option<String>,
             #[prop(optional, into)] input_type: Option<String>,
             #[prop(optional)] style: String,
+            #[prop(optional)] pattern: String,
             updater: U,
             validator: V,
         ) -> impl IntoView {
@@ -69,6 +70,7 @@ macro_rules! input_component {
                         on:input=move |_| on_input()
                         placeholder=placeholder
                         class=move || input_class()
+                        pattern=pattern
                         type=input_type.unwrap_or_else(|| "text".into() )
                     />
                     <span class="text-red-500 font-semibold">

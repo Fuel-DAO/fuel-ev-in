@@ -30,6 +30,8 @@ pub fn HeroSection(
         <div class="relative bg-gray-800 h-screen w-full text-white"
         style="background-image: url('/img/fuel-home.jpeg'); background-size: cover;;"
         >
+            <div class="absolute inset-0 bg-black opacity-50"></div>
+
             // Navigation Bar
             <div class="flex  flex-row hidden md:flex">
                 <img src="/img/fueldao.svg" alt="FuelDAO Logo" class="h-10 p-2 basis-1/4" />

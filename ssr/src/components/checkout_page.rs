@@ -162,7 +162,7 @@ pub fn CheckoutPageInner() -> impl IntoView {
                                     // <input type="text" placeholder="Age" class="border rounded-lg px-4 py-2"/>
                                     <InputBox initial_value=user.user.get_untracked().age.map_or("".into(), |f| f.to_string() ) heading="Age" placeholder="Age" updater=update_age validator=move|val|non_empty_string_validator(val) input_type="number" />
                                     // <input type="email" placeholder="Email ID" class="border rounded-lg px-4 py-2"/>
-                                    <InputBox initial_value=user.user.get_untracked().email.map_or("".into(), |f| f.to_string() ) heading="Email" placeholder="Email" updater=update_email validator=move|val|non_empty_string_validator(val) input_type="email" />
+                                    <InputBox initial_value=user.user.get_untracked().email.map_or("".into(), |f| f.to_string() ) heading="Email" placeholder="Email" updater=update_email validator=move|val|non_empty_string_validator(val) input_type="email" pattern="[a-z0-9._%+\\-]+@[a-z0-9.\\-]+\\.[a-z]{2,}$".into() />
                                    
                                     // <input type="text" placeholder="Pan Card No." class="border rounded-lg px-4 py-2"/>
                                     <InputBox initial_value=user.user.get_untracked().pan.map_or("".into(), |f| f.to_string() ) heading="PAN" placeholder="PAN" updater=update_pan validator=move|val|non_empty_string_validator(val) />
