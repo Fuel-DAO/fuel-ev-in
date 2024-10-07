@@ -219,6 +219,8 @@ fn CarDetailsPopup(#[prop(into)] show_popup: SignalSetter<bool>, car: CarDetails
     let transmission_type = format!("{:?}", car.transmission_type);
     let car_status = format!("{:?}", &car.status).to_case(Case::Title);
     let fuel_type = format!("{:?}", car.fuel_type);
+    let selected_image = create_rw_signal(car.default_image_url.clone());
+
     view! {
         <div class="container mx-auto bg-gray-100">
             <div  class="flex flex-cols-2 bg-gray-100">
@@ -237,7 +239,7 @@ fn CarDetailsPopup(#[prop(into)] show_popup: SignalSetter<bool>, car: CarDetails
                 <div class="flex flex-col items-center bg-white rounded-lg shadow-lg p-6 max-w-full overflow-hidden">
                     // Car promotion with large image and text
                     <div class="relative w-full h-64 md:h-72 bg-cover bg-center rounded-lg mb-4"
-                         style=format!("background-image: url('{}');", car.default_image_url)>
+                         style=move ||format!("background-image: url('{}');",  selected_image.get())>
 
                         // Text overlay on top of the image
                         // <div class="absolute inset-0 flex flex-col justify-start items-start md:items-start p-6 rounded-lg">
@@ -251,11 +253,18 @@ fn CarDetailsPopup(#[prop(into)] show_popup: SignalSetter<bool>, car: CarDetails
                     </div>
 
                     // Gallery with additional car images
-                    // <div class="flex space-x-2 justify-center md:justify-start">
-                    //     <img src="/img/car-side.svg" alt="Car thumbnail" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
-                    //     <img src="/img/interior.svg" alt="Car interior" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
-                    //     <img src="/img/interior.svg" alt="Car seats" class="w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"/>
-                    // </div>
+                    <div class="flex space-x-2 justify-center md:justify-start">
+                        {car.images.iter().map(|f| {
+                            let image =f.clone();
+                            let current_image = image.clone();
+                            let class =move || if current_image == selected_image.get() {
+                                "w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm border-2 border-rose-500"
+                            } else {
+                                "w-20 h-20 md:w-24 md:h-24 object-cover rounded-lg shadow-sm"
+                            };
+                            view! {<button on:click=move|_|selected_image.set(image.clone())> <img src=f  class=class/> </button>}
+                        } ).collect_view()}
+                    </div>
                 </div>
 
                 // Right Section: Car details, price, and "Rent Now" button
