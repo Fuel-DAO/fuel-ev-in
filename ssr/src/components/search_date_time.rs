@@ -1,8 +1,6 @@
-use chrono::{DateTime, Local};
 use leptos::*;
-use leptos_icons::Icon;
 
-use crate::state::checkout_state::CheckoutState;
+use crate::components::SearchBar;
 
 #[component]
 pub fn HeroSectionNotHome(
@@ -19,20 +17,10 @@ pub fn HeroSectionNotHome(
             "hidden" // Use hidden class when the menu is closed
         }
     });
-    let checkout_state = CheckoutState::get();
 
-    let start_time = move ||  checkout_state.pickup_date_formatted.get();
-    let end_time = move || checkout_state.return_date_formatted.get();
-
-    let min_start_date = create_rw_signal( DateTime::parse_from_str(&Local::now().to_string(), "%Y-%m-%d %H:%M:%S%.f %:z").map_or("".to_string(), |f| f.format("%Y-%m-%dT%H:%M").to_string()) );
-
-
-    
-    let (get_pickup_time_value, set_pickup_time_value) = create_signal(String::new());
-    let (_, set_return_time_value) = create_signal(String::new());
     view! { 
-        <div class="flex flex-col justify-between  bg-gray-800 h-screen/2 w-full text-white"
-        style="background-image: url('/img/fuel-home.jpeg'); background-size: cover;"
+        <div class="h-80 flex flex-col justify-between  bg-gray-800 h-screen/2 w-full text-white bg-cover bg-center"
+        style="background-image: url('/img/fuel-home.jpeg')"
         >
             // Navigation Bar
             <div class="flex  flex-row justify-between p-2 ">
@@ -83,69 +71,7 @@ pub fn HeroSectionNotHome(
 
                 </div>
             </div>
-            <div class="flex flex-col justify-between z-10 items-center p-2">
-                <div class="flex flex-col lg:flex-row items-center space-x-[10px]  md:w-full  lg:w-[1074px] h-full lg:h-[106px] p-6 pt-4  lg:p-[27px_34px] bg-[#1D1D1D9C] backdrop-blur-[3px] border-t-[1px] border-l-[1px] border-gray-400 rounded-[22.5px] ">
-                            <div class="flex flex-col gap-4 px-2 lg:flex-row lg:gap-[21px] lg:w-[1005.5px]">
-                                // first field
-                                <div class="bg-[#1D1D1D9C] flex   items-center bg-opacity-0 w-[238.75px] h-[52.5px] lg:p-[13px_12px] gap-[10px] rounded-[9px]">
-                                    <button class="pt-4 pb-4 pl-2">
-                                        <Icon
-                                            class="rounded-full w-[24px] h-[24px]"
-                                            icon=icondata::BiSearchRegular
-                                        />
-                                    </button>
-
-                                    <input
-                                        type="text"
-                                        placeholder="Add your location"
-                                        value= "Bengaluru"
-                                        class="w-[213.81px] h-[24px]  pt-4 pr-4 pb-4 pl-0  bg-[#252525] bg-opacity-0 text-white placeholder-white"
-                                        list="cities"
-                                    />
-                                    <datalist id="cities">
-                                        <option value="Bengaluru"></option>
-                                    </datalist>
-                                </div>
-                                // second field
-                                <div class="flex items-center bg-[#1D1D1D9C] bg-opacity-0 w-[281px] h-[52px] p-[0px_11px] gap-[6px] rounded-tl-[9px] rounded-[9px] ">
-                                            <input
-                                                type="datetime-local"
-                                                placeholder="Pickup datetime"
-                                                class="bg-[#252525] pl-2  bg-opacity-0 text-white w-full placeholder-white"
-                                                on:input=move |ev| {
-                                                    ev.prevent_default();
-                                                    let value = event_target_value(&ev);
-                                                    set_pickup_time_value.set(value.clone());
-                                                    CheckoutState::set_pickup_date_value_formatted(value);
-                                                }
-                                                value=move || start_time.clone()
-                                                min=move|| min_start_date.get().to_string()
-                                                max=end_time.clone()
-                                            />
-                                </div>
-                                // third field
-                                <div class="flex items-center bg-[#1D1D1D9C] bg-opacity-0 w-[281px] h-[52px] p-[0px_11px] gap-[2px] rounded-[9px]">
-                                            <input
-                                                type="datetime-local"
-                                                placeholder="Time"
-                                                class="bg-[#252525] pl-2  bg-opacity-0 text-white w-full placeholder-white"
-                                                min= move||get_pickup_time_value.get().to_string()
-                                                on:input=move |ev| {
-                                                    ev.prevent_default();
-                                                    let value = event_target_value(&ev);
-                                                    set_return_time_value.set(value.clone());
-                                                    CheckoutState::set_return_date_value_formatted(value);
-                                                }
-                                                value=end_time.clone()
-                                            />
-                                </div>
-                            </div>
-                            <a href="/search" class="flex justify-center items-center py-3 px-8 mt-8 w-full font-semibold text-white bg-green-600 rounded-md lg:mt-0 lg:w-auto hover:bg-green-700">
-                                Search
-                            </a>
-                        
-                        </div>
-            </div>
+            <SearchBar is_root=false/>
 
         </div>
     }

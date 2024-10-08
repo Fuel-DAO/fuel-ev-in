@@ -3,6 +3,79 @@ use leptos_icons::Icon;
 
 use crate::components::{auth_cans_provider::AuthCansProvider, spinners::FullScreenSpinner};
 
+use leptos::*;
+
+#[component]
+pub fn FooterSection() -> impl IntoView {
+    view! { 
+        <div class="bg-[#252525] text-white py-12 px-6 md:px-16">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start space-y-12 md:space-y-0">
+                // Left section: Stay in the Know
+                <div class="w-full md:w-1/2 space-y-4">
+                    <h2 class="text-3xl font-bold text-center md:text-left">"Stay in the know"</h2>
+                    <p class="text-gray-300 text-center md:text-left">
+                        "Sign up to get marketing emails from Bookme.com, including promotions, rewards, travel experiences, and information about Bookme.com and Booking.com Transport Limited’s products and services."
+                    </p>
+
+                    // Email and Subscribe button
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 space-x-0 md:space-x-4">
+                        <input
+                            type="email"
+                            placeholder="Your email address"
+                            class="py-3 px-4 w-full bg-white text-gray-900 rounded-md focus:outline-none"
+                        />
+                        <button class="py-3 px-6 w-full md:w-auto bg-green-500 text-white font-bold rounded-md hover:bg-green-600 transition duration-300">
+                            "Subscribe"
+                        </button>
+                    </div>
+
+                    <p class="text-sm text-gray-500 text-center md:text-left">
+                        "You can opt out anytime. See our "
+                        <a href="#" class="text-green-400 underline">"privacy statement."</a>
+                    </p>
+                </div>
+
+                // Right section: Logo and Links
+                <div class="w-full md:w-1/2 flex flex-col items-center md:items-end space-y-8">
+                    // Logo
+                    <img src="/img/fueldao.png" alt="Fuel DAO logo" class="h-12"/>
+
+                    // Links
+                    <div class="flex flex-col space-y-2 text-green-400 text-center md:text-right">
+                        <a href="#" class="hover:underline">"Help"</a>
+                        <a href="#" class="hover:underline">"FAQs"</a>
+                        <a href="#" class="hover:underline">"Contact Us"</a>
+                    </div>
+                </div>
+            </div>
+
+            // Footer bottom
+            <div class="mt-12 border-t border-gray-700 pt-8 flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
+                // Footer Links
+                <div class="flex space-x-4 text-sm text-center md:text-left">
+                    <a href="#" class="text-gray-400 hover:text-white">"Terms & Conditions"</a>
+                    <a href="#" class="text-gray-400 hover:text-white">"Privacy Policy"</a>
+                </div>
+
+                // Social Media Icons
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">...</svg> // Replace with SVG for email icon
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">...</svg> // Replace with SVG for Twitter icon
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white">
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">...</svg> // Replace with SVG for Instagram icon
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+
+
 #[component]
 pub fn Footer() -> impl IntoView {
     view! {

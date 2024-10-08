@@ -48,8 +48,9 @@ fn HomePage() -> impl IntoView {
         <Title text="FuelDao" />
         <main>
             <div class="flex flex-col min-h-screen">
+                <HomeBanner is_root=true />
                 // <Header/>
-                <HeroSection  />
+                // <HeroSection  />
                 // <Search />
                 <BestPlacedForTrips />
                 
@@ -58,7 +59,8 @@ fn HomePage() -> impl IntoView {
                 <InvestInCar />
                 <GetInTouch />
                 // <StayInTheKnow/>
-                <Footer />
+                <FooterSection />
+                // <Footer />
             </div>
         </main>
     }

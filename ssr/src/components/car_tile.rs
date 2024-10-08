@@ -5,7 +5,7 @@ use server_fn::codec::Cbor;
 
 use crate::{
     canister::backend::{Car, CarDetails, CarStatus},
-    components::{ Footer, HeroSectionNotHome, PopupOverlay, SkeletonCards},
+    components::{ FooterSection, HeroSectionNotHome, HomeBanner, PopupOverlay, SkeletonCards},
     state::{
         canisters::{authenticated_canisters, CanistersAuthWire},
         checkout_state::CheckoutState,
@@ -18,7 +18,7 @@ pub fn SearchResult() -> impl IntoView {
         <div class="bg-gray-100">
         <HeroSectionNotHome />
         <SearchResultInner />
-        <Footer />
+        <FooterSection />
         </div>
         
 
@@ -69,7 +69,9 @@ fn SearchResultInner() -> impl IntoView {
 
     view! {
         <Suspense fallback=move|| view! {
+            <div class="w-full">
             <SkeletonCards />
+            </div>
             /* <Spinner /> */}>
         <div>
         {
@@ -78,7 +80,7 @@ fn SearchResultInner() -> impl IntoView {
                     match  res {
                         Ok(cars) => {
                             view! {
-                            <div>
+                            <div class="w-full">
                                 <SearchResultComponent />
                                 <ShowSearchResult cars/ >
                             </div>
@@ -86,7 +88,7 @@ fn SearchResultInner() -> impl IntoView {
                         },
                         Err(e) => {
                                 view! {
-                                <div class="h-6 w-6">
+                                <div>
                                     <span>{e}</span>
                                 </div>
                                 }
@@ -104,7 +106,7 @@ fn SearchResultInner() -> impl IntoView {
 #[component]
 fn ShowSearchResult(cars: Vec<Car>) -> impl IntoView {
     view! {
-        <div class= "grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 bg-gray-100">
+        <div class= "w-full grid grid-cols-1 items-center sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 bg-gray-100">
         {
            cars.into_iter().map(|car| view! {<CarCard car />}).collect_view()
         }

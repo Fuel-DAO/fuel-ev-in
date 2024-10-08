@@ -1,7 +1,7 @@
 use leptos::*;
 
 use crate::{
-    canister::backend::{CarAvailability, CarStatus, CustomerDetials, RentalTransaction}, components::{ActionTrackerPopup, Footer}, state::{
+    canister::backend::{CarAvailability, CarStatus, CustomerDetials, RentalTransaction}, components::{ActionTrackerPopup, FooterSection}, state::{
         canisters::authenticated_canisters,
         checkout_state::{CheckoutState, CheckoutUser},
     }, utils::{
@@ -18,7 +18,7 @@ pub fn CheckoutPage() -> impl IntoView {
     view! {
     <HeroSectionNotHome />
         <CheckoutPageInner />
-    <Footer />
+    <FooterSection />
     }
  
 
