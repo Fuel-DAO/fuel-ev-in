@@ -1,3 +1,4 @@
+use chrono::{DateTime, Local};
 use leptos::*;
 use leptos_icons::Icon;
 
@@ -23,8 +24,11 @@ pub fn HeroSection(
     let start_time = move ||  checkout_state.pickup_date_formatted.get();
     let end_time = move || checkout_state.return_date_formatted.get();
 
+    let min_start_date = create_rw_signal( DateTime::parse_from_str(&Local::now().to_string(), "%Y-%m-%d %H:%M:%S%.f %:z").map_or("".to_string(), |f| f.format("%Y-%m-%dT%H:%M").to_string()) );
+
+
     
-    let (_, set_pickup_time_value) = create_signal(String::new());
+    let (get_pickup_time_value, set_pickup_time_value) = create_signal(String::new());
     let (_, set_return_time_value) = create_signal(String::new());
     view! { 
         <div class="relative bg-gray-800 h-screen w-full text-white"
@@ -33,10 +37,10 @@ pub fn HeroSection(
             <div class="absolute inset-0 bg-black opacity-50"></div>
 
             // Navigation Bar
-            <div class="flex  flex-row hidden md:flex">
+            <div class="flex relative flex-row hidden md:flex">
                 <img src="/img/fueldao.svg" alt="FuelDAO Logo" class="h-10 p-2 basis-1/4" />
                 <img src="/img/header.svg"  class="basis-1/2 hidden  md:flex" />
-                <img src="/icons/user.svg"  class="hidden inset-x-0 top-0 h-8 w-8 basis-1/4 md:flex" />
+                <img src="/icons/user.svg"  class="hidden" />
             </div>
             <div class="flex absolute inset-x-0 top-0 z-20 justify-center items-center md:hidden">
                 <div class="relative w-full md:bg-white max-w-[756.75px] md:rounded-b-[75px]">
@@ -123,69 +127,9 @@ pub fn HeroSection(
                                                     CheckoutState::set_pickup_date_value_formatted(value);
                                                 }
                                                 value=move || start_time.clone()
+                                                min=move|| min_start_date.get().to_string()
+                                                max=end_time.clone()
                                             />
-                                    // <!-- First part of the input -->
-                                    /* <div class="flex flex-row justify-between items-center w-[241.67px] gap-[2px] lg:h-[52.5px]">
-                                        // <!-- First sub-field -->
-                                        // <DateInputWithIcon
-                                        // placeholder="Pickup Date"
-                                        // icon=BsCalendar3
-                                        // />
-                                        //
-                                        <div class="flex items-center w-[178.34px] lg:h-[22.34px] bg-[#252525] text-white placeholder-white lg:p-4 bg-opacity-0">
-                                            <button type="datetime-local" class="pt-4 pb-4 pl-2 lg:pl-0">
-                                                // on:click=move |ev: MouseEvent| {
-                                                // ev.prevent_default();
-                                                // if let Some(input) = input_ref.get() {
-                                                // input.click();
-                                                // }
-                                                // }
-
-                                                <Icon
-
-                                                    class="w-[22px] h-[22px]"
-                                                    icon=icondata::BsCalendar3
-                                                />
-
-                                            </button>
-
-                                            <input
-                                                type="date"
-                                                placeholder="Pickup Date"
-                                                class="bg-[#252525] pl-2 bg-opacity-0 text-white w-full placeholder-white"
-                                                ref=pickup_ref_date
-                                                on:input=move |ev| {
-                                                    ev.prevent_default();
-                                                    let value = event_target_value(&ev);
-                                                    set_pickup_date_value.set(value);
-                                                }
-                                                value=pickup_date_value.get()
-                                            />
-
-                                        </div>
-
-                                        // <!-- Separator -->
-                                        <div class="border-white opacity-0 rotate-90 w-[2.5px] h-[0px] border-t-[1.5px]"></div>
-
-                                        // <!-- Second sub-field -->
-                                        <div class="flex items-center w-[90.34px] lg:h-[22.34px] bg-[#252525] text-white placeholder-white pt-4 pb-4 pl-0  bg-opacity-0">
-                                            <button class="pt-4 pb-4">
-                                                <Icon class="w-[24px] h-[24px]" icon=icondata::WiTime10 />
-                                            </button>
-                                            <input
-                                                type="datetime-local"
-                                                placeholder="Time"
-                                                class="bg-[#252525] pl-2  bg-opacity-0 text-white w-full placeholder-white"
-                                                ref=pickup_ref_time
-                                                on:input=move |ev| {
-                                                    ev.prevent_default();
-                                                    let value = event_target_value(&ev);
-                                                    set_pickup_time_value.set(value);
-                                                }
-                                                value=pickup_time_value.get()
-                                            />
-                                        </div>
-                                    </div> */
                                 </div>
                                 // third field
                                 <div class="flex items-center bg-[#1D1D1D9C] bg-opacity-0 w-[281px] h-[52px] p-[0px_11px] gap-[2px] rounded-[9px]">
@@ -193,7 +137,7 @@ pub fn HeroSection(
                                                 type="datetime-local"
                                                 placeholder="Time"
                                                 class="bg-[#252525] pl-2  bg-opacity-0 text-white w-full placeholder-white"
-
+                                                min= move||get_pickup_time_value.get().to_string()
                                                 on:input=move |ev| {
                                                     ev.prevent_default();
                                                     let value = event_target_value(&ev);
@@ -202,55 +146,7 @@ pub fn HeroSection(
                                                 }
                                                 value=end_time.clone()
                                             />
-                                    // <!-- Placeholder container -->
-                                    /* <div class="flex justify-between items-center w-[240.67px] h-[52.5px] gap-[2px]">
-                                        // <!-- First part of the placeholder -->
-                                        <div class="flex items-center w-[178.34px] h-[22.34px] bg-[#252525] text-white  bg-opacity-0">
-                                            <button class="pt-4 pb-4">
-                                                <Icon
-                                                    class="w-[22px] h-[22px]"
-                                                    icon=icondata::BsCalendar3
-                                                />
-                                            </button>
-                                            <input
-                                                type="date"
-                                                placeholder="Return Date"
-                                                class="bg-[#252525] pl-4  bg-opacity-0 text-white w-full placeholder-white"
-                                                ref=return_ref_date
-                                                on:input=move |ev| {
-                                                    ev.prevent_default();
-                                                    let value = event_target_value(&ev);
-                                                    set_return_date_value.set(value);
-                                                }
-                                                value=return_date_value.get()
-                                            />
-
-                                        </div>
-
-                                        // <!-- Separator -->
-                                        <div class="border-white opacity-0 rotate-90 w-[2.5px] h-[0px] border-t-[1.5px]"></div>
-
-                                        // <!-- Second part of the placeholder -->
-                                        <div class="flex items-center w-[98.34px] h-[22.34px] bg-[#252525] text-white  bg-opacity-0">
-                                            <button class="pt-4 pb-4">
-                                                <Icon class="w-[24px] h-[24px]" icon=icondata::WiTime10 />
-                                            </button>
-                                            <input
-                                                type="time"
-                                                placeholder="Time"
-                                                class="bg-[#252525] pl-2  bg-opacity-0 text-white w-full placeholder-white"
-                                                ref=return_ref_time
-
-                                                on:input=move |ev| {
-                                                    ev.prevent_default();
-                                                    let value = event_target_value(&ev);
-                                                    set_return_time_value.set(value);
-                                                }
-                                                value=return_time_value.get()
-                                            />
-                                            </div>
-                                        
-                                        </div> */
+                                   
                                 </div>
                             </div>
                             <a href="/search" class="flex justify-center items-center py-3 px-8 mt-8 w-full font-semibold text-white bg-green-600 rounded-md lg:mt-0 lg:w-auto hover:bg-green-700">

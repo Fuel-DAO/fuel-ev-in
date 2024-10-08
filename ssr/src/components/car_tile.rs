@@ -5,7 +5,7 @@ use server_fn::codec::Cbor;
 
 use crate::{
     canister::backend::{Car, CarDetails, CarStatus},
-    components::{spinners::Spinner, Footer, HeroSectionNotHome, PopupOverlay},
+    components::{ Footer, HeroSectionNotHome, PopupOverlay, SkeletonCards},
     state::{
         canisters::{authenticated_canisters, CanistersAuthWire},
         checkout_state::CheckoutState,
@@ -15,9 +15,11 @@ use crate::{
 #[component]
 pub fn SearchResult() -> impl IntoView {
     view! {
+        <div class="bg-gray-100">
         <HeroSectionNotHome />
-            <SearchResultInner />
+        <SearchResultInner />
         <Footer />
+        </div>
         
 
     }
@@ -66,7 +68,9 @@ fn SearchResultInner() -> impl IntoView {
     );
 
     view! {
-        <Suspense fallback=move|| view! {<Spinner />}>
+        <Suspense fallback=move|| view! {
+            <SkeletonCards />
+            /* <Spinner /> */}>
         <div>
         {
             move || {
@@ -75,6 +79,7 @@ fn SearchResultInner() -> impl IntoView {
                         Ok(cars) => {
                             view! {
                             <div>
+                                <SearchResultComponent />
                                 <ShowSearchResult cars/ >
                             </div>
                             }
@@ -99,13 +104,26 @@ fn SearchResultInner() -> impl IntoView {
 #[component]
 fn ShowSearchResult(cars: Vec<Car>) -> impl IntoView {
     view! {
-        <div class= "grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+        <div class= "grid grid-cols-1 sm:grid-cols-2  md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 bg-gray-100">
         {
            cars.into_iter().map(|car| view! {<CarCard car />}).collect_view()
         }
         </div>
     }
 }
+
+
+#[component]
+pub fn SearchResultComponent() -> impl IntoView {
+    view! { 
+        <div class="text-center py-8 bg-gray-100">
+            <p class="text-pink-400 text-sm">"Search result"</p>
+            <h1 class="text-4xl font-semibold text-gray-800 mt-2">"Choose Your Suitable Car"</h1>
+            <p class="text-gray-500 mt-4">"We present popular cars that are rented by customers to maximize your comfort on long trips."</p>
+        </div>
+    }
+}
+
 
 #[component]
 pub fn CarCard(car: Car) -> impl IntoView {

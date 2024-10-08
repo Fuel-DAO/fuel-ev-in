@@ -31,3 +31,6 @@ pub mod date_time_picker;
 pub use date_time_picker::*;
 pub mod search_date_time;
 use search_date_time::*;
+
+pub mod skeleton_cards;
+pub use skeleton_cards::*;

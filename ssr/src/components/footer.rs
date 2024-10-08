@@ -6,11 +6,11 @@ use crate::components::{auth_cans_provider::AuthCansProvider, spinners::FullScre
 #[component]
 pub fn Footer() -> impl IntoView {
     view! {
-        <footer class="relative mx-auto bg-[#252525] w-full lg:w-[1440px] h-[718.13px]">
-            <div class="hidden absolute top-0 bg-white md:block w-[792px] h-[35px] left-[324px] rounded-b-[35px]">
-                <div class="absolute top-0 left-[-20px] w-[50px] h-[35px] bg-[#252525] shadow-[1px_-1px_0px_rgba(31,41,55,1)] rounded-tr-[80px]"></div>
-                <div class="absolute top-0 right-[-20px] w-[50px] h-[35px] bg-[#252525] shadow-[-1px_-1px_0px_rgba(31,41,55,1)] rounded-tl-[80px]"></div>
-            </div>
+        <footer class="relative  bg-[#252525] w-full h-[718.13px]">
+            // <div class="hidden absolute top-0 bg-white md:block w-[792px] h-[35px] left-[324px] rounded-b-[35px]">
+            //     <div class="absolute top-0 left-[-20px] w-[50px] h-[35px] bg-[#252525] shadow-[1px_-1px_0px_rgba(31,41,55,1)] rounded-tr-[80px]"></div>
+            //     <div class="absolute top-0 right-[-20px] w-[50px] h-[35px] bg-[#252525] shadow-[-1px_-1px_0px_rgba(31,41,55,1)] rounded-tl-[80px]"></div>
+            // </div>
             <div class="flex flex-col md:flex-row">
                 <div class="flex flex-col justify-start p-2 opacity-100 transform lg:absolute rounded-[9px_0_0_0] lg:h-[250px] lg:w-[510px] lg:top-[160px] lg:left-[150px]">
                     <h3 class="font-bold text-left text-white font-[Poppins] text-[29.98px] leading-[44.98px] tracking-[0.075px]">

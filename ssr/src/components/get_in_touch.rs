@@ -34,25 +34,25 @@ pub fn GetInTouch() -> impl IntoView {
                             <p class="pl-2 m-0">bookings@fueldao.io</p>
                         </div>
 
-                        <div class="flex flex-row items-center gap-[9.99px] w-[253.92px] h-[57.96px]">
-                            <button class="flex items-center">
-                                <Icon
-                                    class="w-[24px] h-[24px] text-[#03B74B]"
-                                    icon=icondata::FiPhone
-                                />
-                            </button>
-                            <p class="pl-2 m-0">+62 8221 1222 0001</p>
-                        </div>
+                        // <div class="flex flex-row items-center gap-[9.99px] w-[253.92px] h-[57.96px]">
+                        //     <button class="flex items-center">
+                        //         <Icon
+                        //             class="w-[24px] h-[24px] text-[#03B74B]"
+                        //             icon=icondata::FiPhone
+                        //         />
+                        //     </button>
+                        //     <p class="pl-2 m-0">+62 8221 1222 0001</p>
+                        // </div>
 
-                        <div class="flex flex-row items-center gap-[9.99px] w-[253.92px] h-[57.96px]">
-                            <button class="flex items-center">
-                                <Icon
-                                    class="w-[26px] h-[26px] text-[#03B74B]"
-                                    icon=icondata::WiTime4
-                                />
-                            </button>
-                            <p class="pl-2 m-0">Everyday : 08.00-21.00</p>
-                        </div>
+                        // <div class="flex flex-row items-center gap-[9.99px] w-[253.92px] h-[57.96px]">
+                        //     <button class="flex items-center">
+                        //         <Icon
+                        //             class="w-[26px] h-[26px] text-[#03B74B]"
+                        //             icon=icondata::WiTime4
+                        //         />
+                        //     </button>
+                        //     <p class="pl-2 m-0">Everyday : 08.00-21.00</p>
+                        // </div>
 
                         <div class="flex flex-row items-center gap-[9.99px] w-[253.92px] h-[57.96px]">
                             <button class="flex items-center">

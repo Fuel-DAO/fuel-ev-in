@@ -123,7 +123,7 @@ pub fn CheckoutPageInner() -> impl IntoView {
 
             // let detals = car.clone();
             view! {
-                <div class="container mx-auto py-8 px-4 lg:px-8">
+                <div class="container mx-auto py-8 px-4 lg:px-8 bg-gray-100">
                     <div class="bg-white rounded-lg  p-6 mb-6">
                     <h1 class="text-2xl lg:text-3xl font-bold mb-6">{format!("{} {}",car.make, car.model )}</h1>
                     </div>
