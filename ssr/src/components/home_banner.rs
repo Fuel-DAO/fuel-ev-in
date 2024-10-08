@@ -1,5 +1,6 @@
 use chrono::{DateTime, Local};
 use leptos::*;
+use leptos_router::use_query;
 
 use crate::state::checkout_state::CheckoutState;
 
@@ -89,38 +90,56 @@ fn QualityService() -> impl IntoView {
 }
 
 
+use leptos::*;
+use leptos_router::Params;
+#[derive(Params, PartialEq)]
+struct SearchQuery {
+    pickup_date: Option<String>,
+    return_date: Option<String>,
+}
+
 #[component]
 pub fn SearchBar(is_root: bool) -> impl IntoView {
     let checkout_state = CheckoutState::get();
 
-    let start_time = move ||  checkout_state.pickup_date_formatted.get();
-    let end_time = move || checkout_state.return_date_formatted.get();
+    // Access the query parameters
+    let query = use_query::<SearchQuery>();
 
-    let min_start_date = create_rw_signal( DateTime::parse_from_str(&Local::now().to_string(), "%Y-%m-%d %H:%M:%S%.f %:z").map_or("".to_string(), |f| f.format("%Y-%m-%dT%H:%M").to_string()) );
+    // Signals for date values
+    let (get_pickup_time_value, set_pickup_time_value) = create_signal(
+        query.with(|f| f.as_ref().map(|f| f.pickup_date.clone().unwrap_or_default()).unwrap_or_default()) ,
+    );
+    let (get_return_time_value, set_return_time_value) = create_signal(
+        query.with(|f| f.as_ref().map(|f| f.return_date.clone().unwrap_or_default()).unwrap_or_default()) ,
 
+    );
 
-    
-    let (get_pickup_time_value, set_pickup_time_value) = create_signal(String::new());
-    let (_, set_return_time_value) = create_signal(String::new());
+    // Minimum start date for pickup
+    let min_start_date = create_rw_signal(
+        DateTime::parse_from_str(&Local::now().to_string(), "%Y-%m-%d %H:%M:%S%.f %:z")
+            .map_or("".to_string(), |f| f.format("%Y-%m-%dT%H:%M").to_string()),
+    );
+
     let class = if is_root {
         "bg-black bg-opacity-75 rounded-lg p-4 flex flex-col md:flex-row items-center justify-around w-4/5 mx-auto md:mx-8 space-y-4 md:space-y-0 md:space-x-4"
     } else {
-        "bg-black bg-opacity-75 rounded-lg p-4 flex flex-col md:flex-row items-center justify-around w-4/5 mb-8 mx-auto space-y-4 md:space-y-0 md:space-x-4" 
+        "bg-black bg-opacity-75 rounded-lg p-4 flex flex-col md:flex-row items-center justify-around w-4/5 mb-8 mx-auto space-y-4 md:space-y-0 md:space-x-4"
     };
-    view! { 
+
+    view! {
         <div class=class>
             // Location input
             <div class="flex items-center bg-gray-800 rounded-lg px-4 py-2 w-full md:w-auto">
                 <i class="fas fa-search text-white mr-2"></i>
                 <input
                     type="text"
-                    value= "Bengaluru"
+                    value="Bengaluru"
                     placeholder="Add your location"
                     class="bg-transparent text-white focus:outline-none w-full" list="cities"
                 />
-                    <datalist id="cities">
-                        <option value="Bengaluru"></option>
-                    </datalist>
+                <datalist id="cities">
+                    <option value="Bengaluru"></option>
+                </datalist>
             </div>
 
             // Pickup Date and Time
@@ -134,11 +153,10 @@ pub fn SearchBar(is_root: bool) -> impl IntoView {
                         ev.prevent_default();
                         let value = event_target_value(&ev);
                         set_pickup_time_value.set(value.clone());
-                        CheckoutState::set_pickup_date_value_formatted(value);
+                        CheckoutState::set_pickup_date_value_formatted(value.clone());
                     }
-                    value=move || start_time.clone()
-                    min=move|| min_start_date.get().to_string()
-                    max=end_time.clone()
+                    value=get_pickup_time_value.get()
+                    min=min_start_date.get()
                 />
             </div>
 
@@ -149,22 +167,25 @@ pub fn SearchBar(is_root: bool) -> impl IntoView {
                     type="datetime-local"
                     placeholder="Return Date and Time"
                     class="bg-transparent text-white focus:outline-none w-full"
-                    min= move||get_pickup_time_value.get().to_string()
+                    min=get_pickup_time_value.get()
                     on:input=move |ev| {
                         ev.prevent_default();
                         let value = event_target_value(&ev);
                         set_return_time_value.set(value.clone());
-                        CheckoutState::set_return_date_value_formatted(value);
+                        CheckoutState::set_return_date_value_formatted(value.clone());
+
+                        // // Update URL with query params
+                        // let new_url = format!("/search?pickup_date={}&return_date={}", get_pickup_time_value.get(), value);
+                        // window().unwrap().location().set_href(&new_url).unwrap();
                     }
-                    value=end_time.clone()
+                    value=get_return_time_value.get()
                 />
             </div>
 
             // Search Button
-            <a  href="/search" class="bg-green-500 text-white rounded-lg px-8 py-2 w-full md:w-auto hover:bg-green-600">
+            <a href="/search" class="bg-green-500 text-white rounded-lg px-8 py-2 w-full md:w-auto hover:bg-green-600">
                 Search
             </a>
         </div>
     }
 }
-
