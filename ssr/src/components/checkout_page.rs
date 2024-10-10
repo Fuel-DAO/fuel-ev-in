@@ -1,7 +1,7 @@
 use leptos::*;
 
 use crate::{
-    canister::backend::{CarAvailability, CarStatus, CustomerDetials, RentalTransaction}, components::{ActionTrackerPopup, FooterSection}, state::{
+    canister::backend::{ CarStatus, CustomerDetials, RentalTransaction}, components::{ActionTrackerPopup, FooterSection}, state::{
         canisters::authenticated_canisters,
         checkout_state::{CheckoutState, CheckoutUser},
     }, utils::{
@@ -86,8 +86,8 @@ pub fn CheckoutPageInner() -> impl IntoView {
                         match reserve {
                             Ok(result1)  => {
                                     match result1 {
-                                        crate::canister::backend::Result1::Ok(rental_transaction) => Ok(rental_transaction),
-                                        crate::canister::backend::Result1::Err(e) => Err(e),
+                                        crate::canister::backend::Result2::Ok(rental_transaction) => Ok(rental_transaction),
+                                        crate::canister::backend::Result2::Err(e) => Err(e),
                                     }
                             }  , 
                             Err(e) => Err(e.to_string())                           
@@ -160,22 +160,22 @@ pub fn CheckoutPageInner() -> impl IntoView {
                                     // <input type="text" placeholder="Full Name" class="border rounded-lg px-4 py-2"/>
                                     <InputBox initial_value=user.user.get_untracked().name.map_or("".into(), |f| f ) heading="Full Name"  placeholder="Full Name" updater=update_name validator=move|val|non_empty_string_validator(val) />
                                     // <input type="text" placeholder="Age" class="border rounded-lg px-4 py-2"/>
-                                    <InputBox initial_value=user.user.get_untracked().age.map_or("".into(), |f| f.to_string() ) heading="Age" placeholder="Age" updater=update_age validator=move|val|non_empty_string_validator(val) input_type="number" />
+                                    <InputBox initial_value=user.user.get_untracked().age.map_or("".into(), |f| f.to_string() ) heading="Age" placeholder="Age" updater=update_age validator=move|val|non_empty_string_validator(val) input_type="number" pattern=String::from("^\\d{2}$") />
                                     // <input type="email" placeholder="Email ID" class="border rounded-lg px-4 py-2"/>
                                     <InputBox initial_value=user.user.get_untracked().email.map_or("".into(), |f| f.to_string() ) heading="Email" placeholder="Email" updater=update_email validator=move|val|non_empty_string_validator(val) input_type="email" pattern="[a-z0-9._%+\\-]+@[a-z0-9.\\-]+\\.[a-z]{2,}$".into() />
                                    
                                     // <input type="text" placeholder="Pan Card No." class="border rounded-lg px-4 py-2"/>
-                                    <InputBox initial_value=user.user.get_untracked().pan.map_or("".into(), |f| f.to_string() ) heading="PAN" placeholder="PAN" updater=update_pan validator=move|val|non_empty_string_validator(val) />
+                                    <InputBox initial_value=user.user.get_untracked().pan.map_or("".into(), |f| f.to_string() ) heading="PAN" placeholder="PAN" updater=update_pan validator=move|val|non_empty_string_validator(val) pattern="^[A-Z]{5}[0-9]{4}[A-Z]{1}$".to_string() />
                                     
                                     // <input type="text" placeholder="Adhar Card No." class="border rounded-lg px-4 py-2"/>
-                                    <InputBox initial_value=user.user.get_untracked().aadhar.map_or("".into(), |f| f.to_string() ) heading="Aadhar" placeholder="Aadhar" updater=update_aadhar validator=move|val|non_empty_string_validator(val) input_type="number" />
+                                    <InputBox initial_value=user.user.get_untracked().aadhar.map_or("".into(), |f| f.to_string() ) heading="Aadhar" placeholder="Aadhar" updater=update_aadhar validator=move|val|non_empty_string_validator(val) input_type="number"  pattern=String::from("^\\d{12}$")  />
 
                                 </div>
                                 <div class="grid grid-cols-2 space-x-2 gap-4">
                                     // <input type="text" placeholder="Country Code" class="border rounded-lg px-4 py-2 w-1/3"/>
-                                    <InputBox initial_value=user.user.get_untracked().country_code.map_or("".into(), |f| f.to_string() ) heading="Country Code" placeholder="Country Code" updater=update_code validator=move|val|non_empty_string_validator(val) input_type="text" style="col-span-1".into() />
+                                    <InputBox initial_value=user.user.get_untracked().country_code.map_or("".into(), |f| f.to_string() ) heading="Country Code" placeholder="Country Code" updater=update_code validator=move|val|non_empty_string_validator(val) input_type="text" style="col-span-1".into() pattern=String::from("^\\d{3}$") />
                                     // <input type="text" placeholder="Mobile Number" class="border rounded-lg px-4 py-2 w-2/3"/>
-                                    <InputBox initial_value=user.user.get_untracked().mobile_number.map_or("".into(), |f| f.to_string() ) heading="Mobile Number" placeholder="Mobile Number" updater=update_mobile validator=move|val|non_empty_string_validator(val) input_type="number" style="col-span-2".into() />
+                                    <InputBox initial_value=user.user.get_untracked().mobile_number.map_or("".into(), |f| f.to_string() ) heading="Mobile Number" placeholder="Mobile Number" updater=update_mobile validator=move|val|non_empty_string_validator(val) input_type="number" style="col-span-2".into() pattern=String::from("^\\d{10}$") />
                                 </div>
                             </div>
 

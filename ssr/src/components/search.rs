@@ -1,6 +1,4 @@
 use crate::state::checkout_state::CheckoutState;
-use crate::utils::time::{current_epoch, get_day_month_time, to_hh_mm_ss};
-use chrono::{DateTime, NaiveDateTime};
 use leptos::event_target_value;
 use leptos::html::Input;
 use leptos::*;
