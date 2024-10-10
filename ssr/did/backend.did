@@ -90,6 +90,7 @@ service : () -> {
   add_car : (CarDetails) -> ();
   add_controller : (principal) -> (Result);
   cancel_reservation : (nat64) -> (Result_1);
+  current_user_bookings : () -> (vec RentalTransaction) query;
   get_car_details : (nat64, nat64, nat64) -> (opt CarAvailability);
   get_default_car : () -> (opt Car) query;
   get_monitoring_events : () -> (vec EventMoniter) query;
