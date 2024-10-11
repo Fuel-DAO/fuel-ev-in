@@ -30,6 +30,18 @@ pub struct UserDetials {
     pub aadhar: Option<String,>
 }
 
+impl UserDetials {
+    pub fn validate_details(&self) -> Result<(), String> {
+        if self.name.clone().unwrap_or_default().trim().len() < 3 {return  Err("Invalid Name, please provide a name with more than 4 characters.".into()) ;}
+        if self.email.clone().unwrap_or_default().trim().len() < 5 {return  Err("Invalid email, please provide a valid email adress".into()) ;}
+        if self.country_code.clone().unwrap_or_default().trim().len() != 2  {return  Err("Invalid country code, please provide a valid country code".into()) ;}
+        if self.mobile_number.clone().unwrap_or_default().trim().len() != 10  {return  Err("Invalid mobile number, please provide a 10 digits mobile number".into()) ;}
+        if (self.pan.clone().unwrap_or_default().trim().is_empty() || self.pan.clone().unwrap_or_default().trim().len() < 10) && (self.aadhar.clone().unwrap_or_default().trim().is_empty() || self.aadhar.clone().unwrap_or_default().trim().len() != 12)  {return  Err("Invalid documents, please provide a PAN or Aadhar".into()) ;}
+        if self.age.clone().unwrap_or_default() < 18  {return  Err("Invalid age, age should be atleast 18".into()) ;}
+        Ok(())
+    }
+}
+
 fn check_is_some_and_not_empty(val: &Option<String> ) -> bool {
     val.is_some() && val.as_ref().unwrap().len() > 0
 }

@@ -64,9 +64,10 @@ pub fn CheckoutPageInner() -> impl IntoView {
                 let value = cans_res.clone();
                 async move {
 
-                    if !user.user.get_untracked().check_ready() {
-                        return Err("All fields are required".into());
-                    }
+                    user.user.get_untracked().validate_details()?;
+                    // if !user.user.get_untracked().validate_details() {
+                    //     return Err("All fields are required".into());
+                    // }
 
                     let cans = value.wait_untracked().await.unwrap();
                         let cans = cans.canisters().unwrap();
@@ -382,7 +383,7 @@ pub fn BookingCreationPopup(
                         <div class="flex  flex-col  gap-4 text-center  justify-center">
                         <p style="color:red">{e}</p>
                         <div class="flex justify-center">
-                        <button   on:click=move |_|close_popup.update(|f| *f =  false) class="w-full bg-green-500 text-white px-3 py-3 rounded-lg font-bold disabled:text-neutral-500 disabled:bg-primary-500/30">
+                        <button  on:click=move |_|close_popup.set(true) class="w-full bg-green-500 text-white px-3 py-3 rounded-lg font-bold disabled:text-neutral-500 disabled:bg-primary-500/30">
                         "Retry"
                         </button>
                         </div>
