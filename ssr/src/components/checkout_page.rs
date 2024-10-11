@@ -379,10 +379,10 @@ pub fn BookingCreationPopup(
                 }
                 Err(e) => {
                     view! {
-                        <div class="flex justify-center">
+                        <div class="flex  flex-col  gap-4 text-center  justify-center">
                         <p style="color:red">{e}</p>
                         <div class="flex justify-center">
-                        <button   on:click=move |_|close_popup.set_untracked(false) class="w-full bg-green-500 text-white px-3 py-3 rounded-lg font-bold disabled:text-neutral-500 disabled:bg-primary-500/30">
+                        <button   on:click=move |_|close_popup.update(|f| *f =  false) class="w-full bg-green-500 text-white px-3 py-3 rounded-lg font-bold disabled:text-neutral-500 disabled:bg-primary-500/30">
                         "Retry"
                         </button>
                         </div>

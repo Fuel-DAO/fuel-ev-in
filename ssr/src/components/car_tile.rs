@@ -69,7 +69,7 @@ fn SearchResultInner() -> impl IntoView {
 
     view! {
         <Suspense fallback=move|| view! {
-            <div class="w-full">
+            <div class="w-screen justify-self-center">
             <SkeletonCards />
             </div>
             /* <Spinner /> */}>
