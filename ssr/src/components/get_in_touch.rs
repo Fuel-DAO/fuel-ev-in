@@ -89,15 +89,16 @@ pub fn GetInTouch() -> impl IntoView {
             </div>
             <div class="flex flex-col">
                 <div class="flex m-8 lg:m-0 h-[446.59px] lg:gap-[49.95px] lg:w-[609.45px]">
-
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3164.28354119872!2d-122.0842497!3d37.4220653!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb5aaf1c3f15d%3A0xa44bc518fdb3f92a!2sGoogleplex!5e0!3m2!1sen!2sin!4v1549380919454"
-                        width="100%"
-                        height="100%"
-                        style="border:0;"
-                        allowfullscreen=""
-                        loading="lazy"
-                    ></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d124424.39726403436!2d77.62742!3d12.955053!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBengaluru%2C%20Karnataka%2C%20India!5e0!3m2!1sen!2sus!4v1728624020395!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+                // <iframe
+                // src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.003759489038!2d77.594562!3d12.9715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670bb12d4fb%3A0x478f7d1ef0a4bc08!2sBengaluru%2C%20Karnataka%2C%20India!5e0!3m2!1sen!2sin!4v1549380919454"
+                // width="100%"
+                // height="100%"
+                // style="border:0;"
+                // allowfullscreen=""
+                // loading="lazy"
+                // ></iframe>
 
                 </div>
 
