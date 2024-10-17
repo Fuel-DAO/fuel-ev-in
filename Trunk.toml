@@ -6,6 +6,10 @@ public_url = "/"
 source = "public"
 destination = "public"
 
+[[hooks]]
+stage = "pre_build"
+command = "sh"
+command_arguments = ["-c", "npx tailwindcss -i style/tailwind1.css -o style/output.css"]
 # [[proxy]]
 # backend = "http://localhost:4943"
 # insecure = true
