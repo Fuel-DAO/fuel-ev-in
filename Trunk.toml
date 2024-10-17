@@ -1,0 +1,11 @@
+[build]
+dist = "dist"  # where to output the final files
+public_url = "/"
+
+[[copy-dir]]
+source = "public"
+destination = "public"
+
+# [[proxy]]
+# backend = "http://localhost:4943"
+# insecure = true
