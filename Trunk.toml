@@ -1,8 +1,8 @@
 [build]
 dist = "dist"  # where to output the final files
 public_url = "/"
-# release = true
-# minify = "on_release" # can be one of: never, on_release, always
+release = true
+minify = "on_release" # can be one of: never, on_release, always
 
 [[copy-dir]]
 source = "public"
