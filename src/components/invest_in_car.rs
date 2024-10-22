@@ -3,7 +3,7 @@ use leptos::*;
 #[component]
 pub fn InvestInCar() -> impl IntoView {
     view! {
-        <section class="relative w-full h-[722.64px] lg:top-[0px] lg:w-[1440px]">
+        <section class="relative w-full h-[722.64px] lg:top-[0px] ">
             <div
                 class="absolute w-full lg:w-[1145.19px] lg:h-[489.37px] lg:left-[147.4px] lg:top-12 lg:pt-12 border-[2px] border-solid border-[#03B74B] rounded-[20px] flex flex-col lg:flex-row  lg:p-12"
                 style="gap: 121px;"
@@ -26,7 +26,7 @@ pub fn InvestInCar() -> impl IntoView {
 
                     <div class="h-auto gap-[9.99px] lg:w-[484.56px]">
                         <p class="font-normal text-left font-lato text-[18px] leading-[21.6px]">
-                        Invest in a car and earn proportional revenue on it! An exclusive, members-only service that enables global decentralization of car networks.
+                            Invest in a car and earn proportional revenue on it! An exclusive, members-only service that enables global decentralization of car networks.
                         </p>
                     </div>
 
