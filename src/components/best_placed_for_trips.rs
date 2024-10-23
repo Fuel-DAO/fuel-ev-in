@@ -61,7 +61,7 @@ pub fn BestPlacedForTrips() -> impl IntoView {
     view! {
         <section class="py-12 bg-gray-100">
             <div class="container mx-auto text-center">
-                <h2 class="mb-8 text-3xl font-bold">"Top spots near Banglore"</h2>
+                <h2 class="mb-8 text-3xl font-bold">"Top spots near Bangalore"</h2>
                 <div class="flex relative justify-center items-center">
 
                     <div class="flex absolute left-0 items-center h-full">

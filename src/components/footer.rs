@@ -3,7 +3,6 @@ use leptos_icons::Icon;
 
 use crate::components::{auth_cans_provider::AuthCansProvider, spinners::FullScreenSpinner};
 
-use leptos::*;
 
 #[component]
 pub fn FooterSection() -> impl IntoView {
@@ -14,7 +13,7 @@ pub fn FooterSection() -> impl IntoView {
                 <div class="w-full md:w-1/2 space-y-4">
                     <h2 class="text-3xl font-bold text-center md:text-left">"Stay in the know"</h2>
                     <p class="text-gray-300 text-center md:text-left">
-                        "Sign up to get marketing emails from Bookme.com, including promotions, rewards, travel experiences, and information about Bookme.com and Booking.com Transport Limited’s products and services."
+                        "Sign up to get marketing emails from FuelDAO, including promotions, rewards, travel experiences and information about FuelDAO.’"
                     </p>
 
                     // Email and Subscribe button
@@ -43,7 +42,7 @@ pub fn FooterSection() -> impl IntoView {
                     // Links
                     <div class="flex flex-col space-y-2 text-green-400 text-center md:text-right">
                         <a href="#" class="hover:underline">"Help"</a>
-                        <a href="#" class="hover:underline">"FAQs"</a>
+                        // <a href="#" class="hover:underline">"FAQs"</a>
                         <a href="#" class="hover:underline">"Contact Us"</a>
                     </div>
                 </div>
