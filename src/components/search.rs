@@ -327,7 +327,7 @@ pub fn Search() -> impl IntoView {
                         "Premium Electric SUV voted ‘Best Family Electric Car’, at your fingertips"
                         </p>
 
-                        <p class="p-4">"Quality service with FuelEv, guaranteed"</p>
+                        <p class="p-4">"Quality service with FuelEV, guaranteed"</p>
                     </div>
                 </div>
             </div>

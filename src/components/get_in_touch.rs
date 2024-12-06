@@ -20,7 +20,7 @@ pub fn GetInTouch() -> impl IntoView {
                 <div class="flex flex-col gap-6">
                     <div class="flex items-center gap-4">
                         <Icon class="text-green-500 w-6 h-6" icon=icondata::FiMail />
-                        <p>bookings@fuelev.in</p>
+                        <p>bookings@fueldao.io</p>
                     </div>
                     <div class="flex items-center gap-4">
                         <Icon class="text-green-500 w-6 h-6" icon=icondata::TiLocationOutline />
