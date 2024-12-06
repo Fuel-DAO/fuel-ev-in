@@ -4,104 +4,57 @@ use leptos_icons::Icon;
 #[component]
 pub fn GetInTouch() -> impl IntoView {
     view! {
-        <section class="flex relative flex-col pt-40 lg:flex-row lg:pt-0 lg:m-32 gap-[137.87px] lg:w-[1238.88px] lg:h-[567.6px]">
+        <section class="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-24 px-4 lg:px-16 py-12 lg:py-20">
+            // <!-- Contact Information Section -->
+            <div class="flex flex-col gap-12 lg:w-1/2">
+                // <!-- Header -->
+                <div class="flex flex-col gap-6">
+                    <h3 class="text-green-500 text-lg font-bold">GET IN TOUCH</h3>
+                    <h1 class="text-4xl font-bold">Contact Us</h1>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        If you need consultation with us, you can write a message or call us. We will respond as quickly as possible.
+                    </p>
+                </div>
 
-            <div class="flex flex-col gap-[64.94px] h-[567.6px] lg:w-[491.55px]">
-                <div class="flex flex-col gap-[24.98px] h-[452.7px] lg:w-[491.55px]">
-                    <div class="flex flex-col w-full h-[177.87px] lg:w-[491.55px]">
-                        <div class="flex flex-col w-[229.98px] h-[121.89px]">
-                            <h3 class="w-[158.98px] h-[43.98px] pt-[9.99px] text-[#03B74B] ">
-                                GET IN TOUCH
-                            </h3>
-                            <h1 class="text-4xl w-[229.98px] h-[71.98px] pt-[9.99px]">
-                                Contact Us
-                            </h1>
-                        </div>
-                        <div class="flex gap-0 w-full h-[55.98px] pt-[9.99px] lg:w-[484.56px]">
-                            <p class="overflow-hidden font-normal text-left break-words font-lato text-[14.99px] leading-[17.98px]">
-                                If you need consultation with us, you can write a message or call us, we will respond as quickly as possible.
-                            </p>
-                        </div>
+                // <!-- Contact Details -->
+                <div class="flex flex-col gap-6">
+                    <div class="flex items-center gap-4">
+                        <Icon class="text-green-500 w-6 h-6" icon=icondata::FiMail />
+                        <p>bookings@fuelev.in</p>
                     </div>
-                    <div class="flex flex-col gap-0 w-[339.92px] h-[249.85px]">
-                        <div class="flex flex-row items-center gap-[9.99px] w-[253.92px] h-[57.96px]">
-                            <button class="flex items-center">
-                                <Icon
-                                    class="w-[24px] h-[24px] text-[#03B74B]"
-                                    icon=icondata::FiMail
-                                />
-                            </button>
-                            <p class="pl-2 m-0">bookings@fueldao.io</p>
-                        </div>
-
-                        // <div class="flex flex-row items-center gap-[9.99px] w-[253.92px] h-[57.96px]">
-                        //     <button class="flex items-center">
-                        //         <Icon
-                        //             class="w-[24px] h-[24px] text-[#03B74B]"
-                        //             icon=icondata::FiPhone
-                        //         />
-                        //     </button>
-                        //     <p class="pl-2 m-0">+62 8221 1222 0001</p>
-                        // </div>
-
-                        // <div class="flex flex-row items-center gap-[9.99px] w-[253.92px] h-[57.96px]">
-                        //     <button class="flex items-center">
-                        //         <Icon
-                        //             class="w-[26px] h-[26px] text-[#03B74B]"
-                        //             icon=icondata::WiTime4
-                        //         />
-                        //     </button>
-                        //     <p class="pl-2 m-0">Everyday : 08.00-21.00</p>
-                        // </div>
-
-                        <div class="flex flex-row items-center gap-[9.99px] w-[253.92px] h-[57.96px]">
-                            <button class="flex items-center">
-                                <Icon
-                                    class="w-[26px] h-[26px] text-[#03B74B]"
-                                    icon=icondata::TiLocationOutline
-                                />
-                            </button>
-                            <p class="pl-2 m-0">
-                                Bangalore, India
-                            </p>
-                        </div>
+                    <div class="flex items-center gap-4">
+                        <Icon class="text-green-500 w-6 h-6" icon=icondata::TiLocationOutline />
+                        <p>Mumbai, India</p>
                     </div>
                 </div>
-                <div class="flex flex-col gap-[9.99px] w-[184.83px] h-[49.95px] pt-[9.99px]">
-                    <div class="flex flex-row gap-[14.99px] w-[164.85px] h-[29.97px]">
-                        <button class="border-t border-transparent icon w-[29.97px] h-[29.97px]">
-                            <Icon
-                                icon=icondata::BiLinkedinSquare
-                                class="w-full h-full text-[#03B74B]"
-                            />
-                        </button>
-                        <button class="border-t border-transparent icon w-[29.97px] h-[29.97px]">
-                            <Icon icon=icondata::BsTwitterX class="w-full h-full text-[#03B74B]" />
-                        </button>
-                        <button class="border-t border-transparent icon w-[29.97px] h-[29.97px]">
-                            <Icon icon=icondata::LuSend class="w-full h-full text-[#03B74B]" />
-                        </button>
-                        <button class="border-t border-transparent icon w-[29.97px] h-[29.97px]">
-                            <Icon icon=icondata::BiInstagram class="w-full h-full text-[#03B74B]" />
-                        </button>
-                    </div>
+
+                // <!-- Social Media Links -->
+                <div class="flex gap-4">
+                    <button class="text-green-500 w-8 h-8">
+                        <Icon icon=icondata::BiLinkedinSquare class="w-full h-full" />
+                    </button>
+                    <button class="text-green-500 w-8 h-8">
+                        <Icon icon=icondata::BsTwitterX class="w-full h-full" />
+                    </button>
+                    <button class="text-green-500 w-8 h-8">
+                        <Icon icon=icondata::LuSend class="w-full h-full" />
+                    </button>
+                    <button class="text-green-500 w-8 h-8">
+                        <Icon icon=icondata::BiInstagram class="w-full h-full" />
+                    </button>
                 </div>
             </div>
-            <div class="flex flex-col">
-                <div class="flex m-8 lg:m-0 h-[446.59px] lg:gap-[49.95px] lg:w-[609.45px]">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d124424.39726403436!2d77.62742!3d12.955053!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670c9b44e6d%3A0xf8dfc3e8517e4fe0!2sBengaluru%2C%20Karnataka%2C%20India!5e0!3m2!1sen!2sus!4v1728624020395!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+
+            // <!-- Google Map Section -->
+            <div class="lg:w-1/2">
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d77850.86027949052!2d72.87719094676066!3d19.07457493347684!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6306644edc1%3A0x5da4ed8f8d648c69!2sMumbai%2C%20Maharashtra%2C%20India!5e0!3m2!1sen!2sus!4v1733463154618!5m2!1sen!2sus"
+                    class="w-full h-80 lg:h-[450px] border-0"
+                    allowfullscreen=""
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                >
                 </iframe>
-                // <iframe
-                // src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.003759489038!2d77.594562!3d12.9715987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae1670bb12d4fb%3A0x478f7d1ef0a4bc08!2sBengaluru%2C%20Karnataka%2C%20India!5e0!3m2!1sen!2sin!4v1549380919454"
-                // width="100%"
-                // height="100%"
-                // style="border:0;"
-                // allowfullscreen=""
-                // loading="lazy"
-                // ></iframe>
-
-                </div>
-
             </div>
         </section>
     }
