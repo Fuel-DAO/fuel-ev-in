@@ -29,27 +29,27 @@ pub fn BestPlacedForTrips() -> impl IntoView {
     let handle_image_click = move |index: usize| {
         set_current_index.set(index);
     };
-    let is_mobile = use_media_query("(max-width: 640px)").get();
-    log::info!("Is Mobile: {}", is_mobile);
+   
 
     // Calculate the 5 indices to be displayed in the carousel
     let get_display_count = move || {
         // Capture the media query and check if the screen width is less than or equal to 640px
-        if use_media_query("(max-width: 640px)").get_untracked() {
-            3 // Display 3 items on small screens
-        } else {
-            5 // Display 5 items on larger screens
-        }
+        5
+        // if use_media_query("(max-width: 640px)").get_untracked() {
+        //     3 // Display 3 items on small screens
+        // } else {
+        //     5 // Display 5 items on larger screens
+        // }
     };
-    let log_size = {
-        move || {
-            logging::log!(
-                "mobile screen: {:?}",
-                use_media_query("(max-width: 640px)").get()
-            )
-        }
-    };
-    log_size();
+    // let log_size = {
+    //     move || {
+    //         logging::log!(
+    //             "mobile screen: {:?}",
+    //             use_media_query("(max-width: 640px)").get()
+    //         )
+    //     }
+    // };
+    // log_size();
     // Calculate the display indices to be displayed in the carousel
     let get_display_indices = |current: usize| {
         let count = get_display_count();
@@ -59,9 +59,10 @@ pub fn BestPlacedForTrips() -> impl IntoView {
     };
 
     view! {
-        <section class="py-12 bg-gray-100">
+        // <ImageCarousel />
+        <section class="p-2 py-12 bg-gray-100">
             <div class="container mx-auto text-center">
-                <h2 class="mb-8 text-3xl font-bold">"Top spots near Bangalore"</h2>
+                <h2 class="mb-8 text-3xl font-bold">"Top spots near Mumbai"</h2>
                 <div class="flex relative justify-center items-center">
 
                     <div class="flex absolute left-0 items-center h-full">
@@ -80,22 +81,22 @@ pub fn BestPlacedForTrips() -> impl IntoView {
                             .map(move |(idx, i)| {
                                 let is_first = idx == 0;
                                 let is_last = idx == get_display_count() - 1;
-                                let blur_class = if is_first || is_last {
-                                    "filter blur-sm"
-                                } else {
-                                    ""
-                                };
-                                let scale = if is_first || is_last { 0.75 } else { 1.0 };
-                                let transform_style = format!(
-                                    "scale({}) translateX({}px)",
-                                    scale,
-                                    (idx as f32 - 1.0) * 20.0,
-                                );
+                                // let blur_class = if is_first || is_last {
+                                //     "filter blur-sm"
+                                // } else {
+                                //     ""
+                                // };
+                                // let scale = if is_first || is_last { 0.75 } else { 1.0 };
+                                // let transform_style = format!(
+                                //     "scale({}) translateX({}px)",
+                                //     scale,
+                                //     (idx as f32 - 1.0) * 20.0,
+                                // );
                                 view! {
                                     // Adjusted for dynamic display count
                                     // Adjusted for dynamic index
                                     <div
-                                        style=transform_style
+                                        // style=transform_style
                                         class=format!(
                                             "flex flex-col justify-center items-center carousel-item transition-transform duration-300 ease-in-out transform {}",
                                             if is_first || is_last {
@@ -147,6 +148,74 @@ pub fn BestPlacedForTrips() -> impl IntoView {
                         </button>
                     </div>
                 </div>
+            </div>
+        </section>
+    }
+}
+
+
+#[component]
+pub fn ImageCarousel() -> impl IntoView {
+    let images = vec![
+        "/public/img/nearby/Goa1.jpg",
+        "/public/img/nearby/Chikmagalur.jpg",
+        "/public/img/nearby/Coorg.jpg",
+        "/public/img/nearby/Wayanad.jpeg",
+        "/public/img/nearby/Hyderabad.jpeg",
+    ];
+
+    let imgs = images.clone();
+
+    let image_count = images.len();
+    let (current_index, set_current_index) = create_signal(0);
+
+    // Navigate carousel
+    let previous_image = move |_| {
+        set_current_index.update(|index| *index = (*index + image_count - 1) % image_count);
+    };
+    let next_image = move |_| {
+        set_current_index.update(|index| *index = (*index + 1) % image_count);
+    };
+
+    view! {
+        <section class="carousel relative w-full h-64 bg-gray-200 overflow-hidden">
+            // Current Image
+            <div class="h-full w-full">
+                <img
+                    class="object-cover w-full h-full transition-opacity duration-500"
+                    src=move || imgs.clone()[current_index.get()]
+                    alt=format!("Image {}", current_index.get() + 1)
+                />
+            </div>
+
+            // Navigation Buttons
+            <button
+                class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white rounded-full p-2 hover:bg-gray-700"
+                on:click=previous_image
+            >
+                <Icon icon=icondata::BsArrowLeftCircle class="w-6 h-6" />
+            </button>
+            <button
+                class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white rounded-full p-2 hover:bg-gray-700"
+                on:click=next_image
+            >
+                <Icon icon=icondata::BsArrowRightCircle class="w-6 h-6" />
+            </button>
+
+            // Dots for navigation
+            <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                {move || images.iter().enumerate().map(move |(index, _)| {
+                    let is_active = current_index.get() == index;
+                    view! {
+                        <div
+                            class=format!(
+                                "w-3 h-3 rounded-full {}",
+                                if is_active { "bg-gray-800" } else { "bg-gray-400" }
+                            )
+                            on:click=move |_| set_current_index.set(index)
+                        />
+                    }
+                }).collect_view()}
             </div>
         </section>
     }

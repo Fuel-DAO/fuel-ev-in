@@ -158,12 +158,12 @@ pub fn Search() -> impl IntoView {
                                     <input
                                         type="text"
                                         placeholder="Add your location"
-                                        value= "Bengaluru"
+                                        value= "Mumbai"
                                         class="w-[213.81px] h-[24px]  pt-4 pr-4 pb-4 pl-0  bg-[#252525] bg-opacity-0 text-white placeholder-white"
                                         list="cities"
                                     />
                                     <datalist id="cities">
-                                        <option value="Bengaluru"></option>
+                                        <option value="Mumbai"></option>
                                     </datalist>
                                 </div>
                                 // second field
@@ -327,7 +327,7 @@ pub fn Search() -> impl IntoView {
                         "Premium Electric SUV voted ‘Best Family Electric Car’, at your fingertips"
                         </p>
 
-                        <p class="p-4">"Quality service with FuelDAO, guaranteed"</p>
+                        <p class="p-4">"Quality service with FuelEv, guaranteed"</p>
                     </div>
                 </div>
             </div>

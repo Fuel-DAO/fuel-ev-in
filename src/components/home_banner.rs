@@ -84,7 +84,7 @@ fn QualityService() -> impl IntoView {
                     "Premium Electric SUV voted ‘Best Family Electric Car’, at your fingertips."
                 </p>
 
-                <p class="p-4">Quality service with FuelDAO, guaranteed</p>
+                <p class="p-4">Quality service with FuelEv, guaranteed</p>
             </div>
         </div>
     }
@@ -116,13 +116,13 @@ pub fn SearchBar(is_root: bool) -> impl IntoView {
                 <i class="fas fa-search text-white mr-2"></i>
                 <input
                     type="text"
-                    value="Bengaluru"
+                    value="Mumbai"
                     placeholder="Add your location"
                     class="bg-transparent text-white focus:outline-none w-full"
                     list="cities"
                 />
                 <datalist id="cities">
-                    <option value="Bengaluru"></option>
+                    <option value="Mumbai"></option>
                 </datalist>
             </div>
 

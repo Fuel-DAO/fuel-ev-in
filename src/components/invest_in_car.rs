@@ -3,35 +3,35 @@ use leptos::*;
 #[component]
 pub fn InvestInCar() -> impl IntoView {
     view! {
-        <section class="relative w-full h-[722.64px] lg:top-[0px] ">
+        <section class="relative w-full h-[72vh] lg:top-0 flex justify-center items-center mb-4">
             <div
-                class="absolute w-full lg:w-[1145.19px] lg:h-[489.37px] lg:left-[147.4px] lg:top-12 lg:pt-12 border-[2px] border-solid border-[#03B74B] rounded-[20px] flex flex-col lg:flex-row  lg:p-12"
-                style="gap: 121px;"
+                class="absolute w-4/5 lg:h-auto lg:left-1/6 lg:top-12 lg:pt-12 border-2 border-solid border-green-500 rounded-xl flex flex-col lg:flex-row lg:p-12"
+                style="gap: 8%"
             >
-                <div class="flex gap-0 justify-center items-center h-[393.37px] lg:w-[443.63px]">
+                <div class="flex gap-0 justify-center items-center lg:w-2/5">
                     <img
                         src="/public/img/Group.png"
                         alt="Left Image"
-                        class="object-cover w-full h-full rounded-[20px]"
+                        class="object-cover w-full h-full rounded-xl"
                     />
                 </div>
 
-                <div class="flex flex-col justify-center p-4 opacity-100 lg:p-0 lg:h-[326.78px] lg:w-[484.56px] lg:gap-[40px]">
-                    <div class="flex gap-0 items-center lg:h-[144.81px] lg:w-[484.56px]">
-                        <p class="font-bold leading-none text-left font-baloo text-[75.41px]">
-                            I<span style="color: #00b84c;">n</span>vest in a <br />Car
-                            N<span style="color: #00b84c;">e</span>twork
+                <div class="flex flex-col justify-center p-4 opacity-100 lg:p-0 lg:h-auto lg:w-1/2 lg:gap-10">
+                    <div class="flex gap-0 items-center lg:h-auto lg:w-full">
+                        <p class="font-bold leading-none text-left font-baloo text-5xl">
+                            I<span class="text-green-500">n</span>vest in a <br />Car
+                            N<span class="text-green-500">e</span>twork
                         </p>
                     </div>
 
-                    <div class="h-auto gap-[9.99px] lg:w-[484.56px]">
-                        <p class="font-normal text-left font-lato text-[18px] leading-[21.6px]">
+                    <div class="h-auto gap-2 lg:w-full">
+                        <p class="font-normal text-left font-lato text-base leading-relaxed">
                             Invest in a car and earn proportional revenue on it! An exclusive, members-only service that enables global decentralization of car networks.
                         </p>
                     </div>
 
                     <div class="flex">
-                        <button class="w-[164.94px] lg:h-[57.96px] p-[9.99px_24.98px] gap-[9.99px] border-[2px] border-solid border-[#03B74B] bg-[#03B74B] text-white rounded-tl-[3px] rounded-tr-none rounded-br-none rounded-bl-none text-left">
+                        <button class="w-40 lg:h-14 py-2 px-6 border-2 border-solid border-green-500 bg-green-500 text-white rounded-tl-md text-left">
                             Coming Soon
                         </button>
                     </div>

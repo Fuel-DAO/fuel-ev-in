@@ -3,7 +3,7 @@ use leptos::{component, view, IntoView};
 #[component]
 pub fn Advantages() -> impl IntoView {
     view! {
-        <section class="py-12 bg-white">
+        <section class="py-12 bg-white px-2">
             <div class="container mx-auto text-center gap-50">
                 // first sub div
                 <div

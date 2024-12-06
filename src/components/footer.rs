@@ -13,7 +13,7 @@ pub fn FooterSection() -> impl IntoView {
                 <div class="w-full md:w-1/2 space-y-4">
                     <h2 class="text-3xl font-bold text-center md:text-left">"Stay in the know"</h2>
                     <p class="text-gray-300 text-center md:text-left">
-                        "Sign up to get marketing emails from FuelDAO, including promotions, rewards, travel experiences and information about FuelDAO.’"
+                        "Sign up to get marketing emails from FuelEv, including promotions, rewards, travel experiences and information about FuelEv."
                     </p>
 
                     // Email and Subscribe button
@@ -89,7 +89,7 @@ pub fn Footer() -> impl IntoView {
                         Stay in the Know
                     </h3>
                     <p class="gap-0 text-left text-white h-[162px] mt-[25px] lg:w-[500px]">
-                        "Sign up to get marketing emails from FuelDAO, including promotions, rewards, travel experiences and information about FuelDAO.’"
+                        "Sign up to get marketing emails from FuelEv, including promotions, rewards, travel experiences and information about FuelEv."
                     </p>
                     <div class="flex flex-col items-center lg:flex-row gap-[6px] lg:mt-[70px]">
                         <input
