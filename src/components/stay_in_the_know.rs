@@ -7,7 +7,7 @@ pub fn StayInTheKnow() -> impl IntoView {
             <div class="container mx-auto text-center">
                 <h2 class="text-3xl font-bold mb-8">"Stay in the know"</h2>
                 <div class="mb-8">
-                    <p class="mb-4">"Sign up to get marketing emails from FuelEv, including promotions, rewards, travel experiences and information about FuelEv."</p>
+                    <p class="mb-4">"Sign up to get marketing emails from FuelEV, including promotions, rewards, travel experiences and information about FuelEV."</p>
                     <div class="flex justify-center">
                         <input type="email" placeholder="Your email address" class="p-2 rounded-l-lg w-full max-w-xs text-black" />
                         <button class="bg-green-500 text-white px-4 py-2 rounded-r-lg">"Subscribe"</button>
