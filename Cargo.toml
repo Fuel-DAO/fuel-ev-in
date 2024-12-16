@@ -72,3 +72,8 @@ tailwind-config-file = "tailwind.config.js"
 #
 # Optional. Env: LEPTOS_ASSETS_DIR.
 assets-dir = "public"
+
+
+[profile.release]
+opt-level = 'z'
+lto = true

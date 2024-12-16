@@ -21,21 +21,21 @@ pub fn HomeBanner(is_root: bool) -> impl IntoView {
                     // Logo image (1/4 width)
                     <div class="w-1/4 flex justify-center ">
                         <a href="/">
-                            <img src="/public/img/fueldao.svg" alt="App Logo" class="h-12" />
+                            <img src="/public/img/app.svg" alt="App Logo" class="h-12" />
                         </a>
                     </div>
 
                     // Middle image (1/2 width)
-                    <div
-                        class="w-1/2 h-16 flex justify-center bg-cover bg-center hidden  md:flex"
-                        style=format!("background-image: url('{}');", "/public/img/header.svg")
-                    ></div>
+                    // <div
+                    //     class="w-1/2 h-16 flex justify-center bg-cover bg-center hidden  md:flex"
+                    //     style=format!("background-image: url('{}');", "/public/img/header.svg")
+                    // ></div>
 
                     // Empty component (1/4 width)
                     <div class="w-1/4"></div>
                 </div>
                 <div
-                    class="text-white flex flex-col p-4 flex-grow"
+                    class="text-white flex flex-col p-4 flex-grow mt-12"
                     style="margin-left:35px; margin-bottom:10px"
                 >
                     <Show when=move || is_root>

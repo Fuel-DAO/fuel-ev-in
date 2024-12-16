@@ -71,11 +71,11 @@ impl CheckoutState {
 
         this.start_time.update(|f| *f = Some(value));
 
-        if !Self::valid_time() {
+        // if !Self::valid_time() {
         
-            this.start_time.update(|f| *f = None);
+        //     this.start_time.update(|f| *f = None);
                 
-        }
+        // }
 
     }
 
@@ -84,11 +84,11 @@ impl CheckoutState {
 
         this.end_time.update(|f| *f = Some(value));
 
-        if !Self::valid_time() {
+        // if !Self::valid_time() {
         
-        this.end_time.update(|f| *f = None);
+        // this.end_time.update(|f| *f = None);
             
-        }
+        // }
     }
 
     fn valid_time() -> bool {
