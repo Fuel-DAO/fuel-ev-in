@@ -116,13 +116,13 @@ pub fn SearchBar(is_root: bool) -> impl IntoView {
                 <i class="fas fa-search text-white mr-2"></i>
                 <input
                     type="text"
-                    value="Mumbai"
+                    value="Bandra, Mumbai"
                     placeholder="Add your location"
                     class="bg-transparent text-white focus:outline-none w-full"
                     list="cities"
                 />
                 <datalist id="cities">
-                    <option value="Mumbai"></option>
+                    <option value="Bandra, Mumbai"></option>
                 </datalist>
             </div>
 

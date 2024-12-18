@@ -24,7 +24,7 @@ pub fn GetInTouch() -> impl IntoView {
                     </div>
                     <div class="flex items-center gap-4">
                         <Icon class="text-green-500 w-6 h-6" icon=icondata::TiLocationOutline />
-                        <p>Mumbai, India</p>
+                        <p>Bandra, Mumbai, India</p>
                     </div>
                 </div>
 
