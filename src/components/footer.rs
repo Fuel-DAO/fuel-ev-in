@@ -37,7 +37,7 @@ pub fn FooterSection() -> impl IntoView {
                 // Right section: Logo and Links
                 <div class="w-full md:w-1/2 flex flex-col items-center md:items-end space-y-8">
                     // Logo
-                    <img src="/public/img/app.svg" alt="Fuel DAO logo" class="h-12"/>
+                    <img src="/public/icons/white.png" alt="Fuel DAO logo White" class="h-12"/>
 
                     // Links
                     <div class="flex flex-col space-y-2 text-green-400 text-center md:text-right">

@@ -106,12 +106,12 @@ pub fn HeroSection(
                                     <input
                                         type="text"
                                         placeholder="Add your location"
-                                        value= "Mumbai"
+                                        value= "Bandra, Mumbai"
                                         class="w-[213.81px] h-[24px]  pt-4 pr-4 pb-4 pl-0  bg-[#252525] bg-opacity-0 text-white placeholder-white"
                                         list="cities"
                                     />
                                     <datalist id="cities">
-                                        <option value="Mumbai"></option>
+                                        <option value="Bandra, Mumbai"></option>
                                     </datalist>
                                 </div>
                                 // second field

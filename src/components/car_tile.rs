@@ -132,7 +132,7 @@ pub fn CarCard(car: Car) -> impl IntoView {
     let details = car.clone();
     let checkout = car.clone();
 
-    let car_type = format!("{:?}", car.car_type);
+    let car_type = format!("{:?}", car.car_type).to_uppercase();
     // let default_image_url = format!("{:?}", car.default_image_url);
     let transmission_type = format!("{:?}", car.transmission_type);
     let car_status = format!("{:?}", &car.status).to_case(Case::Title);
@@ -233,7 +233,7 @@ pub fn CarCard(car: Car) -> impl IntoView {
 fn CarDetailsPopup(#[prop(into)] show_popup: SignalSetter<bool>, car: CarDetails) -> impl IntoView {
     let details = car.clone();
 
-    let car_type = format!("{:?}", car.car_type);
+    let car_type = format!("{:?}", car.car_type).to_uppercase();
     let transmission_type = format!("{:?}", car.transmission_type);
     let car_status = format!("{:?}", &car.status).to_case(Case::Title);
     let fuel_type = format!("{:?}", car.fuel_type);
