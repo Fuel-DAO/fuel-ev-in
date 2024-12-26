@@ -23,10 +23,6 @@ use crate::{
 use codee::string::JsonSerdeCodec;
 use leptos_use::storage::use_local_storage;
 
-#[derive(Params, PartialEq, Clone)]
-struct Referrer {
-    user_refer: String,
-}
 
 #[component]
 fn CtxProvider(temp_identity: Option<JwkEcKey>, children: ChildrenFn) -> impl IntoView {

@@ -1,4 +1,4 @@
 [toolchain]
-channel = "nightly"
+channel = "nightly-2024-11-28"
 targets = ["wasm32-unknown-unknown"]
 

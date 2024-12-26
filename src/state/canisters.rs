@@ -6,6 +6,7 @@ use crate::{
     utils::{ic::AgentWrapper, MockPartialEq, ParentResource},
 };
 use candid::Principal;
+use dotenv_codegen::dotenv;
 use ic_agent::{identity::DelegatedIdentity, Identity};
 use leptos::*;
 use serde::{Deserialize, Serialize};
@@ -121,6 +122,10 @@ pub fn unauth_canisters() -> Canisters<false> {
 impl<const A: bool> Canisters<A> {
     pub async fn backend(&self) -> Backend<'_> {
         let agent = self.agent.get_agent().await;
+        let is_dev = dotenv!("BACKEND") == "LOCAL";
+        if is_dev {
+          let _ =  agent.fetch_root_key().await;
+        }
         Backend(self.backend_principal, agent)
     }
 }

@@ -37,3 +37,6 @@ pub use skeleton_cards::*;
 
 pub mod home_banner;
 pub use home_banner::*;
+
+pub mod payment;
+pub use payment::*;
