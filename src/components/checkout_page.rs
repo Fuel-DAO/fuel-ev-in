@@ -232,7 +232,7 @@ pub fn CheckoutPageInner() -> impl IntoView {
                                                                         .country_code
                                                                         .map_or("".into(), |f| f.to_string())
                                                                     heading="Country Code"
-                                                                    placeholder="Country Code"
+                                                                    placeholder="Country Code: +91"
                                                                     updater=update_code
                                                                     validator=move |val| non_empty_string_validator(val)
                                                                     input_type="text"
