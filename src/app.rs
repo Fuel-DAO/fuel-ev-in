@@ -57,7 +57,7 @@ fn HomePage() -> impl IntoView {
                 
                 // <Services/>
                 <Advantages />
-                <InvestInCar />
+                // <InvestInCar />
                 <GetInTouch />
                 // <StayInTheKnow/>
                 <FooterSection />
