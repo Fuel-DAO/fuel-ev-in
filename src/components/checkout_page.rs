@@ -407,6 +407,10 @@ pub fn CheckoutPageInner() -> impl IntoView {
                                                                             <span>"Subtotal"</span>
                                                                             <span>"₹"{format!("{:.2}", a.total_amount)}</span>
                                                                         </div>
+                                                                        <div class="flex justify-between items-center mb-4">
+                                                                            <span>"PG fees + 18% GST on PG fees"</span>
+                                                                            <span>"₹"{format!("{:.2}", a.total_amount * 0.0236)}</span>
+                                                                        </div>
                                                                         // <div class="flex justify-between items-center mb-4">
                                                                         // <span>"Tax"</span>
                                                                         // <span>"₹""0.00"</span>
@@ -419,7 +423,7 @@ pub fn CheckoutPageInner() -> impl IntoView {
 
                                                                         <div class="flex justify-between items-center mb-4 font-bold text-lg">
                                                                             <span>"Total Rental Price"</span>
-                                                                            <span>"₹"{format!("{:.2}", a.total_amount)}</span>
+                                                                            <span>"₹"{format!("{:.2}", a.total_amount * 1.0236)}</span>
                                                                         </div>
 
                                                                     // <button class="w-full bg-green-500 text-white py-3 rounded-lg font-bold hover:bg-green-600">
