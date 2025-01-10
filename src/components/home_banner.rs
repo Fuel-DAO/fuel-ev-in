@@ -40,10 +40,10 @@ pub fn HomeBanner(is_root: bool) -> impl IntoView {
                 >
                     <Show when=move || is_root>
                         <div class="text-left">
-                            <p class="text-3xl md:text-5xl lg:text-7xl font-bold">
-                                Explore your place
+                            <p class="text-3xl md:text-5xl lg:text-7xl font-bold w-3/4">
+                                Enjoy a luxurious drive to the places you love
                             </p>
-                            <p class="text-3xl md:text-5xl lg:text-7xl font-bold">to stay</p>
+                            // <p class="text-3xl md:text-5xl lg:text-7xl font-bold">to stay</p>
                         </div>
                     </Show>
                 </div>
