@@ -63,7 +63,8 @@ macro_rules! input_component {
             view! {
                 <div class=format!("{:?}", style)>
                 <div class="flex flex-col grow gap-y-1 text-sm md:text-base">
-                     <span class="font-semibold">{heading.clone()}</span>
+                     <span class="font-semibold">{heading.clone()}<span class="text-red-500">*</span></span>
+                     
                      <$input_element
                         _ref=input_ref
                         value={initial_value.unwrap_or_default()}

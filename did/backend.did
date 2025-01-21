@@ -110,7 +110,6 @@ service : () -> {
   get_monitoring_events : () -> (vec EventMoniter) query;
   greet : (text) -> (text) query;
   remove_controller : (principal) -> (Result);
-  reserve_car : (nat64, nat64, nat64, CustomerDetials) -> (Result_2);
   search_car : (nat64, nat64) -> (vec Car);
   update_car : (nat64, CarDetails) -> ();
 }

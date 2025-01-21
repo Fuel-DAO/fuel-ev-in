@@ -142,7 +142,9 @@ pub fn Search() -> impl IntoView {
             // hero section
             <div class="flex relative z-10 items-center mx-auto max-w-screen-xl h-full">
                 <div class="p-4 lg:p-10" style="margin-bottom: 70px;">
-                    <h1 class="text-5xl font-bold lg:text-7xl">Explore your place <br />to stay</h1>
+                <p class="text-left text-3xl md:text-5xl lg:text-7xl font-bold w-3/4">
+                Enjoy a luxurious drive to the places you love
+            </p>
                     <div class="relative mt-8">
                         <div class="flex flex-col lg:flex-row items-center space-x-[10px] w-4/5 md:w-full  lg:w-[1074px] h-full lg:h-[106px] p-12 pt-4  lg:p-[27px_34px] bg-[#1D1D1D9C] backdrop-blur-[3px] border-t-[1px] border-l-[1px] border-gray-400 rounded-[22.5px] ">
                             <div class="flex flex-col gap-4 px-2 lg:flex-row lg:gap-[21px] lg:w-[1005.5px]">

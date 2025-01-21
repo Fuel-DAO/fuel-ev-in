@@ -40,11 +40,11 @@ pub fn FooterSection() -> impl IntoView {
                     <img src="/public/icons/white.png" alt="Fuel DAO logo White" class="h-12"/>
 
                     // Links
-                    <div class="flex flex-col space-y-2 text-green-400 text-center md:text-right">
-                        <a href="#" class="hover:underline">"Help"</a>
-                        // <a href="#" class="hover:underline">"FAQs"</a>
-                        <a href="#" class="hover:underline">"Contact Us"</a>
-                    </div>
+                    // <div class="flex flex-col space-y-2 text-green-400 text-center md:text-right">
+                    //     <a href="#" class="hover:underline">"Help"</a>
+                    //     // <a href="#" class="hover:underline">"FAQs"</a>
+                    //     <a href="#" class="hover:underline">"Contact Us"</a>
+                    // </div>
                 </div>
             </div>
 
@@ -120,26 +120,26 @@ pub fn Footer() -> impl IntoView {
                         />
                     </div>
 
-                    <nav class="flex flex-col justify-start items-start h-full ml-[50px]">
-                        <div class="mb-4">
-                            <img
-                                src="/public/img/app.svg"
-                                alt="Logo"
-                                class="z-10 h-10"
-                                style="max-width: 100%; height: auto;"
-                            />
-                        </div>
-                        <a href="#" class="mb-2 text-white">
-                            Help
-                        </a>
-                        // <a href="#" class="mb-2 text-white">
-                        //     FAQs
-                        // </a>
+                    // <nav class="flex flex-col justify-start items-start h-full ml-[50px]">
+                    //     <div class="mb-4">
+                    //         <img
+                    //             src="/public/img/app.svg"
+                    //             alt="Logo"
+                    //             class="z-10 h-10"
+                    //             style="max-width: 100%; height: auto;"
+                    //         />
+                    //     </div>
+                    //     <a href="#" class="mb-2 text-white">
+                    //         Help
+                    //     </a>
+                    //     // <a href="#" class="mb-2 text-white">
+                    //     //     FAQs
+                    //     // </a>
 
-                        <a href="#" class="text-white">
-                            Contact Us
-                        </a>
-                    </nav>
+                    //     <a href="#" class="text-white">
+                    //         Contact Us
+                    //     </a>
+                    // </nav>
                 </div>
             </div>
             <div class="flex absolute gap-0 justify-between items-start border-t border-[#4E5154] top-[589.35px] lg:left-[154.89px] lg:w-[1142px] h-[40.81px] px-4 lg:px-0 lg:p-[15px_0_0_0]">

@@ -1,6 +1,5 @@
 use leptos::*;
 use leptos_icons::Icon;
-use leptos_use::use_media_query;
 
 #[component]
 pub fn BestPlacedForTrips() -> impl IntoView {
